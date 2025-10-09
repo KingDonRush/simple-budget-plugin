@@ -1,0 +1,111 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Budget Plugin 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 00:00+0000\n"
+"PO-Revision-Date: 2025-10-09 00:00+0000\n"
+"Last-Translator: Guilherme Silva <email@dominio.com>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# === Erros e mensagens gerais ===
+msgid "Erro de segurança: nonce inválido ou expirado."
+msgstr ""
+
+msgid "Carrinho vazio ou dados inválidos."
+msgstr ""
+
+msgid "Nenhum produto encontrado."
+msgstr ""
+
+msgid "Produto inválido."
+msgstr ""
+
+msgid "Produto adicionado ao carrinho."
+msgstr ""
+
+msgid "Produto removido do carrinho."
+msgstr ""
+
+msgid "Carrinho está vazio."
+msgstr ""
+
+msgid "Número de WhatsApp não configurado."
+msgstr ""
+
+msgid "IDs de produtos não enviados."
+msgstr ""
+
+# === Front-end popup ===
+msgid "Seu Carrinho"
+msgstr ""
+
+msgid "Enviar Orçamento via WhatsApp"
+msgstr ""
+
+msgid "Remover"
+msgstr ""
+
+# === Página de configurações (Admin) ===
+msgid "Configurações sbp"
+msgstr ""
+
+msgid "Configurações do Simple Budget Plugin"
+msgstr ""
+
+msgid "Configurações do WhatsApp"
+msgstr ""
+
+msgid "Número de WhatsApp"
+msgstr ""
+
+msgid "Post Types dos Produtos"
+msgstr ""
+
+msgid "Insira o número de WhatsApp (DDD + 9 + número [se for fixo, retirar o 9; DDD + Número])."
+msgstr ""
+
+# === Shortcode [sbp_cart] ===
+msgid "Erro ao carregar o carrinho."
+msgstr ""
+
+msgid "Seu carrinho está vazio."
+msgstr ""
+
+# === JavaScript (popup, carrinho e WhatsApp) ===
+msgid "Erro: Popup do carrinho não foi encontrado na página."
+msgstr ""
+
+msgid "Aviso: Popup já está fechado."
+msgstr ""
+
+msgid "Carrinho vazio ou inexistente no localStorage."
+msgstr ""
+
+msgid "Erro ao tentar parsear o carrinho:"
+msgstr ""
+
+msgid "Erro: Tentativa de salvar um carrinho inválido no localStorage."
+msgstr ""
+
+msgid "Produto adicionado ao carrinho!"
+msgstr ""
+
+msgid "Produto já está no carrinho!"
+msgstr ""
+
+msgid "Erro ao adicionar o produto ao carrinho."
+msgstr ""
+
+msgid "Erro: Número de WhatsApp não configurado."
+msgstr ""
+
+msgid "Erro ao gerar a mensagem do WhatsApp."
+msgstr ""
+
+msgid "Olá! Eu quero fazer um orçamento dos seguintes produtos:\\n"
+msgstr ""

@@ -1,0 +1,248 @@
+/* Importar a fonte Red Hat Display */
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap');
+
+/* Estilos para o popup customizado */
+.sbp-custom-popup {
+    display: none;
+    position: fixed; /* Fixado para cobrir toda a tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+    z-index: 99999; /* Garante que o popup esteja acima de outros elementos */
+    transition: opacity 0.3s ease-in-out; /* Suaviza a transição de exibição */
+}
+
+/* Conteúdo do popup centralizado */
+.sbp-custom-popup-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar o popup */
+    position: relative;
+    animation: fadeIn 0.3s; /* Efeito de fade-in */
+    font-family: 'Red Hat Display', sans-serif;
+    transition: transform 0.3s ease;
+    transform: scale(1);
+    overflow-y: auto; /* Para permitir scroll no conteúdo caso necessário */
+    max-height: 80vh; /* Limita a altura do conteúdo para evitar que ultrapasse a tela */
+}
+
+/* Estado de transição ao abrir */
+.sbp-custom-popup.open .sbp-custom-popup-content {
+    transform: scale(1.05);
+}
+
+/* Título do carrinho */
+.sbp-custom-popup-content h2 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Estilo dos itens do carrinho */
+.sbp-cart-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    margin: 10px 0;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover no item do carrinho */
+.sbp-cart-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Imagem do produto ajustada à esquerda */
+.sbp-cart-item img {
+    width: 58px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve na imagem */
+    transition: transform 0.2s ease;
+}
+
+/* Zoom leve na imagem ao passar o mouse */
+.sbp-cart-item img:hover {
+    transform: scale(1.1);
+}
+
+/* Nome do produto */
+.sbp-cart-item h4 {
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+    text-align: left;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* Botão de remover */
+.sbp-remove-from-cart {
+    background-color: #ff4d4f;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Estado hover e active no botão de remover */
+.sbp-remove-from-cart:hover {
+    background-color: #e04545;
+    transform: scale(1.05);
+}
+
+.sbp-remove-from-cart:active {
+    transform: scale(0.95);
+}
+
+/* Botão de enviar orçamento via WhatsApp */
+#enviar-orcamento-whatsapp {
+    background-color: #25d366;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    width: 100%; /* Largura total do botão */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover e active no botão de WhatsApp */
+#enviar-orcamento-whatsapp:hover {
+    background-color: #20c15a;
+    transform: translateY(-2px); /* Leve elevação */
+}
+
+#enviar-orcamento-whatsapp:active {
+    transform: translateY(2px);
+}
+
+/* Botão de fechar maior */
+.sbp-close-popup {
+    font-size: 36px;
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover e active no botão de fechar */
+.sbp-close-popup:hover {
+    color: #000;
+    transform: rotate(90deg); /* Leve rotação */
+}
+
+.sbp-close-popup:active {
+    transform: rotate(-90deg);
+}
+
+/* Animação para o popup aparecer */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade-out */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Estado de transição ao fechar */
+.sbp-custom-popup.fade-out {
+    animation: fadeOut 0.3s;
+    opacity: 0;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .sbp-cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sbp-cart-item img {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .sbp-cart-item h4 {
+        text-align: center;
+    }
+}
+
+/* Barra de rolagem personalizada */
+.sbp-custom-popup-content {
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #eaeaea;
+}
+
+.sbp-custom-popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sbp-custom-popup-content::-webkit-scrollbar-track {
+    background: #eaeaea;
+}
+
+.sbp-custom-popup-content::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
+    border: 2px solid #eaeaea;
+}
+
+/* Foco para acessibilidade */
+.sbp-remove-from-cart:focus,
+#enviar-orcamento-whatsapp:focus,
+.sbp-close-popup:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Contraste aumentado para acessibilidade */
+@media (prefers-contrast: high) {
+    .sbp-remove-from-cart {
+        background-color: #ff0000;
+        color: #ffffff;
+    }
+}
+
+/* Botão com ícone do WhatsApp */
+#enviar-orcamento-whatsapp::before {
+    content: "\f232"; /* Unicode do ícone WhatsApp */
+    font-family: "FontAwesome";
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Definindo altura mínima para o popup */
+.sbp-custom-popup-content {
+    min-height: 200px;
+    max-height: 60vh; /* Limite de altura    para não ultrapassar a tela */
+    overflow-y: auto; /* Permite scroll no conteúdo do popup */
+}
