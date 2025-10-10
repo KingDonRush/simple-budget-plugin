@@ -1,0 +1,1436 @@
+﻿
+=== DIR: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\assets ===
+
+
+=== DIR: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\assets\css ===
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\assets\css\sbp-styles.css ===
+/* Importar a fonte Red Hat Display */
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap');
+
+/* Estilos para o popup customizado */
+.sbp-custom-popup {
+    display: none;
+    position: fixed; /* Fixado para cobrir toda a tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+    z-index: 99999; /* Garante que o popup esteja acima de outros elementos */
+    transition: opacity 0.3s ease-in-out; /* Suaviza a transiÃ§Ã£o de exibiÃ§Ã£o */
+}
+
+/* ConteÃºdo do popup centralizado */
+.sbp-custom-popup-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar o popup */
+    position: relative;
+    animation: fadeIn 0.3s; /* Efeito de fade-in */
+    font-family: 'Red Hat Display', sans-serif;
+    transition: transform 0.3s ease;
+    transform: scale(1);
+    overflow-y: auto; /* Para permitir scroll no conteÃºdo caso necessÃ¡rio */
+    max-height: 80vh; /* Limita a altura do conteÃºdo para evitar que ultrapasse a tela */
+}
+
+/* Estado de transiÃ§Ã£o ao abrir */
+.sbp-custom-popup.open .sbp-custom-popup-content {
+    transform: scale(1.05);
+}
+
+/* TÃ­tulo do carrinho */
+.sbp-custom-popup-content h2 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Estilo dos itens do carrinho */
+.sbp-cart-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    margin: 10px 0;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover no item do carrinho */
+.sbp-cart-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Imagem do produto ajustada Ã  esquerda */
+.sbp-cart-item img {
+    width: 58px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve na imagem */
+    transition: transform 0.2s ease;
+}
+
+/* Zoom leve na imagem ao passar o mouse */
+.sbp-cart-item img:hover {
+    transform: scale(1.1);
+}
+
+/* Nome do produto */
+.sbp-cart-item h4 {
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+    text-align: left;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* BotÃ£o de remover */
+.sbp-remove-from-cart {
+    background-color: #ff4d4f;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Estado hover e active no botÃ£o de remover */
+.sbp-remove-from-cart:hover {
+    background-color: #e04545;
+    transform: scale(1.05);
+}
+
+.sbp-remove-from-cart:active {
+    transform: scale(0.95);
+}
+
+/* BotÃ£o de enviar orÃ§amento via WhatsApp */
+#enviar-orcamento-whatsapp {
+    background-color: #25d366;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    width: 100%; /* Largura total do botÃ£o */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover e active no botÃ£o de WhatsApp */
+#enviar-orcamento-whatsapp:hover {
+    background-color: #20c15a;
+    transform: translateY(-2px); /* Leve elevaÃ§Ã£o */
+}
+
+#enviar-orcamento-whatsapp:active {
+    transform: translateY(2px);
+}
+
+/* BotÃ£o de fechar maior */
+.sbp-close-popup {
+    font-size: 36px;
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover e active no botÃ£o de fechar */
+.sbp-close-popup:hover {
+    color: #000;
+    transform: rotate(90deg); /* Leve rotaÃ§Ã£o */
+}
+
+.sbp-close-popup:active {
+    transform: rotate(-90deg);
+}
+
+/* AnimaÃ§Ã£o para o popup aparecer */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade-out */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Estado de transiÃ§Ã£o ao fechar */
+.sbp-custom-popup.fade-out {
+    animation: fadeOut 0.3s;
+    opacity: 0;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .sbp-cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sbp-cart-item img {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .sbp-cart-item h4 {
+        text-align: center;
+    }
+}
+
+/* Barra de rolagem personalizada */
+.sbp-custom-popup-content {
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #eaeaea;
+}
+
+.sbp-custom-popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sbp-custom-popup-content::-webkit-scrollbar-track {
+    background: #eaeaea;
+}
+
+.sbp-custom-popup-content::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
+    border: 2px solid #eaeaea;
+}
+
+/* Foco para acessibilidade */
+.sbp-remove-from-cart:focus,
+#enviar-orcamento-whatsapp:focus,
+.sbp-close-popup:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Contraste aumentado para acessibilidade */
+@media (prefers-contrast: high) {
+    .sbp-remove-from-cart {
+        background-color: #ff0000;
+        color: #ffffff;
+    }
+}
+
+/* BotÃ£o com Ã­cone do WhatsApp */
+#enviar-orcamento-whatsapp::before {
+    content: "\f232"; /* Unicode do Ã­cone WhatsApp */
+    font-family: "FontAwesome";
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Definindo altura mÃ­nima para o popup */
+.sbp-custom-popup-content {
+    min-height: 200px;
+    max-height: 60vh; /* Limite de altura    para nÃ£o ultrapassar a tela */
+    overflow-y: auto; /* Permite scroll no conteÃºdo do popup */
+}
+
+
+=== DIR: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\assets\js ===
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\assets\js\sbp-script.js ===
+jQuery(document).ready(function ($) {
+    console.log("O script foi carregado e estÃ¡ funcionando!");
+
+    // FunÃ§Ã£o para abrir o popup do carrinho com verificaÃ§Ãµes adicionais
+    function openPopup() {
+        console.log("Abrindo popup do carrinho...");
+
+        $('body').addClass('sbp-popup-open');
+
+        if (!$('#sbp-custom-popup').length) {
+            console.error(sbp_i18n_js.popup_not_found);
+            return;
+        }
+
+        $('#sbp-custom-popup').fadeIn(function () {
+            console.log("Popup do carrinho exibido.");
+        });
+
+        renderCart();
+    }
+
+    // FunÃ§Ã£o para fechar o popup do carrinho
+    function closePopup() {
+        console.log("Fechando popup do carrinho...");
+
+        $('body').removeClass('sbp-popup-open');
+
+        if (!$('#sbp-custom-popup').is(':visible')) {
+            console.warn(sbp_i18n_js.popup_closed);
+            return;
+        }
+
+        $('#sbp-custom-popup').fadeOut(function () {
+            console.log("Popup do carrinho fechado.");
+        });
+    }
+
+    // Captura o clique no botÃ£o de abrir o carrinho
+    $('#open-cart-button').on('click', function (e) {
+        e.preventDefault();
+        console.log("BotÃ£o de abrir o carrinho clicado.");
+        openPopup();
+    });
+
+    // Captura o clique no botÃ£o de fechar do popup
+    $('.sbp-close-popup').on('click', function () {
+        console.log("BotÃ£o de fechar o carrinho clicado.");
+        closePopup();
+    });
+
+    // Fecha o popup ao clicar fora do conteÃºdo
+    $(window).on('click', function (event) {
+        var popup = $('#sbp-custom-popup');
+        if ($(event.target).is(popup)) {
+            closePopup();
+        }
+    });
+
+    // FunÃ§Ã£o para obter o carrinho do localStorage
+    function getCart() {
+        var cart = localStorage.getItem('sbp_cart');
+
+        if (!cart) {
+            console.warn("Carrinho vazio ou inexistente no localStorage.");
+            return [];
+        }
+
+        try {
+            cart = JSON.parse(cart);
+        } catch (e) {
+            console.error("Erro ao tentar parsear o carrinho:", e);
+            return [];
+        }
+
+        console.log("Carrinho carregado com sucesso:", cart);
+        return cart;
+    }
+
+    // FunÃ§Ã£o para salvar o carrinho
+    function saveCart(cart) {
+        if (!Array.isArray(cart)) {
+            console.error("Erro: Tentativa de salvar um carrinho invÃ¡lido no localStorage.");
+            return;
+        }
+
+        localStorage.setItem('sbp_cart', JSON.stringify(cart));
+        console.log("Carrinho salvo com sucesso no localStorage:", cart);
+    }
+
+    // FunÃ§Ã£o para renderizar o carrinho
+    function renderCart() {
+        var cart = getCart();
+
+        if (cart.length === 0) {
+            console.warn("Carrinho estÃ¡ vazio. Exibindo mensagem de aviso.");
+            $('#sbp-cart-items').html('<p>' + sbp_i18n_js.cart_empty + '</p>');
+            $('#enviar-orcamento-whatsapp').hide();
+            return;
+        }
+
+        console.log("Iniciando renderizaÃ§Ã£o dos itens do carrinho...");
+
+        $.ajax({
+            url: sbp_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'sbp_get_cart_products',
+                nonce: sbp_ajax.nonce,
+                product_ids: cart
+            },
+            success: function (response) {
+                console.log("Resposta do servidor:", response);
+
+                if (response.success) {
+                    $('#sbp-cart-items').html(response.data);
+                    $('#enviar-orcamento-whatsapp').show();
+                    attachRemoveListeners();
+                } else {
+                    console.error("Erro ao carregar os produtos do carrinho:", response.data);
+                    $('#sbp-cart-items').html('<p>' + sbp_i18n_js.load_error + '</p>');
+                    $('#enviar-orcamento-whatsapp').hide();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Erro na requisiÃ§Ã£o AJAX:", status, error);
+                $('#sbp-cart-items').html('<p>' + sbp_i18n_js.load_error + '</p>');
+                $('#enviar-orcamento-whatsapp').hide();
+            }
+        });
+    }
+
+    // Captura o ID do produto atual
+    function getCurrentProductId() {
+        var productId = $('input[name="post_ID"]').val() || $('body').attr('class').match(/postid-(\d+)/)?.[1];
+
+        if (!productId) {
+            console.error("Erro: ID do produto nÃ£o encontrado.");
+            return null;
+        }
+
+        console.log("ID do produto atual:", productId);
+        return productId;
+    }
+
+    // Remove item do carrinho
+    function removeFromCart(productId) {
+        var cart = getCart();
+        console.log('Carrinho antes de remover:', cart);
+
+        cart = cart.filter(id => String(id) !== String(productId));
+
+        console.log('Carrinho apÃ³s remover item:', cart);
+        saveCart(cart);
+        console.log('Carrinho salvo no localStorage:', JSON.parse(localStorage.getItem('sbp_cart')));
+
+        renderCart();
+        console.log(`Produto ${productId} removido do carrinho.`);
+    }
+
+    // Adiciona produto ao carrinho
+    $('#add-to-cart-button').on('click', function (e) {
+        e.preventDefault();
+
+        var productId = getCurrentProductId();
+
+        if (productId) {
+            var cart = getCart();
+            if (!cart.includes(productId)) {
+                cart.push(productId);
+                saveCart(cart);
+                console.log("Produto adicionado ao carrinho:", productId);
+                alert(sbp_i18n_js.product_added);
+            } else {
+                alert(sbp_i18n_js.product_exists);
+            }
+        } else {
+            alert(sbp_i18n_js.product_add_error);
+        }
+    });
+
+    // Eventos de remover item
+    function attachRemoveListeners() {
+        $('.sbp-remove-from-cart').off('click').on('click', function () {
+            var productId = $(this).data('product-id');
+            console.log('Tentando remover produto com ID:', productId);
+            removeFromCart(productId);
+        });
+    }
+
+    // Gerar mensagem do WhatsApp
+    function gerarMensagemWhatsApp() {
+        var cart = getCart();
+        if (cart.length > 0) {
+            $.ajax({
+                url: sbp_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'sbp_get_product_titles',
+                    nonce: sbp_ajax.nonce,
+                    product_ids: cart
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var productTitles = response.data;
+                        var message = sbp_i18n_js.whatsapp_intro;
+
+                        productTitles.forEach(function (title, index) {
+                            message += (index + 1) + " - " + title + ";\n";
+                        });
+
+                        if (sbp_ajax.whatsapp_number) {
+                            var telefone = '+55' + sbp_ajax.whatsapp_number;
+                            var url = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(message);
+                            window.open(url, '_blank');
+                            console.log("Abrindo WhatsApp com a mensagem:", message);
+                        } else {
+                            console.error(sbp_i18n_js.whatsapp_number_error);
+                            alert(sbp_i18n_js.whatsapp_number_error);
+                        }
+                    } else {
+                        console.error("Erro ao buscar tÃ­tulos dos produtos:", response.data);
+                        alert(sbp_i18n_js.whatsapp_error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Erro na requisiÃ§Ã£o AJAX:", status, error);
+                    alert(sbp_i18n_js.whatsapp_error);
+                }
+            });
+        } else {
+            alert(sbp_i18n_js.cart_empty);
+        }
+    }
+
+    // Clique no botÃ£o de WhatsApp
+    $('#enviar-orcamento-whatsapp').on('click', function (e) {
+        e.preventDefault();
+        gerarMensagemWhatsApp();
+    });
+
+    // Exibir o carrinho ao carregar
+    renderCart();
+});
+
+
+=== DIR: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\includes ===
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\includes\class-sbp-shortcodes.php ===
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; // SeguranÃ§a
+
+class sbp_Shortcodes {
+
+    public function __construct() {
+        // Registra o shortcode no WordPress
+        add_shortcode( 'sbp_cart', array( $this, 'sbp_cart_shortcode' ) );
+    }
+
+    // FunÃ§Ã£o do shortcode que exibe o carrinho
+    public function sbp_cart_shortcode() {
+        // Localizar strings de traduÃ§Ã£o para o JavaScript
+        $i18n = array(
+            'load_error' => __( 'Erro ao carregar o carrinho.', 'simple-budget-plugin-sbp' ),
+            'empty_cart' => __( 'Seu carrinho estÃ¡ vazio.', 'simple-budget-plugin-sbp' ),
+        );
+
+        // Passar traduÃ§Ãµes para o JS (garantindo que estejam disponÃ­veis)
+        wp_localize_script( 'sbp-script', 'sbp_i18n', $i18n );
+
+        ob_start();
+        ?>
+        <div id="sbp-cart-content"></div>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                function displayCartProducts() {
+                    var cart = localStorage.getItem('sbp_cart');
+                    var quantities = localStorage.getItem('sbp_cart_quantities');
+
+                    if (cart) {
+                        var productIds = JSON.parse(cart);
+                        var quantitiesObj = quantities ? JSON.parse(quantities) : {};
+
+                        if (productIds.length > 0) {
+                            $.ajax({
+                                url: sbp_ajax.ajax_url,
+                                type: 'POST',
+                                data: {
+                                    action: 'sbp_get_cart_products',
+                                    nonce: sbp_ajax.nonce,
+                                    product_ids: productIds,
+                                    quantities: quantitiesObj
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        $('#sbp-cart-content').html(response.data);
+                                    } else {
+                                        $('#sbp-cart-content').html('<p>' + sbp_i18n.load_error + '</p>');
+                                    }
+                                },
+                                error: function() {
+                                    $('#sbp-cart-content').html('<p>' + sbp_i18n.load_error + '</p>');
+                                }
+                            });
+                        } else {
+                            $('#sbp-cart-content').html('<p>' + sbp_i18n.empty_cart + '</p>');
+                        }
+                    } else {
+                        $('#sbp-cart-content').html('<p>' + sbp_i18n.empty_cart + '</p>');
+                    }
+                }
+
+                displayCartProducts();
+
+                // Evento para alterar a quantidade
+                $(document).on('change', '.sbp-quantity', function() {
+                    var productId = $(this).data('product-id').toString();
+                    var quantity = parseInt($(this).val());
+                    var cartQuantities = localStorage.getItem('sbp_cart_quantities') ? JSON.parse(localStorage.getItem('sbp_cart_quantities')) : {};
+
+                    if (quantity > 0) {
+                        cartQuantities[productId] = quantity;
+                    } else {
+                        delete cartQuantities[productId];
+                    }
+
+                    localStorage.setItem('sbp_cart_quantities', JSON.stringify(cartQuantities));
+                });
+
+                // Evento para remover produto do carrinho
+                $(document).on('click', '.sbp-remove-from-cart', function() {
+                    var productId = $(this).data('product-id').toString();
+                    var cart = localStorage.getItem('sbp_cart') ? JSON.parse(localStorage.getItem('sbp_cart')) : [];
+                    var cartQuantities = localStorage.getItem('sbp_cart_quantities') ? JSON.parse(localStorage.getItem('sbp_cart_quantities')) : {};
+
+                    var index = cart.indexOf(productId);
+                    if (index > -1) {
+                        cart.splice(index, 1);
+                        localStorage.setItem('sbp_cart', JSON.stringify(cart));
+
+                        delete cartQuantities[productId];
+                        localStorage.setItem('sbp_cart_quantities', JSON.stringify(cartQuantities));
+
+                        displayCartProducts();
+                    }
+                });
+
+            });
+        </script>
+        <?php
+        return ob_get_clean();
+    }
+}
+
+new sbp_Shortcodes();
+
+
+=== DIR: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\languages ===
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\languages\simple-budget-plugin-sbp.pot ===
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Budget Plugin 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 00:00+0000\n"
+"PO-Revision-Date: 2025-10-10 00:00+0000\n"
+"Last-Translator: Guilherme Silva <email@dominio.com>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# === Erros e mensagens gerais ===
+msgid "Erro de seguranÃ§a: nonce invÃ¡lido ou expirado."
+msgstr ""
+
+msgid "Falha de seguranÃ§a."
+msgstr ""
+
+msgid "Carrinho vazio ou dados invÃ¡lidos."
+msgstr ""
+
+msgid "Nenhum item encontrado."
+msgstr ""
+
+msgid "Nenhum produto encontrado."
+msgstr ""
+
+msgid "Produto invÃ¡lido."
+msgstr ""
+
+msgid "Produto adicionado ao carrinho."
+msgstr ""
+
+msgid "Produto removido do carrinho."
+msgstr ""
+
+msgid "Carrinho estÃ¡ vazio."
+msgstr ""
+
+msgid "NÃºmero de WhatsApp nÃ£o configurado."
+msgstr ""
+
+msgid "IDs de produtos nÃ£o enviados."
+msgstr ""
+
+# === Front-end popup ===
+msgid "Seu Carrinho"
+msgstr ""
+
+msgid "Enviar OrÃ§amento via WhatsApp"
+msgstr ""
+
+msgid "Remover"
+msgstr ""
+
+# === PÃ¡gina de configuraÃ§Ãµes (Admin) ===
+msgid "ConfiguraÃ§Ãµes sbp"
+msgstr ""
+
+msgid "ConfiguraÃ§Ãµes do Simple Budget Plugin"
+msgstr ""
+
+msgid "ConfiguraÃ§Ãµes do WhatsApp"
+msgstr ""
+
+msgid "NÃºmero de WhatsApp"
+msgstr ""
+
+msgid "Post Types dos Produtos"
+msgstr ""
+
+msgid "Insira o nÃºmero de WhatsApp (DDD + 9 + nÃºmero [se for fixo, retirar o 9; DDD + NÃºmero])."
+msgstr ""
+
+msgid "Insira o nÃºmero de WhatsApp (apenas dÃ­gitos, com DDD). Ex.: 11999998888"
+msgstr ""
+
+msgid "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
+msgstr ""
+
+# === Shortcode [sbp_cart] ===
+msgid "Erro ao carregar o carrinho."
+msgstr ""
+
+msgid "Seu carrinho estÃ¡ vazio."
+msgstr ""
+
+# === JavaScript (popup, carrinho e WhatsApp) ===
+msgid "Erro: Popup do carrinho nÃ£o foi encontrado na pÃ¡gina."
+msgstr ""
+
+msgid "Aviso: Popup jÃ¡ estÃ¡ fechado."
+msgstr ""
+
+msgid "Carrinho vazio ou inexistente no localStorage."
+msgstr ""
+
+msgid "Erro ao tentar parsear o carrinho:"
+msgstr ""
+
+msgid "Erro: Tentativa de salvar um carrinho invÃ¡lido no localStorage."
+msgstr ""
+
+msgid "Produto adicionado ao carrinho!"
+msgstr ""
+
+msgid "Produto jÃ¡ estÃ¡ no carrinho!"
+msgstr ""
+
+msgid "Erro ao adicionar o produto ao carrinho."
+msgstr ""
+
+msgid "Erro: NÃºmero de WhatsApp nÃ£o configurado."
+msgstr ""
+
+msgid "Erro ao gerar a mensagem do WhatsApp."
+msgstr ""
+
+msgid "OlÃ¡! Eu quero fazer um orÃ§amento dos seguintes produtos:\\n"
+msgstr ""
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\languages\simple-budget-plugin-sbp-en_US.po ===
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Budget Plugin 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 00:00+0000\n"
+"PO-Revision-Date: 2025-10-10 00:00+0000\n"
+"Last-Translator: Guilherme Silva <email@dominio.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# === General errors and messages ===
+msgid "Erro de seguranÃ§a: nonce invÃ¡lido ou expirado."
+msgstr "Security error: invalid or expired nonce."
+
+msgid "Falha de seguranÃ§a."
+msgstr "Security failure."
+
+msgid "Carrinho vazio ou dados invÃ¡lidos."
+msgstr "Empty cart or invalid data."
+
+msgid "Nenhum item encontrado."
+msgstr "No items found."
+
+msgid "Nenhum produto encontrado."
+msgstr "No products found."
+
+msgid "Produto invÃ¡lido."
+msgstr "Invalid product."
+
+msgid "Produto adicionado ao carrinho."
+msgstr "Product added to cart."
+
+msgid "Produto removido do carrinho."
+msgstr "Product removed from cart."
+
+msgid "Carrinho estÃ¡ vazio."
+msgstr "Cart is empty."
+
+msgid "NÃºmero de WhatsApp nÃ£o configurado."
+msgstr "WhatsApp number not configured."
+
+msgid "IDs de produtos nÃ£o enviados."
+msgstr "Product IDs not provided."
+
+# === Front-end popup ===
+msgid "Seu Carrinho"
+msgstr "Your Cart"
+
+msgid "Enviar OrÃ§amento via WhatsApp"
+msgstr "Send Quote via WhatsApp"
+
+msgid "Remover"
+msgstr "Remove"
+
+# === Admin Settings Page ===
+msgid "ConfiguraÃ§Ãµes sbp"
+msgstr "SBP Settings"
+
+msgid "ConfiguraÃ§Ãµes do Simple Budget Plugin"
+msgstr "Simple Budget Plugin Settings"
+
+msgid "ConfiguraÃ§Ãµes do WhatsApp"
+msgstr "WhatsApp Settings"
+
+msgid "NÃºmero de WhatsApp"
+msgstr "WhatsApp Number"
+
+msgid "Post Types dos Produtos"
+msgstr "Product Post Types"
+
+msgid "Insira o nÃºmero de WhatsApp (DDD + 9 + nÃºmero [se for fixo, retirar o 9; DDD + NÃºmero])."
+msgstr "Enter the WhatsApp number (Area code + 9 + number [for landlines, remove the 9; Area code + Number])."
+
+msgid "Insira o nÃºmero de WhatsApp (apenas dÃ­gitos, com DDD). Ex.: 11999998888"
+msgstr "Enter the WhatsApp number (digits only, with area code). E.g., 11999998888"
+
+msgid "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
+msgstr "Leave it blank to accept any post type. To restrict it, enter the slugs (one per line)."
+
+# === Shortcode [sbp_cart] ===
+msgid "Erro ao carregar o carrinho."
+msgstr "Error loading the cart."
+
+msgid "Seu carrinho estÃ¡ vazio."
+msgstr "Your cart is empty."
+
+# === JavaScript (popup, cart and WhatsApp) ===
+msgid "Erro: Popup do carrinho nÃ£o foi encontrado na pÃ¡gina."
+msgstr "Error: Cart popup was not found on the page."
+
+msgid "Aviso: Popup jÃ¡ estÃ¡ fechado."
+msgstr "Warning: Popup is already closed."
+
+msgid "Carrinho vazio ou inexistente no localStorage."
+msgstr "Cart empty or missing in localStorage."
+
+msgid "Erro ao tentar parsear o carrinho:"
+msgstr "Error trying to parse the cart:"
+
+msgid "Erro: Tentativa de salvar um carrinho invÃ¡lido no localStorage."
+msgstr "Error: Attempt to save an invalid cart in localStorage."
+
+msgid "Produto adicionado ao carrinho!"
+msgstr "Product added to cart!"
+
+msgid "Produto jÃ¡ estÃ¡ no carrinho!"
+msgstr "Product is already in the cart!"
+
+msgid "Erro ao adicionar o produto ao carrinho."
+msgstr "Error adding product to cart."
+
+msgid "Erro: NÃºmero de WhatsApp nÃ£o configurado."
+msgstr "Error: WhatsApp number not configured."
+
+msgid "Erro ao gerar a mensagem do WhatsApp."
+msgstr "Error generating WhatsApp message."
+
+msgid "OlÃ¡! Eu quero fazer um orÃ§amento dos seguintes produtos:\\n"
+msgstr "Hello! I would like to request a quote for the following products:\\n"
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\languages\simple-budget-plugin-sbp-pt_BR.po ===
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Budget Plugin 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 00:00+0000\n"
+"PO-Revision-Date: 2025-10-10 00:00+0000\n"
+"Last-Translator: Guilherme Silva <email@dominio.com>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# === Erros e mensagens gerais ===
+msgid "Erro de seguranÃ§a: nonce invÃ¡lido ou expirado."
+msgstr "Erro de seguranÃ§a: nonce invÃ¡lido ou expirado."
+
+msgid "Falha de seguranÃ§a."
+msgstr "Falha de seguranÃ§a."
+
+msgid "Carrinho vazio ou dados invÃ¡lidos."
+msgstr "Carrinho vazio ou dados invÃ¡lidos."
+
+msgid "Nenhum item encontrado."
+msgstr "Nenhum item encontrado."
+
+msgid "Nenhum produto encontrado."
+msgstr "Nenhum produto encontrado."
+
+msgid "Produto invÃ¡lido."
+msgstr "Produto invÃ¡lido."
+
+msgid "Produto adicionado ao carrinho."
+msgstr "Produto adicionado ao carrinho."
+
+msgid "Produto removido do carrinho."
+msgstr "Produto removido do carrinho."
+
+msgid "Carrinho estÃ¡ vazio."
+msgstr "Carrinho estÃ¡ vazio."
+
+msgid "NÃºmero de WhatsApp nÃ£o configurado."
+msgstr "NÃºmero de WhatsApp nÃ£o configurado."
+
+msgid "IDs de produtos nÃ£o enviados."
+msgstr "IDs de produtos nÃ£o enviados."
+
+# === Front-end popup ===
+msgid "Seu Carrinho"
+msgstr "Seu Carrinho"
+
+msgid "Enviar OrÃ§amento via WhatsApp"
+msgstr "Enviar OrÃ§amento via WhatsApp"
+
+msgid "Remover"
+msgstr "Remover"
+
+# === PÃ¡gina de configuraÃ§Ãµes (Admin) ===
+msgid "ConfiguraÃ§Ãµes sbp"
+msgstr "ConfiguraÃ§Ãµes sbp"
+
+msgid "ConfiguraÃ§Ãµes do Simple Budget Plugin"
+msgstr "ConfiguraÃ§Ãµes do Simple Budget Plugin"
+
+msgid "ConfiguraÃ§Ãµes do WhatsApp"
+msgstr "ConfiguraÃ§Ãµes do WhatsApp"
+
+msgid "NÃºmero de WhatsApp"
+msgstr "NÃºmero de WhatsApp"
+
+msgid "Post Types dos Produtos"
+msgstr "Post Types dos Produtos"
+
+msgid "Insira o nÃºmero de WhatsApp (DDD + 9 + nÃºmero [se for fixo, retirar o 9; DDD + NÃºmero])."
+msgstr "Insira o nÃºmero de WhatsApp (DDD + 9 + nÃºmero [se for fixo, retirar o 9; DDD + NÃºmero])."
+
+msgid "Insira o nÃºmero de WhatsApp (apenas dÃ­gitos, com DDD). Ex.: 11999998888"
+msgstr "Insira o nÃºmero de WhatsApp (apenas dÃ­gitos, com DDD). Ex.: 11999998888"
+
+msgid "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
+msgstr "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
+
+# === Shortcode [sbp_cart] ===
+msgid "Erro ao carregar o carrinho."
+msgstr "Erro ao carregar o carrinho."
+
+msgid "Seu carrinho estÃ¡ vazio."
+msgstr "Seu carrinho estÃ¡ vazio."
+
+# === JavaScript (popup, carrinho e WhatsApp) ===
+msgid "Erro: Popup do carrinho nÃ£o foi encontrado na pÃ¡gina."
+msgstr "Erro: Popup do carrinho nÃ£o foi encontrado na pÃ¡gina."
+
+msgid "Aviso: Popup jÃ¡ estÃ¡ fechado."
+msgstr "Aviso: Popup jÃ¡ estÃ¡ fechado."
+
+msgid "Carrinho vazio ou inexistente no localStorage."
+msgstr "Carrinho vazio ou inexistente no localStorage."
+
+msgid "Erro ao tentar parsear o carrinho:"
+msgstr "Erro ao tentar parsear o carrinho:"
+
+msgid "Erro: Tentativa de salvar um carrinho invÃ¡lido no localStorage."
+msgstr "Erro: Tentativa de salvar um carrinho invÃ¡lido no localStorage."
+
+msgid "Produto adicionado ao carrinho!"
+msgstr "Produto adicionado ao carrinho!"
+
+msgid "Produto jÃ¡ estÃ¡ no carrinho!"
+msgstr "Produto jÃ¡ estÃ¡ no carrinho!"
+
+msgid "Erro ao adicionar o produto ao carrinho."
+msgstr "Erro ao adicionar o produto ao carrinho."
+
+msgid "Erro: NÃºmero de WhatsApp nÃ£o configurado."
+msgstr "Erro: NÃºmero de WhatsApp nÃ£o configurado."
+
+msgid "Erro ao gerar a mensagem do WhatsApp."
+msgstr "Erro ao gerar a mensagem do WhatsApp."
+
+msgid "OlÃ¡! Eu quero fazer um orÃ§amento dos seguintes produtos:\\n"
+msgstr "OlÃ¡! Eu quero fazer um orÃ§amento dos seguintes produtos:\\n"
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\simple-budget-plugin.php ===
+<?php
+/*
+Plugin Name: Simple Budget Plugin
+Description: Plugin para orÃ§amentos personalizados em sites com Elementor e CPTs.
+Version: 1.0.0
+Author: Guilherme Silva
+Text Domain: simple-budget-plugin-sbp
+Domain Path: /languages
+Requires at least: 6.0
+Requires PHP: 7.4
+*/
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+// ===========================
+// Constantes Ãºteis
+// ===========================
+define( 'SBP_VERSION', '1.0.0' );
+define( 'SBP_FILE', __FILE__ );
+define( 'SBP_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SBP_URL',  plugin_dir_url( __FILE__ ) );
+
+// ===========================
+// Load Text Domain (TraduÃ§Ãµes)
+// ===========================
+function sbp_load_textdomain() {
+    load_plugin_textdomain(
+        'simple-budget-plugin-sbp',
+        false,
+        dirname( plugin_basename( __FILE__ ) ) . '/languages'
+    );
+}
+add_action( 'plugins_loaded', 'sbp_load_textdomain' );
+
+// ======================================
+// Enfileirar scripts JS e CSS (Frontend)
+// ======================================
+function sbp_enqueue_scripts() {
+    wp_enqueue_script(
+        'sbp-script',
+        SBP_URL . 'assets/js/sbp-script.js',
+        array( 'jquery' ),
+        SBP_VERSION,
+        true
+    );
+
+    wp_enqueue_style(
+        'sbp-styles',
+        SBP_URL . 'assets/css/sbp-styles.css',
+        array(),
+        SBP_VERSION
+    );
+
+    $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
+
+    // Dados AJAX
+    wp_localize_script( 'sbp-script', 'sbp_ajax', array(
+        'ajax_url'        => admin_url( 'admin-ajax.php' ),
+        'nonce'           => wp_create_nonce( 'sbp_nonce' ),
+        'whatsapp_number' => $whatsapp_number,
+    ) );
+
+    // TraduÃ§Ãµes para uso no JavaScript (mantido como sbp_i18n_js para compatibilidade com seu JS)
+    wp_localize_script( 'sbp-script', 'sbp_i18n_js', array(
+        'popup_not_found'        => __( 'Erro: Popup do carrinho nÃ£o foi encontrado na pÃ¡gina.', 'simple-budget-plugin-sbp' ),
+        'popup_closed'           => __( 'Aviso: Popup jÃ¡ estÃ¡ fechado.', 'simple-budget-plugin-sbp' ),
+        'cart_empty'             => __( 'Seu carrinho estÃ¡ vazio.', 'simple-budget-plugin-sbp' ),
+        'load_error'             => __( 'Erro ao carregar o carrinho.', 'simple-budget-plugin-sbp' ),
+        'product_added'          => __( 'Produto adicionado ao carrinho!', 'simple-budget-plugin-sbp' ),
+        'product_exists'         => __( 'Produto jÃ¡ estÃ¡ no carrinho!', 'simple-budget-plugin-sbp' ),
+        'product_add_error'      => __( 'Erro ao adicionar o produto ao carrinho.', 'simple-budget-plugin-sbp' ),
+        'whatsapp_error'         => __( 'Erro ao gerar a mensagem do WhatsApp.', 'simple-budget-plugin-sbp' ),
+        'whatsapp_number_error'  => __( 'Erro: NÃºmero de WhatsApp nÃ£o configurado.', 'simple-budget-plugin-sbp' ),
+        'whatsapp_intro'         => __( "OlÃ¡! Eu quero fazer um orÃ§amento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' ),
+    ) );
+}
+add_action( 'wp_enqueue_scripts', 'sbp_enqueue_scripts' );
+
+// =======================================
+// AJAX - Obter produtos no carrinho
+// =======================================
+function sbp_get_cart_products() {
+    if ( ! check_ajax_referer( 'sbp_nonce', 'nonce', false ) ) {
+        wp_send_json_error( __( 'Erro de seguranÃ§a: nonce invÃ¡lido ou expirado.', 'simple-budget-plugin-sbp' ), 403 );
+    }
+
+    $product_ids = isset( $_POST['product_ids'] ) ? array_map( 'intval', (array) $_POST['product_ids'] ) : array();
+    if ( empty( $product_ids ) ) {
+        wp_send_json_error( __( 'Carrinho vazio ou dados invÃ¡lidos.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    // Se a opÃ§Ã£o estiver vazia -> aceita QUALQUER post type
+    $post_types_opt = get_option( 'sbp_product_post_types', array() );
+    $post_type_arg  = ( ! empty( $post_types_opt ) && is_array( $post_types_opt ) ) ? $post_types_opt : 'any';
+
+    $query = new WP_Query( array(
+        'post_type'      => $post_type_arg,
+        'post__in'       => $product_ids,
+        'orderby'        => 'post__in', // mantÃ©m a ordem do carrinho
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+    ) );
+
+    if ( ! $query->have_posts() ) {
+        wp_send_json_error( __( 'Nenhum item encontrado.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    ob_start();
+    while ( $query->have_posts() ) {
+        $query->the_post();
+        $product_id = get_the_ID(); ?>
+        <div class="sbp-cart-item">
+            <?php if ( has_post_thumbnail() ) { ?>
+                <img src="<?php echo esc_url( get_the_post_thumbnail_url() ); ?>" alt="<?php the_title_attribute(); ?>">
+            <?php } ?>
+            <h4><?php the_title(); ?></h4>
+            <button class="sbp-remove-from-cart" data-product-id="<?php echo esc_attr( $product_id ); ?>">
+                <?php _e( 'Remover', 'simple-budget-plugin-sbp' ); ?>
+            </button>
+        </div>
+    <?php }
+    wp_reset_postdata();
+
+    wp_send_json_success( ob_get_clean() );
+}
+add_action( 'wp_ajax_sbp_get_cart_products', 'sbp_get_cart_products' );
+add_action( 'wp_ajax_nopriv_sbp_get_cart_products', 'sbp_get_cart_products' );
+
+// =======================================
+// IntegraÃ§Ã£o com Elementor (usa CSS ID)
+// =======================================
+function sbp_add_product_id_to_button( $widget ) {
+    if ( 'button' !== $widget->get_name() ) {
+        return;
+    }
+
+    $current_id = get_the_ID();
+    // No Elementor, o campo Ã© "CSS ID", acessÃ­vel por 'button_css_id'
+    $button_id  = $widget->get_settings( 'button_css_id' );
+
+    if ( $current_id && $button_id === 'add-to-cart-button' ) {
+        $widget->add_render_attribute( '_wrapper', 'data-product-id', $current_id );
+    }
+}
+add_action( 'elementor/frontend/widget/before_render', 'sbp_add_product_id_to_button' );
+
+// =======================================
+// Shortcodes
+// =======================================
+require_once __DIR__ . '/includes/class-sbp-shortcodes.php';
+
+// =======================================
+// Popup do Carrinho (Frontend)
+// =======================================
+function sbp_add_popup_html() { ?>
+    <div id="sbp-custom-popup" class="sbp-custom-popup">
+        <div class="sbp-custom-popup-content">
+            <span class="sbp-close-popup">&times;</span>
+            <h2><?php _e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?></h2>
+            <div id="sbp-cart-items"></div>
+            <button id="enviar-orcamento-whatsapp" style="display:none;">
+                <?php _e( 'Enviar OrÃ§amento via WhatsApp', 'simple-budget-plugin-sbp' ); ?>
+            </button>
+        </div>
+    </div>
+<?php }
+add_action( 'wp_footer', 'sbp_add_popup_html' );
+
+// =======================================
+// Admin Menu
+// =======================================
+function sbp_add_admin_menu() {
+    add_menu_page(
+        __( 'ConfiguraÃ§Ãµes sbp', 'simple-budget-plugin-sbp' ),
+        __( 'ConfiguraÃ§Ãµes sbp', 'simple-budget-plugin-sbp' ),
+        'manage_options',
+        'sbp-settings',
+        'sbp_settings_page',
+        'dashicons-cart'
+    );
+}
+add_action( 'admin_menu', 'sbp_add_admin_menu' );
+
+// =======================================
+// PÃ¡gina de ConfiguraÃ§Ãµes
+// =======================================
+function sbp_settings_page() { ?>
+    <div class="wrap">
+        <h1><?php _e( 'ConfiguraÃ§Ãµes do Simple Budget Plugin', 'simple-budget-plugin-sbp' ); ?></h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields( 'sbp_settings_group' );
+            do_settings_sections( 'sbp-settings' );
+            submit_button();
+            ?>
+        </form>
+    </div>
+<?php }
+
+// =======================================
+// Registrar ConfiguraÃ§Ãµes
+// =======================================
+function sbp_register_settings() {
+    register_setting( 'sbp_settings_group', 'sbp_whatsapp_number', array(
+        'type'              => 'string',
+        'sanitize_callback' => 'sbp_sanitize_phone_number',
+        'default'           => '',
+    ) );
+
+    // Vazio = aceita qualquer post type
+    register_setting( 'sbp_settings_group', 'sbp_product_post_types', array(
+        'type'              => 'array',
+        'sanitize_callback' => 'sbp_sanitize_post_types',
+        'default'           => array(),
+    ) );
+
+    add_settings_section(
+        'sbp_main_section',
+        __( 'ConfiguraÃ§Ãµes do WhatsApp', 'simple-budget-plugin-sbp' ),
+        null,
+        'sbp-settings'
+    );
+
+    add_settings_field(
+        'sbp_whatsapp_number',
+        __( 'NÃºmero de WhatsApp', 'simple-budget-plugin-sbp' ),
+        'sbp_render_whatsapp_number_field',
+        'sbp-settings',
+        'sbp_main_section'
+    );
+
+    add_settings_field(
+        'sbp_product_post_types',
+        __( 'Post Types dos Produtos', 'simple-budget-plugin-sbp' ),
+        'sbp_render_product_post_types_field',
+        'sbp-settings',
+        'sbp_main_section'
+    );
+}
+add_action( 'admin_init', 'sbp_register_settings' );
+
+// =======================================
+// SanitizaÃ§Ã£o
+// =======================================
+function sbp_sanitize_phone_number( $phone ) {
+    $phone = preg_replace( '/[^0-9]/', '', (string) $phone );
+    if ( strlen( $phone ) < 10 ) {
+        return '';
+    }
+    return $phone;
+}
+
+function sbp_sanitize_post_types( $post_types ) {
+    $post_types = array_map( 'sanitize_key', (array) $post_types );
+    $post_types = array_filter( $post_types ); // remove vazios
+    return array_values( $post_types );
+}
+
+// =======================================
+// Campos do Admin
+// =======================================
+function sbp_render_whatsapp_number_field() {
+    $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
+    ?>
+    <input type="text" name="sbp_whatsapp_number" value="<?php echo esc_attr( $whatsapp_number ); ?>" class="regular-text" />
+    <p class="description">
+        <?php _e( 'Insira o nÃºmero de WhatsApp (apenas dÃ­gitos, com DDD). Ex.: 11999998888', 'simple-budget-plugin-sbp' ); ?>
+    </p>
+    <?php
+}
+
+function sbp_render_product_post_types_field() {
+    $post_types = get_option('sbp_product_post_types', array());
+
+    // Garante que seja um array e que haja pelo menos 1 linha
+    if (!is_array($post_types)) {
+        $post_types = array();
+    }
+    if (empty($post_types)) {
+        $post_types = array('');
+    }
+    ?>
+    <div id="post-types-wrapper">
+        <?php foreach ($post_types as $index => $post_type) : ?>
+            <div class="post-type-entry" style="margin-bottom:8px;">
+                <input type="text" name="sbp_product_post_types[]" value="<?php echo esc_attr($post_type); ?>" class="regular-text" />
+                <?php if ($index === 0) : ?>
+                    <button type="button" class="button add-post-type-button">+</button>
+                <?php else : ?>
+                    <button type="button" class="button remove-post-type-button">-</button>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <p class="description">
+        <?php _e('Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha).', 'simple-budget-plugin-sbp'); ?>
+    </p>
+
+    <script>
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('add-post-type-button')) {
+            const wrapper = document.getElementById('post-types-wrapper');
+            const newField = document.createElement('div');
+            newField.classList.add('post-type-entry');
+            newField.style.marginBottom = '8px';
+            newField.innerHTML =
+                '<input type="text" name="sbp_product_post_types[]" class="regular-text" /> ' +
+                '<button type="button" class="button remove-post-type-button">-</button>';
+            wrapper.appendChild(newField);
+        }
+        if (e.target.classList.contains('remove-post-type-button')) {
+            e.target.closest('.post-type-entry').remove();
+        }
+    });
+    </script>
+    <?php
+}
+
+
+// =======================================
+// AJAX - Adicionar / Remover / Enviar WhatsApp
+// =======================================
+function sbp_add_to_cart() {
+    if ( ! check_ajax_referer( 'sbp_nonce', 'nonce', false ) ) {
+        wp_send_json_error( __( 'Falha de seguranÃ§a.', 'simple-budget-plugin-sbp' ), 403 );
+    }
+
+    $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
+    if ( ! $product_id ) {
+        wp_send_json_error( __( 'Produto invÃ¡lido.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    $allowed_types = get_option( 'sbp_product_post_types', array() );
+    $type_ok = empty( $allowed_types ) ? true : in_array( get_post_type( $product_id ), $allowed_types, true );
+
+    if ( ! $type_ok ) {
+        wp_send_json_error( __( 'Produto invÃ¡lido.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    wp_send_json_success( __( 'Produto adicionado ao carrinho.', 'simple-budget-plugin-sbp' ) );
+}
+add_action( 'wp_ajax_sbp_add_to_cart', 'sbp_add_to_cart' );
+add_action( 'wp_ajax_nopriv_sbp_add_to_cart', 'sbp_add_to_cart' );
+
+function sbp_remove_from_cart() {
+    if ( ! check_ajax_referer( 'sbp_nonce', 'nonce', false ) ) {
+        wp_send_json_error( __( 'Falha de seguranÃ§a.', 'simple-budget-plugin-sbp' ), 403 );
+    }
+
+    $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
+    if ( ! $product_id ) {
+        wp_send_json_error( __( 'Produto invÃ¡lido.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    $allowed_types = get_option( 'sbp_product_post_types', array() );
+    $type_ok = empty( $allowed_types ) ? true : in_array( get_post_type( $product_id ), $allowed_types, true );
+
+    if ( ! $type_ok ) {
+        wp_send_json_error( __( 'Produto invÃ¡lido.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    wp_send_json_success( __( 'Produto removido do carrinho.', 'simple-budget-plugin-sbp' ) );
+}
+add_action( 'wp_ajax_sbp_remove_from_cart', 'sbp_remove_from_cart' );
+add_action( 'wp_ajax_nopriv_sbp_remove_from_cart', 'sbp_remove_from_cart' );
+
+function sbp_send_whatsapp_message() {
+    if ( ! check_ajax_referer( 'sbp_nonce', 'nonce', false ) ) {
+        wp_send_json_error( __( 'Falha de seguranÃ§a.', 'simple-budget-plugin-sbp' ), 403 );
+    }
+
+    $cart = isset( $_POST['cart'] ) ? (array) $_POST['cart'] : array();
+
+    if ( empty( $cart ) ) {
+        wp_send_json_error( __( 'Carrinho estÃ¡ vazio.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    $message = __( "OlÃ¡! Eu gostaria de fazer um orÃ§amento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' );
+    foreach ( $cart as $index => $product_id ) {
+        $product_title = get_the_title( intval( $product_id ) );
+        if ( $product_title ) {
+            $message .= ( $index + 1 ) . ' - ' . $product_title . "\n";
+        }
+    }
+
+    $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
+    if ( empty( $whatsapp_number ) ) {
+        wp_send_json_error( __( 'NÃºmero de WhatsApp nÃ£o configurado.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    $whatsapp_number = '+55' . preg_replace( '/[^0-9]/', '', $whatsapp_number );
+    $url = 'https://wa.me/' . rawurlencode( $whatsapp_number ) . '?text=' . rawurlencode( $message );
+
+    wp_send_json_success( array( 'url' => $url ) );
+}
+add_action( 'wp_ajax_sbp_send_whatsapp_message', 'sbp_send_whatsapp_message' );
+add_action( 'wp_ajax_nopriv_sbp_send_whatsapp_message', 'sbp_send_whatsapp_message' );
+
+// =======================================
+// AJAX - Obter tÃ­tulos dos produtos
+// =======================================
+function sbp_get_product_titles() {
+    if ( ! check_ajax_referer( 'sbp_nonce', 'nonce', false ) ) {
+        wp_send_json_error( __( 'Erro de seguranÃ§a: nonce invÃ¡lido ou expirado.', 'simple-budget-plugin-sbp' ), 403 );
+    }
+
+    $product_ids = isset( $_POST['product_ids'] ) ? array_map( 'intval', (array) $_POST['product_ids'] ) : array();
+    if ( empty( $product_ids ) ) {
+        wp_send_json_error( __( 'IDs de produtos nÃ£o enviados.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    // Se a opÃ§Ã£o estiver vazia -> aceita QUALQUER post type
+    $post_types_opt = get_option( 'sbp_product_post_types', array() );
+    $allowed_types  = ( ! empty( $post_types_opt ) && is_array( $post_types_opt ) ) ? $post_types_opt : null;
+
+    $product_titles = array();
+    foreach ( $product_ids as $product_id ) {
+        $product = get_post( $product_id );
+        if ( $product && get_post_status( $product ) === 'publish' ) {
+            if ( is_array( $allowed_types ) && ! in_array( $product->post_type, $allowed_types, true ) ) {
+                continue;
+            }
+            $product_titles[] = $product->post_title;
+        }
+    }
+
+    if ( empty( $product_titles ) ) {
+        wp_send_json_error( __( 'Nenhum tÃ­tulo encontrado.', 'simple-budget-plugin-sbp' ) );
+    }
+
+    wp_send_json_success( $product_titles );
+}
+add_action( 'wp_ajax_sbp_get_product_titles', 'sbp_get_product_titles' );
+add_action( 'wp_ajax_nopriv_sbp_get_product_titles', 'sbp_get_product_titles' );
+
+=== FILE: C:\Users\guilh\OneDrive\Desktop\dev\simple-budget-plugin\uninstall.php ===
+<?php
+if ( ! defined('WP_UNINSTALL_PLUGIN') ) exit;
+delete_option('sbp_whatsapp_number');
+delete_option('sbp_product_post_types');
+

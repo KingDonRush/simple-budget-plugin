@@ -69,8 +69,8 @@ msgstr "WhatsApp Settings"
 msgid "Número de WhatsApp"
 msgstr "WhatsApp Number"
 
-msgid "Post Types dos Produtos"
-msgstr "Product Post Types"
+msgid "Tipos de Conteúdo"
+msgstr "Content Types"
 
 msgid "Insira o número de WhatsApp (DDD + 9 + número [se for fixo, retirar o 9; DDD + Número])."
 msgstr "Enter the WhatsApp number (Area code + 9 + number [for landlines, remove the 9; Area code + Number])."
