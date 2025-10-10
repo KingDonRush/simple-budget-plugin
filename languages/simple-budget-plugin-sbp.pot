@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simple Budget Plugin 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-09 00:00+0000\n"
-"PO-Revision-Date: 2025-10-09 00:00+0000\n"
+"POT-Creation-Date: 2025-10-10 00:00+0000\n"
+"PO-Revision-Date: 2025-10-10 00:00+0000\n"
 "Last-Translator: Guilherme Silva <email@dominio.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -16,7 +16,13 @@ msgstr ""
 msgid "Erro de segurança: nonce inválido ou expirado."
 msgstr ""
 
+msgid "Falha de segurança."
+msgstr ""
+
 msgid "Carrinho vazio ou dados inválidos."
+msgstr ""
+
+msgid "Nenhum item encontrado."
 msgstr ""
 
 msgid "Nenhum produto encontrado."
@@ -67,6 +73,12 @@ msgid "Post Types dos Produtos"
 msgstr ""
 
 msgid "Insira o número de WhatsApp (DDD + 9 + número [se for fixo, retirar o 9; DDD + Número])."
+msgstr ""
+
+msgid "Insira o número de WhatsApp (apenas dígitos, com DDD). Ex.: 11999998888"
+msgstr ""
+
+msgid "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
 msgstr ""
 
 # === Shortcode [sbp_cart] ===
