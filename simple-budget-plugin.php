@@ -231,11 +231,12 @@ function sbp_register_settings() {
 
     add_settings_field(
         'sbp_product_post_types',
-        __( 'Post Types dos Produtos', 'simple-budget-plugin-sbp' ),
+        __( 'Tipos de Conteúdo', 'simple-budget-plugin-sbp' ),
         'sbp_render_product_post_types_field',
         'sbp-settings',
         'sbp_main_section'
     );
+    
 }
 add_action( 'admin_init', 'sbp_register_settings' );
 
@@ -270,27 +271,52 @@ function sbp_render_whatsapp_number_field() {
 }
 
 function sbp_render_product_post_types_field() {
-    $post_types = get_option( 'sbp_product_post_types', array() );
-    if ( ! is_array( $post_types ) ) {
+    $post_types = get_option('sbp_product_post_types', array());
+
+    // Garante que seja um array e que haja pelo menos 1 linha
+    if (!is_array($post_types)) {
         $post_types = array();
     }
-    // Renderiza pelo menos um campo vazio
-    if ( empty( $post_types ) ) {
-        $post_types = array( '' );
+    if (empty($post_types)) {
+        $post_types = array('');
     }
     ?>
     <div id="post-types-wrapper">
-        <?php foreach ( $post_types as $post_type ) { ?>
-            <div class="post-type-entry">
-                <input type="text" name="sbp_product_post_types[]" value="<?php echo esc_attr( $post_type ); ?>" class="regular-text" />
+        <?php foreach ($post_types as $index => $post_type) : ?>
+            <div class="post-type-entry" style="margin-bottom:8px;">
+                <input type="text" name="sbp_product_post_types[]" value="<?php echo esc_attr($post_type); ?>" class="regular-text" />
+                <?php if ($index === 0) : ?>
+                    <button type="button" class="button add-post-type-button">+</button>
+                <?php else : ?>
+                    <button type="button" class="button remove-post-type-button">-</button>
+                <?php endif; ?>
             </div>
-        <?php } ?>
+        <?php endforeach; ?>
     </div>
     <p class="description">
-        <?php _e( 'Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha).', 'simple-budget-plugin-sbp' ); ?>
+        <?php _e('Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha).', 'simple-budget-plugin-sbp'); ?>
     </p>
+
+    <script>
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('add-post-type-button')) {
+            const wrapper = document.getElementById('post-types-wrapper');
+            const newField = document.createElement('div');
+            newField.classList.add('post-type-entry');
+            newField.style.marginBottom = '8px';
+            newField.innerHTML =
+                '<input type="text" name="sbp_product_post_types[]" class="regular-text" /> ' +
+                '<button type="button" class="button remove-post-type-button">-</button>';
+            wrapper.appendChild(newField);
+        }
+        if (e.target.classList.contains('remove-post-type-button')) {
+            e.target.closest('.post-type-entry').remove();
+        }
+    });
+    </script>
     <?php
 }
+
 
 // =======================================
 // AJAX - Adicionar / Remover / Enviar WhatsApp
