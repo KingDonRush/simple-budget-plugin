@@ -1,28 +1,28 @@
 <?php
+/**
+ * Shortcodes do plugin.
+ */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Segurança
+namespace SBP\Shortcodes;
 
-class sbp_Shortcodes {
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-    public function __construct() {
-        // Registra o shortcode no WordPress
-        add_shortcode( 'sbp_cart', array( $this, 'sbp_cart_shortcode' ) );
+class Shortcodes {
+
+    public function init_hooks() {
+        add_shortcode( 'sbp_cart', [ $this, 'render_cart_shortcode' ] );
     }
 
-    // Função do shortcode que exibe o carrinho
-    public function sbp_cart_shortcode() {
-        // Localizar strings de tradução para o JavaScript
-        $i18n = array(
+    public function render_cart_shortcode() {
+        $i18n = [
             'load_error' => __( 'Erro ao carregar o carrinho.', 'simple-budget-plugin-sbp' ),
             'empty_cart' => __( 'Seu carrinho está vazio.', 'simple-budget-plugin-sbp' ),
-        );
-
-        // Passar traduções para o JS (garantindo que estejam disponíveis)
+        ];
         wp_localize_script( 'sbp-script', 'sbp_i18n', $i18n );
 
-        ob_start();
-        ?>
+        ob_start(); ?>
         <div id="sbp-cart-content"></div>
+
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 function displayCartProducts() {
@@ -47,28 +47,29 @@ class sbp_Shortcodes {
                                     if (response.success) {
                                         $('#sbp-cart-content').html(response.data);
                                     } else {
-                                        $('#sbp-cart-content').html('<p>' + sbp_i18n.load_error + '</p>');
+                                        $('#sbp-cart-content').html('<p>' + (window.sbp_i18n?.load_error || 'Erro ao carregar o carrinho.') + '</p>');
                                     }
                                 },
                                 error: function() {
-                                    $('#sbp-cart-content').html('<p>' + sbp_i18n.load_error + '</p>');
+                                    $('#sbp-cart-content').html('<p>' + (window.sbp_i18n?.load_error || 'Erro ao carregar o carrinho.') + '</p>');
                                 }
                             });
                         } else {
-                            $('#sbp-cart-content').html('<p>' + sbp_i18n.empty_cart + '</p>');
+                            $('#sbp-cart-content').html('<p>' + (window.sbp_i18n?.empty_cart || 'Seu carrinho está vazio.') + '</p>');
                         }
                     } else {
-                        $('#sbp-cart-content').html('<p>' + sbp_i18n.empty_cart + '</p>');
+                        $('#sbp-cart-content').html('<p>' + (window.sbp_i18n?.empty_cart || 'Seu carrinho está vazio.') + '</p>');
                     }
                 }
 
                 displayCartProducts();
 
-                // Evento para alterar a quantidade
                 $(document).on('change', '.sbp-quantity', function() {
                     var productId = $(this).data('product-id').toString();
                     var quantity = parseInt($(this).val());
-                    var cartQuantities = localStorage.getItem('sbp_cart_quantities') ? JSON.parse(localStorage.getItem('sbp_cart_quantities')) : {};
+                    var cartQuantities = localStorage.getItem('sbp_cart_quantities')
+                        ? JSON.parse(localStorage.getItem('sbp_cart_quantities'))
+                        : {};
 
                     if (quantity > 0) {
                         cartQuantities[productId] = quantity;
@@ -79,29 +80,25 @@ class sbp_Shortcodes {
                     localStorage.setItem('sbp_cart_quantities', JSON.stringify(cartQuantities));
                 });
 
-                // Evento para remover produto do carrinho
                 $(document).on('click', '.sbp-remove-from-cart', function() {
                     var productId = $(this).data('product-id').toString();
                     var cart = localStorage.getItem('sbp_cart') ? JSON.parse(localStorage.getItem('sbp_cart')) : [];
-                    var cartQuantities = localStorage.getItem('sbp_cart_quantities') ? JSON.parse(localStorage.getItem('sbp_cart_quantities')) : {};
+                    var cartQuantities = localStorage.getItem('sbp_cart_quantities')
+                        ? JSON.parse(localStorage.getItem('sbp_cart_quantities'))
+                        : {};
 
                     var index = cart.indexOf(productId);
                     if (index > -1) {
                         cart.splice(index, 1);
                         localStorage.setItem('sbp_cart', JSON.stringify(cart));
-
                         delete cartQuantities[productId];
                         localStorage.setItem('sbp_cart_quantities', JSON.stringify(cartQuantities));
-
                         displayCartProducts();
                     }
                 });
-
             });
         </script>
         <?php
         return ob_get_clean();
     }
 }
-
-new sbp_Shortcodes();
