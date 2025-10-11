@@ -15,7 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // ===========================
 // Constantes úteis
 // ===========================
+<<<<<<< HEAD
 define( 'SBP_VERSION', '1.0.2' );
+=======
+define( 'SBP_VERSION', '1.0.0' );
+>>>>>>> 865b86e9553376bec76a0e6bd240610da60c8488
 define( 'SBP_FILE', __FILE__ );
 define( 'SBP_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SBP_URL',  plugin_dir_url( __FILE__ ) );
