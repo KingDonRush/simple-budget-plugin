@@ -1,0 +1,40 @@
+name: Channel or destination integration
+description: Add or refine quote destinations such as WhatsApp, email, Telegram, or webhook.
+title: "[Channel]: "
+labels: ["type:feature", "area:settings", "portfolio:evidence"]
+body:
+  - type: dropdown
+    id: channel
+    attributes:
+      label: Channel
+      options:
+        - WhatsApp
+        - Email
+        - Telegram
+        - Custom URL
+        - Webhook
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: User value
+      description: Why does this channel matter for site owners?
+    validations:
+      required: true
+  - type: textarea
+    id: settings
+    attributes:
+      label: Required settings
+      description: Admin fields, defaults, validation, and message template needs.
+  - type: textarea
+    id: qa
+    attributes:
+      label: QA checklist
+      value: |
+        - [ ] Existing WhatsApp flow still works.
+        - [ ] Empty cart behavior checked.
+        - [ ] Message formatting checked.
+        - [ ] Elementor CSS hook flow checked.
+

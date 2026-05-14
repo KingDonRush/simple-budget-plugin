@@ -1,0 +1,25 @@
+name: Widget or CSS-hook mode
+description: Decide and track Elementor widget mode versus CSS hook mode.
+title: "[Mode]: "
+labels: ["type:feature", "area:elementor", "status:needs-audit"]
+body:
+  - type: textarea
+    id: current_flow
+    attributes:
+      label: Current flow
+      description: How does the existing CSS hook or shortcode flow work?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_mode
+    attributes:
+      label: Proposed mode
+      description: CSS hook mode, Elementor widget mode, or both?
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility concerns
+      description: Existing pages, Elementor behavior, styling, or CPT metadata.
+

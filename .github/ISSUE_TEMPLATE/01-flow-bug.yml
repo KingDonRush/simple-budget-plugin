@@ -1,0 +1,35 @@
+name: Budget flow bug
+description: Track broken add-to-budget, modal, metadata, or message behavior.
+title: "[Flow]: "
+labels: ["type:bug", "area:frontend", "status:needs-audit"]
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Broken behavior
+      description: What part of the quote flow fails?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Product/CPT metadata involved
+      description: Relevant fields, custom post type, or dynamic metadata.
+
