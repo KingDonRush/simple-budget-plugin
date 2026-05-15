@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,17 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.3.1 =
+**PT-BR:**
+- Move os controles de posição e espaçamento do ícone do **Budget Button** para **Style → Icon**.
+- Mantém compatibilidade com templates existentes preservando os mesmos IDs internos dos controles.
+- Reforça o autoloader interno para aceitar apenas classes `SBP\` válidas e evitar exposição de paths em logs de debug.
+
+**EN-US:**
+- Moves **Budget Button** icon position and spacing controls into **Style → Icon**.
+- Preserves existing templates by keeping the same internal control IDs.
+- Hardens the internal autoloader to accept only valid `SBP\` classes and avoid exposing paths in debug logs.
+
 = 2.3.0 =
 **PT-BR:**
 - Adiciona controles de shell do carrinho no **Budget Button**: modal central, carrinho lateral esquerdo/direito e bottom sheet.

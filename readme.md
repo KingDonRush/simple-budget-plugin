@@ -58,10 +58,10 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.3.0` adds cart-shell controls for modal/drawer presentation,
-quantity-aware budget listings, configurable empty-cart behavior for WhatsApp
-buttons, direct icon styling controls, and an Elementor editor preview shell for
-cart templates.
+Version `2.3.1` keeps the v2.3 cart-shell package and moves the button icon
+layout controls into the Style > Icon panel for a cleaner implementer workflow.
+It also tightens the internal autoloader guard to avoid exposing filesystem
+paths in debug logs.
 
 ## License
 

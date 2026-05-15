@@ -391,53 +391,6 @@ class BudgetButton extends Widget_Base {
         );
 
         $this->add_control(
-            'icon_align',
-            [
-                'label'     => esc_html__( 'Icon Position', 'simple-budget-plugin-sbp' ),
-                'type'      => Controls_Manager::CHOOSE,
-                'default'   => is_rtl() ? 'row-reverse' : 'row',
-                'options'   => [
-                    'row'         => [
-                        'title' => esc_html__( 'Start', 'simple-budget-plugin-sbp' ),
-                        'icon'  => 'eicon-h-align-left',
-                    ],
-                    'row-reverse' => [
-                        'title' => esc_html__( 'End', 'simple-budget-plugin-sbp' ),
-                        'icon'  => 'eicon-h-align-right',
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .elementor-button-content-wrapper' => 'flex-direction: {{VALUE}};',
-                ],
-                'condition' => [
-                    'text!'                  => '',
-                    'selected_icon[value]!'  => '',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'icon_indent',
-            [
-                'label'      => esc_html__( 'Icon Spacing', 'simple-budget-plugin-sbp' ),
-                'type'       => Controls_Manager::SLIDER,
-                'size_units' => [ 'px', 'em', 'rem' ],
-                'range'      => [
-                    'px'  => [ 'max' => 50 ],
-                    'em'  => [ 'max' => 5 ],
-                    'rem' => [ 'max' => 5 ],
-                ],
-                'selectors'  => [
-                    '{{WRAPPER}} .elementor-button .elementor-button-content-wrapper' => 'gap: {{SIZE}}{{UNIT}};',
-                ],
-                'condition'  => [
-                    'text!'                 => '',
-                    'selected_icon[value]!' => '',
-                ],
-            ]
-        );
-
-        $this->add_control(
             'button_css_id',
             [
                 'label'       => esc_html__( 'Button ID', 'simple-budget-plugin-sbp' ),
@@ -672,6 +625,64 @@ class BudgetButton extends Widget_Base {
                 'label'     => esc_html__( 'Icon', 'simple-budget-plugin-sbp' ),
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
+                    'selected_icon[value]!' => '',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'icon_align',
+            [
+                'label'                => esc_html__( 'Icon Position', 'simple-budget-plugin-sbp' ),
+                'type'                 => Controls_Manager::CHOOSE,
+                'default'              => is_rtl() ? 'row-reverse' : 'row',
+                'options'              => [
+                    'row'         => [
+                        'title' => esc_html__( 'Start', 'simple-budget-plugin-sbp' ),
+                        'icon'  => 'eicon-h-align-left',
+                    ],
+                    'row-reverse' => [
+                        'title' => esc_html__( 'End', 'simple-budget-plugin-sbp' ),
+                        'icon'  => 'eicon-h-align-right',
+                    ],
+                ],
+                'classes'              => 'elementor-control-start-end',
+                'selectors_dictionary' => [
+                    'left'  => is_rtl() ? 'row-reverse' : 'row',
+                    'right' => is_rtl() ? 'row' : 'row-reverse',
+                ],
+                'selectors'            => [
+                    '{{WRAPPER}} .elementor-button-content-wrapper' => 'flex-direction: {{VALUE}};',
+                ],
+                'condition'            => [
+                    'text!'                 => '',
+                    'selected_icon[value]!' => '',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'icon_indent',
+            [
+                'label'      => esc_html__( 'Icon Spacing', 'simple-budget-plugin-sbp' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+                'range'      => [
+                    'px'  => [
+                        'max' => 50,
+                    ],
+                    'em'  => [
+                        'max' => 5,
+                    ],
+                    'rem' => [
+                        'max' => 5,
+                    ],
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .elementor-button .elementor-button-content-wrapper' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+                'condition'  => [
+                    'text!'                 => '',
                     'selected_icon[value]!' => '',
                 ],
             ]
