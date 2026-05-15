@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,13 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.0.1 =
+**PT-BR:**
+- Silencia mensagens esperadas de carrinho vazio no console, mantendo logs de debug atrás de uma flag.
+
+**EN-US:**
+- Silences expected empty-cart console messages while keeping debug logs behind a flag.
+
 = 2.0.0 =
 **PT-BR:**  
 - Reestruturação completa com namespaces e autoloader PSR-4.  
