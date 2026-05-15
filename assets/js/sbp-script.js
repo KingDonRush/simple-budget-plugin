@@ -1,5 +1,7 @@
-jQuery(document).ready(function ($) {
-    var debugMode = Boolean(window.sbp_debug || (window.sbp_ajax && window.sbp_ajax.debug));
+jQuery(function ($) {
+    var config = window.sbp_ajax || {};
+    var i18n = window.sbp_i18n_js || {};
+    var debugMode = Boolean(window.sbp_debug || config.debug);
 
     function debugLog() {
         if (debugMode && window.console) {
@@ -13,245 +15,346 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    debugLog("O script foi carregado e está funcionando!");
-
-    // Função para abrir o popup do carrinho com verificações adicionais
-    function openPopup() {
-        debugLog("Abrindo popup do carrinho...");
-
-        $('body').addClass('sbp-popup-open');
-
-        if (!$('#sbp-custom-popup').length) {
-            console.error(sbp_i18n_js.popup_not_found);
-            return;
-        }
-
-        $('#sbp-custom-popup').fadeIn(function () {
-            debugLog("Popup do carrinho exibido.");
-        });
-
-        renderCart();
-    }
-
-    // Função para fechar o popup do carrinho
-    function closePopup() {
-        debugLog("Fechando popup do carrinho...");
-
-        $('body').removeClass('sbp-popup-open');
-
-        if (!$('#sbp-custom-popup').is(':visible')) {
-            debugWarn(sbp_i18n_js.popup_closed);
-            return;
-        }
-
-        $('#sbp-custom-popup').fadeOut(function () {
-            debugLog("Popup do carrinho fechado.");
-        });
-    }
-
-    // Captura o clique no botão de abrir o carrinho
-    $('#open-cart-button').on('click', function (e) {
-        e.preventDefault();
-        debugLog("Botão de abrir o carrinho clicado.");
-        openPopup();
-    });
-
-    // Captura o clique no botão de fechar do popup
-    $('.sbp-close-popup').on('click', function () {
-        debugLog("Botão de fechar o carrinho clicado.");
-        closePopup();
-    });
-
-    // Fecha o popup ao clicar fora do conteúdo
-    $(window).on('click', function (event) {
-        var popup = $('#sbp-custom-popup');
-        if ($(event.target).is(popup)) {
-            closePopup();
-        }
-    });
-
-    // Função para obter o carrinho do localStorage
     function getCart() {
-        var cart = localStorage.getItem('sbp_cart');
+        var storedCart = localStorage.getItem('sbp_cart');
 
-        if (!cart) {
-            debugWarn("Carrinho vazio ou inexistente no localStorage.");
+        if (!storedCart) {
             return [];
         }
 
         try {
-            cart = JSON.parse(cart);
-        } catch (e) {
-            console.error("Erro ao tentar parsear o carrinho:", e);
+            var cart = JSON.parse(storedCart);
+            return Array.isArray(cart) ? cart.map(String) : [];
+        } catch (error) {
+            debugWarn('Erro ao tentar parsear o carrinho:', error);
             return [];
         }
-
-        debugLog("Carrinho carregado com sucesso:", cart);
-        return cart;
     }
 
-    // Função para salvar o carrinho
     function saveCart(cart) {
         if (!Array.isArray(cart)) {
-            console.error("Erro: Tentativa de salvar um carrinho inválido no localStorage.");
             return;
         }
 
-        localStorage.setItem('sbp_cart', JSON.stringify(cart));
-        debugLog("Carrinho salvo com sucesso no localStorage:", cart);
+        var uniqueCart = [];
+
+        cart.map(String).forEach(function (id) {
+            if (id && uniqueCart.indexOf(id) === -1) {
+                uniqueCart.push(id);
+            }
+        });
+
+        localStorage.setItem('sbp_cart', JSON.stringify(uniqueCart));
+        debugLog('Carrinho salvo:', uniqueCart);
     }
 
-    // Função para renderizar o carrinho
-    function renderCart() {
+    function getCurrentProductId($trigger) {
+        var explicitId = $trigger.data('sbp-product-id') || $trigger.data('product-id');
+
+        if (explicitId) {
+            return String(explicitId);
+        }
+
+        var $context = $trigger.closest('[data-sbp-product-id], [data-product-id]');
+        var contextId = $context.data('sbp-product-id') || $context.data('product-id');
+
+        if (contextId) {
+            return String(contextId);
+        }
+
+        var postInputId = $('input[name="post_ID"]').val();
+
+        if (postInputId) {
+            return String(postInputId);
+        }
+
+        var bodyMatch = document.body.className.match(/postid-(\d+)/);
+
+        return bodyMatch ? String(bodyMatch[1]) : null;
+    }
+
+    function getLegacyFeedbackMode($trigger) {
+        return $trigger.is('#add-to-cart-button') ? 'alert' : 'none';
+    }
+
+    function notify(message, mode) {
+        if ('alert' === mode && message) {
+            alert(message);
+        }
+    }
+
+    function publishCartUpdated() {
+        $(document).trigger('sbp:cart-updated', [getCart()]);
+    }
+
+    function addToCart(productId, feedbackMode) {
+        if (!productId) {
+            notify(i18n.product_add_error || 'Erro ao adicionar o produto ao carrinho.', feedbackMode);
+            return;
+        }
+
         var cart = getCart();
 
-        if (cart.length === 0) {
-            debugWarn("Carrinho está vazio. Exibindo mensagem de aviso.");
-            $('#sbp-cart-items').html('<p>' + sbp_i18n_js.cart_empty + '</p>');
+        if (cart.indexOf(String(productId)) === -1) {
+            cart.push(String(productId));
+            saveCart(cart);
+            notify(i18n.product_added || 'Produto adicionado ao carrinho!', feedbackMode);
+            publishCartUpdated();
+        } else {
+            notify(i18n.product_exists || 'Produto já está no carrinho!', feedbackMode);
+        }
+    }
+
+    function removeFromCart(productId) {
+        if (!productId) {
+            return;
+        }
+
+        var cart = getCart().filter(function (id) {
+            return String(id) !== String(productId);
+        });
+
+        saveCart(cart);
+        publishCartUpdated();
+    }
+
+    function toggleCartItem(productId, feedbackMode) {
+        var cart = getCart();
+
+        if (cart.indexOf(String(productId)) === -1) {
+            addToCart(productId, feedbackMode);
+        } else {
+            removeFromCart(productId);
+        }
+    }
+
+    function getListingDisplay($listing) {
+        return {
+            show_image: $listing.data('sbp-show-image') || 'yes',
+            show_remove: $listing.data('sbp-show-remove') || 'yes',
+            remove_text: $listing.data('sbp-remove-text') || i18n.remove_text || 'Remover'
+        };
+    }
+
+    function renderEmptyListing($listing) {
+        var emptyMessage = $listing.data('sbp-empty-message') || i18n.cart_empty || 'Seu carrinho está vazio.';
+
+        $listing.find('.sbp-budget-listing__items').html(
+            '<p class="sbp-budget-listing__empty">' + escapeHtml(emptyMessage) + '</p>'
+        );
+        $listing.find('.sbp-budget-listing__submit').addClass('sbp-is-hidden');
+    }
+
+    function renderBudgetListing($listing) {
+        var cart = getCart();
+
+        if (!cart.length) {
+            renderEmptyListing($listing);
+            return;
+        }
+
+        $.ajax({
+            url: config.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'sbp_get_cart_products',
+                nonce: config.nonce,
+                product_ids: cart,
+                display: getListingDisplay($listing)
+            },
+            success: function (response) {
+                if (response.success) {
+                    $listing.find('.sbp-budget-listing__items').html(response.data);
+                    $listing.find('.sbp-budget-listing__submit').removeClass('sbp-is-hidden');
+                } else {
+                    renderEmptyListing($listing);
+                }
+            },
+            error: function () {
+                $listing.find('.sbp-budget-listing__items').html(
+                    '<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.load_error || 'Erro ao carregar o carrinho.') + '</p>'
+                );
+                $listing.find('.sbp-budget-listing__submit').addClass('sbp-is-hidden');
+            }
+        });
+    }
+
+    function renderBudgetListings() {
+        $('.sbp-budget-listing').each(function () {
+            renderBudgetListing($(this));
+        });
+    }
+
+    function renderLegacyCart() {
+        var $legacyCart = $('#sbp-cart-items');
+
+        if (!$legacyCart.length) {
+            return;
+        }
+
+        var cart = getCart();
+
+        if (!cart.length) {
+            $legacyCart.html('<p>' + escapeHtml(i18n.cart_empty || 'Seu carrinho está vazio.') + '</p>');
             $('#enviar-orcamento-whatsapp').hide();
             return;
         }
 
-        debugLog("Iniciando renderização dos itens do carrinho...");
-
         $.ajax({
-            url: sbp_ajax.ajax_url,
+            url: config.ajax_url,
             type: 'POST',
             data: {
                 action: 'sbp_get_cart_products',
-                nonce: sbp_ajax.nonce,
+                nonce: config.nonce,
                 product_ids: cart
             },
             success: function (response) {
-                debugLog("Resposta do servidor:", response);
-
                 if (response.success) {
-                    $('#sbp-cart-items').html(response.data);
+                    $legacyCart.html(response.data);
                     $('#enviar-orcamento-whatsapp').show();
-                    attachRemoveListeners();
                 } else {
-                    console.error("Erro ao carregar os produtos do carrinho:", response.data);
-                    $('#sbp-cart-items').html('<p>' + sbp_i18n_js.load_error + '</p>');
+                    $legacyCart.html('<p>' + escapeHtml(i18n.load_error || 'Erro ao carregar o carrinho.') + '</p>');
                     $('#enviar-orcamento-whatsapp').hide();
                 }
             },
-            error: function (xhr, status, error) {
-                console.error("Erro na requisição AJAX:", status, error);
-                $('#sbp-cart-items').html('<p>' + sbp_i18n_js.load_error + '</p>');
+            error: function () {
+                $legacyCart.html('<p>' + escapeHtml(i18n.load_error || 'Erro ao carregar o carrinho.') + '</p>');
                 $('#enviar-orcamento-whatsapp').hide();
             }
         });
     }
 
-    // Captura o ID do produto atual
-    function getCurrentProductId() {
-        var productId = $('input[name="post_ID"]').val() || $('body').attr('class').match(/postid-(\d+)/)?.[1];
-
-        if (!productId) {
-            console.error("Erro: ID do produto não encontrado.");
-            return null;
-        }
-
-        debugLog("ID do produto atual:", productId);
-        return productId;
+    function renderAllCarts() {
+        renderBudgetListings();
+        renderLegacyCart();
+        updateActionStates();
     }
 
-    // Remove item do carrinho
-    function removeFromCart(productId) {
+    function updateActionStates() {
         var cart = getCart();
-        debugLog('Carrinho antes de remover:', cart);
 
-        cart = cart.filter(id => String(id) !== String(productId));
+        $('.sbp-budget-action[data-sbp-action="toggle"], .sbp-budget-action[data-sbp-action="add"], .sbp-budget-action[data-sbp-action="remove"]').each(function () {
+            var $button = $(this);
+            var productId = getCurrentProductId($button);
+            var isActive = productId && cart.indexOf(String(productId)) !== -1;
 
-        debugLog('Carrinho após remover item:', cart);
-        saveCart(cart);
-        debugLog('Carrinho salvo no localStorage:', JSON.parse(localStorage.getItem('sbp_cart')));
-
-        renderCart();
-        debugLog(`Produto ${productId} removido do carrinho.`);
-    }
-
-    // Adiciona produto ao carrinho
-    $('#add-to-cart-button').on('click', function (e) {
-        e.preventDefault();
-
-        var productId = getCurrentProductId();
-
-        if (productId) {
-            var cart = getCart();
-            if (!cart.includes(productId)) {
-                cart.push(productId);
-                saveCart(cart);
-                debugLog("Produto adicionado ao carrinho:", productId);
-                alert(sbp_i18n_js.product_added);
-            } else {
-                alert(sbp_i18n_js.product_exists);
-            }
-        } else {
-            alert(sbp_i18n_js.product_add_error);
-        }
-    });
-
-    // Eventos de remover item
-    function attachRemoveListeners() {
-        $('.sbp-remove-from-cart').off('click').on('click', function () {
-            var productId = $(this).data('product-id');
-            debugLog('Tentando remover produto com ID:', productId);
-            removeFromCart(productId);
+            $button.toggleClass('sbp-is-active', Boolean(isActive));
+            $button.attr('aria-pressed', isActive ? 'true' : 'false');
         });
     }
 
-    // Gerar mensagem do WhatsApp
-    function gerarMensagemWhatsApp() {
-        var cart = getCart();
-        if (cart.length > 0) {
-            $.ajax({
-                url: sbp_ajax.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sbp_get_product_titles',
-                    nonce: sbp_ajax.nonce,
-                    product_ids: cart
-                },
-                success: function (response) {
-                    if (response.success) {
-                        var productTitles = response.data;
-                        var message = sbp_i18n_js.whatsapp_intro;
+    function openPopup() {
+        var $popup = $('#sbp-custom-popup');
 
-                        productTitles.forEach(function (title, index) {
-                            message += (index + 1) + " - " + title + ";\n";
-                        });
-
-                        if (sbp_ajax.whatsapp_number) {
-                            var telefone = '+55' + sbp_ajax.whatsapp_number;
-                            var url = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(message);
-                            window.open(url, '_blank');
-                            debugLog("Abrindo WhatsApp com a mensagem:", message);
-                        } else {
-                            console.error(sbp_i18n_js.whatsapp_number_error);
-                            alert(sbp_i18n_js.whatsapp_number_error);
-                        }
-                    } else {
-                        console.error("Erro ao buscar títulos dos produtos:", response.data);
-                        alert(sbp_i18n_js.whatsapp_error);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Erro na requisição AJAX:", status, error);
-                    alert(sbp_i18n_js.whatsapp_error);
-                }
-            });
-        } else {
-            alert(sbp_i18n_js.cart_empty);
+        if (!$popup.length) {
+            console.error(i18n.popup_not_found || 'Erro: Popup do carrinho não foi encontrado na página.');
+            return;
         }
+
+        $('body').addClass('sbp-popup-open');
+        $popup.fadeIn();
+        renderLegacyCart();
     }
 
-    // Clique no botão de WhatsApp
-    $('#enviar-orcamento-whatsapp').on('click', function (e) {
-        e.preventDefault();
-        gerarMensagemWhatsApp();
+    function closePopup() {
+        var $popup = $('#sbp-custom-popup');
+
+        $('body').removeClass('sbp-popup-open');
+
+        if (!$popup.is(':visible')) {
+            return;
+        }
+
+        $popup.fadeOut();
+    }
+
+    function sendWhatsAppBudget() {
+        var cart = getCart();
+
+        if (!cart.length) {
+            alert(i18n.cart_empty || 'Seu carrinho está vazio.');
+            return;
+        }
+
+        $.ajax({
+            url: config.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'sbp_send_whatsapp_message',
+                nonce: config.nonce,
+                cart: cart
+            },
+            success: function (response) {
+                if (response.success && response.data && response.data.url) {
+                    window.open(response.data.url, '_blank');
+                } else {
+                    alert(response.data || i18n.whatsapp_error || 'Erro ao gerar a mensagem do WhatsApp.');
+                }
+            },
+            error: function () {
+                alert(i18n.whatsapp_error || 'Erro ao gerar a mensagem do WhatsApp.');
+            }
+        });
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    $(document).on('click', '.sbp-budget-action, #add-to-cart-button, #open-cart-button, #enviar-orcamento-whatsapp', function (event) {
+        var $trigger = $(this);
+        var action = $trigger.data('sbp-action');
+
+        if ($trigger.is('#add-to-cart-button')) {
+            action = 'add';
+        } else if ($trigger.is('#open-cart-button')) {
+            action = 'open_cart';
+        } else if ($trigger.is('#enviar-orcamento-whatsapp')) {
+            action = 'send_whatsapp';
+        }
+
+        if (!action) {
+            return;
+        }
+
+        event.preventDefault();
+
+        var productId = getCurrentProductId($trigger);
+        var feedbackMode = getLegacyFeedbackMode($trigger);
+
+        if ('add' === action) {
+            addToCart(productId, feedbackMode);
+        } else if ('remove' === action) {
+            removeFromCart(productId);
+        } else if ('toggle' === action) {
+            toggleCartItem(productId, feedbackMode);
+        } else if ('open_cart' === action) {
+            openPopup();
+        } else if ('send_whatsapp' === action) {
+            sendWhatsAppBudget();
+        }
     });
 
-    // Exibir o carrinho ao carregar
-    renderCart();
+    $(document).on('click', '.sbp-close-popup', function () {
+        closePopup();
+    });
+
+    $(window).on('click', function (event) {
+        var $popup = $('#sbp-custom-popup');
+
+        if ($popup.length && $(event.target).is($popup)) {
+            closePopup();
+        }
+    });
+
+    $(document).on('sbp:cart-updated', function () {
+        renderAllCarts();
+    });
+
+    renderAllCarts();
 });

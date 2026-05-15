@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,8 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 **PT-BR:**  
 - Criação de orçamentos personalizados via popup interativo.  
 - Integração com **WhatsApp** para envio automático do pedido.  
-- Compatível com **Elementor** (botão de “Adicionar ao Carrinho”).  
+- Widgets nativos para **Elementor**: **Budget Button** e **Budget Listing**.
+- Modo legado compatível com botão Elementor usando o ID `add-to-cart-button`.
 - Suporte a múltiplos **Custom Post Types (CPTs)**.  
 - Painel administrativo completo com opções de configuração.  
 - Totalmente responsivo e traduzível.  
@@ -34,7 +35,8 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 **EN-US:**  
 - Create personalized quotes via an interactive popup.  
 - **WhatsApp** integration for automatic message generation.  
-- Works perfectly with **Elementor** (Add to Cart button).  
+- Native **Elementor** widgets: **Budget Button** and **Budget Listing**.
+- Legacy mode remains compatible with an Elementor button using the `add-to-cart-button` ID.
 - Supports multiple **Custom Post Types (CPTs)**.  
 - Admin panel with full customization options.  
 - Fully responsive and translation-ready.  
@@ -49,8 +51,9 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 3. Vá até **Configurações → Configurações SBP** para definir:  
    - Número de WhatsApp  
    - Tipos de post aceitos (CPTs)  
-4. Adicione o shortcode `[sbp_cart]` em qualquer página para exibir o carrinho.  
-5. Use o botão do Elementor com ID `add-to-cart-button` para adicionar produtos ao carrinho.
+4. No Elementor, use o widget **Budget Button** dentro do card/template do item.
+5. Use o widget **Budget Listing** na página/template de orçamento para listar itens e remover produtos.
+6. Alternativamente, mantenha o modo legado com o shortcode `[sbp_cart]` e um botão Elementor com ID `add-to-cart-button`.
 
 **EN-US:**  
 1. Upload the `simple-budget-plugin` folder to `/wp-content/plugins/`.  
@@ -58,8 +61,9 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 3. Go to **Settings → SBP Settings** and configure:  
    - WhatsApp number  
    - Allowed post types (CPTs)  
-4. Add the `[sbp_cart]` shortcode to any page to display the quote cart.  
-5. Use an Elementor button with the CSS ID `add-to-cart-button` to add products to the cart.
+4. In Elementor, use the **Budget Button** widget inside the item card/template.
+5. Use the **Budget Listing** widget on the quote page/template to list and remove products.
+6. Alternatively, keep the legacy mode with the `[sbp_cart]` shortcode and an Elementor button with the `add-to-cart-button` ID.
 
 ---
 
@@ -94,6 +98,17 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.1.0 =
+**PT-BR:**
+- Adiciona widgets Elementor nativos para ações de orçamento e listagem de itens.
+- Adiciona botão de remoção reutilizável na listagem do orçamento.
+- Mantém compatibilidade com o modo legado por ID/shortcode.
+
+**EN-US:**
+- Adds native Elementor widgets for budget actions and item listing.
+- Adds a reusable remove button in the budget listing.
+- Keeps compatibility with the legacy ID/shortcode mode.
+
 = 2.0.1 =
 **PT-BR:**
 - Silencia mensagens esperadas de carrinho vazio no console, mantendo logs de debug atrás de uma flag.

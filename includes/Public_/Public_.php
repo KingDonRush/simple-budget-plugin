@@ -50,6 +50,7 @@ class Public_ {
             'whatsapp_error'        => __( 'Erro ao gerar a mensagem do WhatsApp.', 'simple-budget-plugin-sbp' ),
             'whatsapp_number_error' => __( 'Erro: Número de WhatsApp não configurado.', 'simple-budget-plugin-sbp' ),
             'whatsapp_intro'        => __( "Olá! Eu quero fazer um orçamento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' ),
+            'remove_text'           => __( 'Remover', 'simple-budget-plugin-sbp' ),
         ]);
     }
 

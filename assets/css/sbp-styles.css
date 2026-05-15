@@ -246,3 +246,58 @@
     max-height: 60vh; /* Limite de altura    para não ultrapassar a tela */
     overflow-y: auto; /* Permite scroll no conteúdo do popup */
 }
+
+/* Elementor widgets */
+.sbp-budget-button .elementor-button,
+.sbp-budget-listing__submit.elementor-button {
+    cursor: pointer;
+}
+
+.sbp-budget-button .elementor-button-content-wrapper,
+.sbp-budget-listing__submit .elementor-button-content-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sbp-budget-listing {
+    width: 100%;
+}
+
+.sbp-budget-listing__items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sbp-budget-listing .sbp-cart-item {
+    border: 1px solid #e6e8ec;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.sbp-cart-item__media {
+    flex: 0 0 auto;
+}
+
+.sbp-cart-item__body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.sbp-cart-item__title {
+    margin: 0;
+}
+
+.sbp-budget-listing__empty {
+    margin: 0;
+}
+
+.sbp-budget-listing__submit {
+    display: inline-flex;
+    margin-top: 16px;
+}
+
+.sbp-is-hidden {
+    display: none !important;
+}

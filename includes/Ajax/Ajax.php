@@ -5,6 +5,8 @@
 
 namespace SBP\Ajax;
 
+use SBP\Support\CartRenderer;
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Ajax {
@@ -35,49 +37,25 @@ class Ajax {
     public function get_cart_products() {
         $this->verify_nonce();
 
-        $product_ids = isset( $_POST['product_ids'] ) ? array_map( 'intval', (array) $_POST['product_ids'] ) : [];
+        $product_ids = isset( $_POST['product_ids'] ) ? CartRenderer::normalize_product_ids( wp_unslash( $_POST['product_ids'] ) ) : [];
         if ( empty( $product_ids ) ) {
             wp_send_json_error( __( 'Carrinho vazio ou dados inválidos.', 'simple-budget-plugin-sbp' ) );
         }
 
-        $allowed_types = get_option( 'sbp_product_post_types', [] );
-        $query_types   = ! empty( $allowed_types ) ? $allowed_types : 'any';
+        $display = isset( $_POST['display'] ) ? (array) wp_unslash( $_POST['display'] ) : [];
+        $html    = CartRenderer::render_items( $product_ids, $display );
 
-        $q = new \WP_Query([
-            'post_type'      => $query_types,
-            'post__in'       => $product_ids,
-            'orderby'        => 'post__in',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-        ]);
-
-        if ( ! $q->have_posts() ) {
+        if ( '' === $html ) {
             wp_send_json_error( __( 'Nenhum item encontrado.', 'simple-budget-plugin-sbp' ) );
         }
 
-        ob_start();
-        while ( $q->have_posts() ) {
-            $q->the_post();
-            $id = get_the_ID(); ?>
-            <div class="sbp-cart-item">
-                <?php if ( has_post_thumbnail() ) : ?>
-                    <img src="<?php echo esc_url( get_the_post_thumbnail_url() ); ?>" alt="<?php the_title_attribute(); ?>">
-                <?php endif; ?>
-                <h4><?php the_title(); ?></h4>
-                <button class="sbp-remove-from-cart" data-product-id="<?php echo esc_attr( $id ); ?>">
-                    <?php esc_html_e( 'Remover', 'simple-budget-plugin-sbp' ); ?>
-                </button>
-            </div>
-        <?php }
-        wp_reset_postdata();
-
-        wp_send_json_success( ob_get_clean() );
+        wp_send_json_success( $html );
     }
 
     public function get_product_titles() {
         $this->verify_nonce();
 
-        $product_ids = isset( $_POST['product_ids'] ) ? array_map( 'intval', (array) $_POST['product_ids'] ) : [];
+        $product_ids = isset( $_POST['product_ids'] ) ? CartRenderer::normalize_product_ids( wp_unslash( $_POST['product_ids'] ) ) : [];
         if ( empty( $product_ids ) ) {
             wp_send_json_error( __( 'IDs de produtos não enviados.', 'simple-budget-plugin-sbp' ) );
         }
@@ -142,18 +120,35 @@ class Ajax {
     public function send_whatsapp_message() {
         $this->verify_nonce();
 
-        $cart = isset( $_POST['cart'] ) ? (array) $_POST['cart'] : [];
+        $cart = isset( $_POST['cart'] ) ? CartRenderer::normalize_product_ids( wp_unslash( $_POST['cart'] ) ) : [];
         if ( empty( $cart ) ) {
             wp_send_json_error( __( 'Carrinho está vazio.', 'simple-budget-plugin-sbp' ) );
         }
 
         $message = __( "Olá! Eu gostaria de fazer um orçamento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' );
+        $allowed_types = get_option( 'sbp_product_post_types', [] );
+        $line_number = 1;
 
-        foreach ( $cart as $i => $id ) {
-            $title = get_the_title( intval( $id ) );
-            if ( $title ) {
-                $message .= ( $i + 1 ) . ' - ' . $title . "\n";
+        foreach ( $cart as $id ) {
+            $post = get_post( $id );
+
+            if ( ! $post || 'publish' !== get_post_status( $post ) ) {
+                continue;
             }
+
+            if ( is_array( $allowed_types ) && ! empty( $allowed_types ) && ! in_array( $post->post_type, $allowed_types, true ) ) {
+                continue;
+            }
+
+            $title = get_the_title( $id );
+            if ( $title ) {
+                $message .= $line_number . ' - ' . $title . "\n";
+                $line_number++;
+            }
+        }
+
+        if ( 1 === $line_number ) {
+            wp_send_json_error( __( 'Nenhum título encontrado.', 'simple-budget-plugin-sbp' ) );
         }
 
         $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
