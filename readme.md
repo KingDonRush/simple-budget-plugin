@@ -17,6 +17,11 @@ custom post type.
 - Native Elementor widgets:
   - **Budget Button** for add, remove, toggle, open cart, and send actions.
   - **Budget Listing** for cart display, empty state, item removal, and submit.
+- Elementor cart template builder:
+  - Create cart modal templates in **Simple Budget > Templates**.
+  - Edit the modal content with Elementor free.
+  - Select the template directly in a **Budget Button** configured as
+    **Open budget popup**.
 - Legacy Elementor mode with a regular Button widget using the
   `add-to-cart-button` CSS ID.
 - Shortcode fallback through `[sbp_cart]`.
@@ -34,10 +39,13 @@ custom post type.
 
 1. Copy `simple-budget-plugin` into `wp-content/plugins/`.
 2. Activate **Simple Budget Plugin** in WordPress.
-3. Open **Configurações SBP** and configure the WhatsApp number.
+3. Open **Simple Budget > Configurações SBP** and configure the WhatsApp number.
 4. Optionally restrict the accepted post types.
 5. In Elementor, add **Budget Button** inside the item/card template.
 6. Add **Budget Listing** where the visitor should review selected items.
+7. To customize the modal, open **Simple Budget > Templates**, create a cart
+   template, edit it in Elementor, then select it in a **Budget Button** whose
+   action is **Open budget popup**.
 
 ## Legacy Mode
 
@@ -47,8 +55,8 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.1.0` adds the native Elementor widget layer while preserving the
-older shortcode and CSS-ID integration.
+Version `2.2.0` adds an Elementor-based cart template builder for customizable
+modal content while preserving the older shortcode and CSS-ID integration.
 
 ## License
 

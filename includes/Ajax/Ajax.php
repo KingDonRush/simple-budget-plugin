@@ -6,6 +6,7 @@
 namespace SBP\Ajax;
 
 use SBP\Support\CartRenderer;
+use SBP\Templates\CartTemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -14,6 +15,9 @@ class Ajax {
     public function init_hooks() {
         add_action( 'wp_ajax_sbp_get_cart_products', [ $this, 'get_cart_products' ] );
         add_action( 'wp_ajax_nopriv_sbp_get_cart_products', [ $this, 'get_cart_products' ] );
+
+        add_action( 'wp_ajax_sbp_render_cart_template', [ $this, 'render_cart_template' ] );
+        add_action( 'wp_ajax_nopriv_sbp_render_cart_template', [ $this, 'render_cart_template' ] );
 
         add_action( 'wp_ajax_sbp_get_product_titles', [ $this, 'get_product_titles' ] );
         add_action( 'wp_ajax_nopriv_sbp_get_product_titles', [ $this, 'get_product_titles' ] );
@@ -50,6 +54,27 @@ class Ajax {
         }
 
         wp_send_json_success( $html );
+    }
+
+    public function render_cart_template() {
+        $this->verify_nonce();
+
+        $template_id = isset( $_POST['template_id'] ) ? absint( $_POST['template_id'] ) : 0;
+
+        if ( ! $template_id ) {
+            wp_send_json_error( __( 'Template não informado.', 'simple-budget-plugin-sbp' ) );
+        }
+
+        $html = CartTemplateManager::render_template( $template_id );
+
+        if ( '' === trim( $html ) ) {
+            wp_send_json_error( __( 'Template não encontrado ou inválido.', 'simple-budget-plugin-sbp' ) );
+        }
+
+        wp_send_json_success([
+            'template_id' => $template_id,
+            'html'        => $html,
+        ]);
     }
 
     public function get_product_titles() {

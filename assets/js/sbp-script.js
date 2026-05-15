@@ -224,6 +224,64 @@ jQuery(function ($) {
         });
     }
 
+    function renderElementorTemplate($container, html) {
+        $container.html(html);
+        runElementorReadyTriggers($container);
+        renderBudgetListings();
+        updateActionStates();
+    }
+
+    function runElementorReadyTriggers($scope) {
+        if (
+            !window.elementorFrontend ||
+            !window.elementorFrontend.elementsHandler ||
+            typeof window.elementorFrontend.elementsHandler.runReadyTrigger !== 'function'
+        ) {
+            return;
+        }
+
+        $scope.find('.elementor-element').each(function () {
+            window.elementorFrontend.elementsHandler.runReadyTrigger($(this));
+        });
+    }
+
+    function showTemplateShell($popup) {
+        $popup.find('#sbp-custom-popup-fallback').attr('hidden', true);
+        $popup.find('#sbp-custom-popup-template').removeAttr('hidden');
+    }
+
+    function showLegacyShell($popup) {
+        $popup.find('#sbp-custom-popup-template').attr('hidden', true).empty();
+        $popup.find('#sbp-custom-popup-fallback').removeAttr('hidden');
+    }
+
+    function loadCartTemplate($popup, templateId) {
+        var $template = $popup.find('#sbp-custom-popup-template');
+
+        showTemplateShell($popup);
+        $template.html('<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.template_loading || 'Carregando orçamento...') + '</p>');
+
+        $.ajax({
+            url: config.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'sbp_render_cart_template',
+                nonce: config.nonce,
+                template_id: templateId
+            },
+            success: function (response) {
+                if (response.success && response.data && response.data.html) {
+                    renderElementorTemplate($template, response.data.html);
+                } else {
+                    $template.html('<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.template_error || 'Erro ao carregar o template do carrinho.') + '</p>');
+                }
+            },
+            error: function () {
+                $template.html('<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.template_error || 'Erro ao carregar o template do carrinho.') + '</p>');
+            }
+        });
+    }
+
     function renderAllCarts() {
         renderBudgetListings();
         renderLegacyCart();
@@ -243,7 +301,7 @@ jQuery(function ($) {
         });
     }
 
-    function openPopup() {
+    function openPopup(templateId) {
         var $popup = $('#sbp-custom-popup');
 
         if (!$popup.length) {
@@ -252,14 +310,26 @@ jQuery(function ($) {
         }
 
         $('body').addClass('sbp-popup-open');
+        $popup.attr('aria-hidden', 'false');
         $popup.fadeIn();
-        renderLegacyCart();
+
+        if (templateId) {
+            loadCartTemplate($popup, templateId);
+        } else {
+            showLegacyShell($popup);
+            renderLegacyCart();
+        }
+
+        setTimeout(function () {
+            $popup.find('.sbp-custom-popup-content').trigger('focus');
+        }, 50);
     }
 
     function closePopup() {
         var $popup = $('#sbp-custom-popup');
 
         $('body').removeClass('sbp-popup-open');
+        $popup.attr('aria-hidden', 'true');
 
         if (!$popup.is(':visible')) {
             return;
@@ -334,7 +404,9 @@ jQuery(function ($) {
         } else if ('toggle' === action) {
             toggleCartItem(productId, feedbackMode);
         } else if ('open_cart' === action) {
-            openPopup();
+            openPopup($trigger.data('sbp-template-id') || '');
+        } else if ('close_cart' === action) {
+            closePopup();
         } else if ('send_whatsapp' === action) {
             sendWhatsAppBudget();
         }
@@ -348,6 +420,12 @@ jQuery(function ($) {
         var $popup = $('#sbp-custom-popup');
 
         if ($popup.length && $(event.target).is($popup)) {
+            closePopup();
+        }
+    });
+
+    $(document).on('keydown', function (event) {
+        if ('Escape' === event.key) {
             closePopup();
         }
     });

@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 == Features ==
 **PT-BR:**  
 - Criação de orçamentos personalizados via popup interativo.  
+- Templates de carrinho editáveis no Elementor via **Simple Budget → Templates**.
 - Integração com **WhatsApp** para envio automático do pedido.  
 - Widgets nativos para **Elementor**: **Budget Button** e **Budget Listing**.
 - Modo legado compatível com botão Elementor usando o ID `add-to-cart-button`.
@@ -34,6 +35,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 
 **EN-US:**  
 - Create personalized quotes via an interactive popup.  
+- Elementor-editable cart templates through **Simple Budget → Templates**.
 - **WhatsApp** integration for automatic message generation.  
 - Native **Elementor** widgets: **Budget Button** and **Budget Listing**.
 - Legacy mode remains compatible with an Elementor button using the `add-to-cart-button` ID.
@@ -48,22 +50,24 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 **PT-BR:**  
 1. Faça o upload da pasta `simple-budget-plugin` para `/wp-content/plugins/`.  
 2. Ative o plugin no menu **Plugins** do painel WordPress.  
-3. Vá até **Configurações → Configurações SBP** para definir:  
+3. Vá até **Simple Budget → Configurações SBP** para definir:
    - Número de WhatsApp  
    - Tipos de post aceitos (CPTs)  
 4. No Elementor, use o widget **Budget Button** dentro do card/template do item.
 5. Use o widget **Budget Listing** na página/template de orçamento para listar itens e remover produtos.
-6. Alternativamente, mantenha o modo legado com o shortcode `[sbp_cart]` e um botão Elementor com ID `add-to-cart-button`.
+6. Para customizar o modal, acesse **Simple Budget → Templates**, crie um template de carrinho, edite no Elementor e selecione esse template em um **Budget Button** com ação **Open budget popup**.
+7. Alternativamente, mantenha o modo legado com o shortcode `[sbp_cart]` e um botão Elementor com ID `add-to-cart-button`.
 
 **EN-US:**  
 1. Upload the `simple-budget-plugin` folder to `/wp-content/plugins/`.  
 2. Activate the plugin through the **Plugins** menu in WordPress.  
-3. Go to **Settings → SBP Settings** and configure:  
+3. Go to **Simple Budget → SBP Settings** and configure:
    - WhatsApp number  
    - Allowed post types (CPTs)  
 4. In Elementor, use the **Budget Button** widget inside the item card/template.
 5. Use the **Budget Listing** widget on the quote page/template to list and remove products.
-6. Alternatively, keep the legacy mode with the `[sbp_cart]` shortcode and an Elementor button with the `add-to-cart-button` ID.
+6. To customize the modal, open **Simple Budget → Templates**, create a cart template, edit it in Elementor, and select it in a **Budget Button** configured as **Open budget popup**.
+7. Alternatively, keep the legacy mode with the `[sbp_cart]` shortcode and an Elementor button with the `add-to-cart-button` ID.
 
 ---
 
@@ -98,6 +102,19 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.2.0 =
+**PT-BR:**
+- Adiciona tela **Simple Budget → Templates** para criar templates de carrinho editáveis no Elementor.
+- Adiciona seleção de template no widget **Budget Button** quando a ação é abrir o carrinho.
+- Adiciona ação `close_cart` para fechar o modal a partir de botões criados no Elementor.
+- Renderiza templates do carrinho via AJAX mantendo fallback legado.
+
+**EN-US:**
+- Adds **Simple Budget → Templates** to create Elementor-editable cart templates.
+- Adds template selection to the **Budget Button** widget when the action opens the cart.
+- Adds the `close_cart` action so Elementor-built buttons can close the modal.
+- Renders cart templates through AJAX while preserving the legacy fallback.
+
 = 2.1.0 =
 **PT-BR:**
 - Adiciona widgets Elementor nativos para ações de orçamento e listagem de itens.

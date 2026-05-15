@@ -142,6 +142,8 @@
 
 /* Botão de fechar maior */
 .sbp-close-popup {
+    background: transparent;
+    border: 0;
     font-size: 36px;
     color: #aaa;
     position: absolute;
@@ -149,6 +151,8 @@
     right: 20px;
     cursor: pointer;
     transition: color 0.3s ease, transform 0.2s ease;
+    line-height: 1;
+    padding: 0;
 }
 
 /* Hover e active no botão de fechar */
@@ -261,6 +265,15 @@
 }
 
 .sbp-budget-listing {
+    width: 100%;
+}
+
+.sbp-custom-popup-template[hidden],
+.sbp-custom-popup-fallback[hidden] {
+    display: none !important;
+}
+
+.sbp-custom-popup-template {
     width: 100%;
 }
 

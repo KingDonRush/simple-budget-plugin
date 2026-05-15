@@ -51,18 +51,26 @@ class Public_ {
             'whatsapp_number_error' => __( 'Erro: Número de WhatsApp não configurado.', 'simple-budget-plugin-sbp' ),
             'whatsapp_intro'        => __( "Olá! Eu quero fazer um orçamento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' ),
             'remove_text'           => __( 'Remover', 'simple-budget-plugin-sbp' ),
+            'template_loading'      => __( 'Carregando orçamento...', 'simple-budget-plugin-sbp' ),
+            'template_error'        => __( 'Erro ao carregar o template do carrinho.', 'simple-budget-plugin-sbp' ),
+            'close_cart'            => __( 'Fechar carrinho', 'simple-budget-plugin-sbp' ),
         ]);
     }
 
     public function render_popup() { ?>
-        <div id="sbp-custom-popup" class="sbp-custom-popup">
-            <div class="sbp-custom-popup-content">
-                <span class="sbp-close-popup">&times;</span>
-                <h2><?php esc_html_e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?></h2>
-                <div id="sbp-cart-items"></div>
-                <button id="enviar-orcamento-whatsapp" style="display:none;">
-                    <?php esc_html_e( 'Enviar Orçamento via WhatsApp', 'simple-budget-plugin-sbp' ); ?>
-                </button>
+        <div id="sbp-custom-popup" class="sbp-custom-popup" role="dialog" aria-modal="true" aria-hidden="true" aria-label="<?php esc_attr_e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?>">
+            <div class="sbp-custom-popup-content" role="document" tabindex="-1">
+                <button type="button" class="sbp-close-popup" aria-label="<?php esc_attr_e( 'Fechar carrinho', 'simple-budget-plugin-sbp' ); ?>">&times;</button>
+
+                <div id="sbp-custom-popup-template" class="sbp-custom-popup-template" hidden></div>
+
+                <div id="sbp-custom-popup-fallback" class="sbp-custom-popup-fallback">
+                    <h2 id="sbp-custom-popup-title"><?php esc_html_e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?></h2>
+                    <div id="sbp-cart-items"></div>
+                    <button id="enviar-orcamento-whatsapp" style="display:none;">
+                        <?php esc_html_e( 'Enviar Orçamento via WhatsApp', 'simple-budget-plugin-sbp' ); ?>
+                    </button>
+                </div>
             </div>
         </div>
     <?php }

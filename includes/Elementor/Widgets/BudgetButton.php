@@ -16,6 +16,7 @@ use Elementor\Group_Control_Typography;
 use Elementor\Icons_Manager;
 use Elementor\Widget_Base;
 use SBP\Elementor\ElementorIntegration;
+use SBP\Templates\CartTemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -77,6 +78,7 @@ class BudgetButton extends Widget_Base {
                     'remove'        => esc_html__( 'Remove current item', 'simple-budget-plugin-sbp' ),
                     'toggle'        => esc_html__( 'Toggle current item', 'simple-budget-plugin-sbp' ),
                     'open_cart'     => esc_html__( 'Open budget popup', 'simple-budget-plugin-sbp' ),
+                    'close_cart'    => esc_html__( 'Close budget popup', 'simple-budget-plugin-sbp' ),
                     'send_whatsapp' => esc_html__( 'Send WhatsApp budget', 'simple-budget-plugin-sbp' ),
                 ],
             ]
@@ -94,6 +96,20 @@ class BudgetButton extends Widget_Base {
                 ],
                 'condition' => [
                     'action' => [ 'add', 'remove', 'toggle' ],
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'cart_template_id',
+            [
+                'label'       => esc_html__( 'Cart Template', 'simple-budget-plugin-sbp' ),
+                'type'        => Controls_Manager::SELECT,
+                'default'     => '',
+                'options'     => CartTemplateManager::get_template_options(),
+                'description' => esc_html__( 'Create and edit templates in Simple Budget > Templates.', 'simple-budget-plugin-sbp' ),
+                'condition'   => [
+                    'action' => 'open_cart',
                 ],
             ]
         );
@@ -464,6 +480,10 @@ class BudgetButton extends Widget_Base {
             $this->add_render_attribute( 'button', 'data-sbp-product-id', $product_id );
         }
 
+        if ( 'open_cart' === $action && ! empty( $settings['cart_template_id'] ) ) {
+            $this->add_render_attribute( 'button', 'data-sbp-template-id', absint( $settings['cart_template_id'] ) );
+        }
+
         if ( ! empty( $settings['button_css_id'] ) ) {
             $this->add_render_attribute( 'button', 'id', sanitize_html_class( $settings['button_css_id'] ) );
         }
@@ -507,6 +527,10 @@ class BudgetButton extends Widget_Base {
 
         if ( settings.button_css_id ) {
             view.addRenderAttribute( 'button', 'id', settings.button_css_id );
+        }
+
+        if ( 'open_cart' === settings.action && settings.cart_template_id ) {
+            view.addRenderAttribute( 'button', 'data-sbp-template-id', settings.cart_template_id );
         }
 
         if ( settings.hover_animation ) {
@@ -570,7 +594,7 @@ class BudgetButton extends Widget_Base {
     }
 
     private function sanitize_action( $action ) {
-        $allowed = [ 'add', 'remove', 'toggle', 'open_cart', 'send_whatsapp' ];
+        $allowed = [ 'add', 'remove', 'toggle', 'open_cart', 'close_cart', 'send_whatsapp' ];
 
         return in_array( $action, $allowed, true ) ? $action : 'add';
     }

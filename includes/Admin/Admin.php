@@ -5,6 +5,8 @@
 
 namespace SBP\Admin;
 
+use SBP\Templates\CartTemplateManager;
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Admin {
@@ -12,16 +14,26 @@ class Admin {
     public function init_hooks() {
         add_action( 'admin_menu', [ $this, 'register_menu' ] );
         add_action( 'admin_init', [ $this, 'register_settings' ] );
+        add_action( 'admin_post_sbp_create_cart_template', [ $this, 'handle_create_cart_template' ] );
     }
 
     public function register_menu() {
         add_menu_page(
             __( 'Configurações SBP', 'simple-budget-plugin-sbp' ),
-            __( 'Configurações SBP', 'simple-budget-plugin-sbp' ),
+            __( 'Simple Budget', 'simple-budget-plugin-sbp' ),
             'manage_options',
             'sbp-settings',
             [ $this, 'render_settings_page' ],
             'dashicons-cart'
+        );
+
+        add_submenu_page(
+            'sbp-settings',
+            __( 'Budget Templates', 'simple-budget-plugin-sbp' ),
+            __( 'Templates', 'simple-budget-plugin-sbp' ),
+            'manage_options',
+            'sbp-templates',
+            [ $this, 'render_templates_page' ]
         );
     }
 
@@ -37,6 +49,107 @@ class Admin {
             </form>
         </div>
     <?php }
+
+    public function render_templates_page() {
+        $templates = CartTemplateManager::get_templates();
+        ?>
+        <div class="wrap">
+            <h1><?php esc_html_e( 'Simple Budget Templates', 'simple-budget-plugin-sbp' ); ?></h1>
+
+            <?php if ( isset( $_GET['sbp_error'] ) ) : ?>
+                <div class="notice notice-error">
+                    <p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['sbp_error'] ) ) ); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if ( ! CartTemplateManager::is_elementor_available() ) : ?>
+                <div class="notice notice-warning">
+                    <p><?php esc_html_e( 'Elementor must be active to create and edit Simple Budget templates.', 'simple-budget-plugin-sbp' ); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <p>
+                <?php esc_html_e( 'Create Elementor templates for the budget modal, then select one in a Budget Button configured as Open cart.', 'simple-budget-plugin-sbp' ); ?>
+            </p>
+
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin: 18px 0 24px;">
+                <?php wp_nonce_field( 'sbp_create_cart_template' ); ?>
+                <input type="hidden" name="action" value="sbp_create_cart_template" />
+                <label for="sbp_template_title" class="screen-reader-text">
+                    <?php esc_html_e( 'Template title', 'simple-budget-plugin-sbp' ); ?>
+                </label>
+                <input
+                    id="sbp_template_title"
+                    type="text"
+                    name="template_title"
+                    class="regular-text"
+                    placeholder="<?php echo esc_attr__( 'Simple Budget Cart Modal', 'simple-budget-plugin-sbp' ); ?>"
+                />
+                <?php submit_button( __( 'Create cart template', 'simple-budget-plugin-sbp' ), 'primary', 'submit', false ); ?>
+            </form>
+
+            <table class="widefat striped">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e( 'Template', 'simple-budget-plugin-sbp' ); ?></th>
+                        <th><?php esc_html_e( 'Status', 'simple-budget-plugin-sbp' ); ?></th>
+                        <th><?php esc_html_e( 'Actions', 'simple-budget-plugin-sbp' ); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ( empty( $templates ) ) : ?>
+                        <tr>
+                            <td colspan="3"><?php esc_html_e( 'No Simple Budget cart templates found yet.', 'simple-budget-plugin-sbp' ); ?></td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ( $templates as $template ) : ?>
+                            <?php $status = get_post_status_object( $template->post_status ); ?>
+                            <tr>
+                                <td>
+                                    <strong><?php echo esc_html( get_the_title( $template ) ); ?></strong>
+                                    <br />
+                                    <code><?php echo esc_html( '#' . $template->ID ); ?></code>
+                                </td>
+                                <td><?php echo esc_html( $status ? $status->label : $template->post_status ); ?></td>
+                                <td>
+                                    <a class="button button-primary" href="<?php echo esc_url( CartTemplateManager::get_edit_url( $template->ID ) ); ?>">
+                                        <?php esc_html_e( 'Edit in Elementor', 'simple-budget-plugin-sbp' ); ?>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php }
+
+    public function handle_create_cart_template() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to create Simple Budget templates.', 'simple-budget-plugin-sbp' ) );
+        }
+
+        check_admin_referer( 'sbp_create_cart_template' );
+
+        $title = isset( $_POST['template_title'] ) ? sanitize_text_field( wp_unslash( $_POST['template_title'] ) ) : '';
+        $template_id = CartTemplateManager::create_cart_modal_template( $title );
+
+        if ( is_wp_error( $template_id ) ) {
+            wp_safe_redirect(
+                add_query_arg(
+                    [
+                        'page'      => 'sbp-templates',
+                        'sbp_error' => $template_id->get_error_message(),
+                    ],
+                    admin_url( 'admin.php' )
+                )
+            );
+            exit;
+        }
+
+        wp_safe_redirect( CartTemplateManager::get_edit_url( $template_id ) );
+        exit;
+    }
 
     public function register_settings() {
         register_setting( 'sbp_settings_group', 'sbp_whatsapp_number', [
