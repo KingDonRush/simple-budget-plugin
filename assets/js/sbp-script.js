@@ -461,12 +461,43 @@ jQuery(function ($) {
         return {
             shell: $trigger.data('sbp-shell') || 'modal',
             animation: $trigger.data('sbp-animation') || 'fade_scale',
-            panelWidth: $trigger.data('sbp-panel-width') || '560px',
+            panelWidth: getResponsivePanelWidth($trigger),
             overlayColor: $trigger.data('sbp-overlay-color') || '#000000',
             overlayOpacity: $trigger.data('sbp-overlay-opacity') || 50,
             closeOverlay: $trigger.data('sbp-close-overlay') || 'yes',
             closeEscape: $trigger.data('sbp-close-escape') || 'yes',
             showClose: $trigger.data('sbp-show-close') || 'yes'
+        };
+    }
+
+    function getResponsivePanelWidth($trigger) {
+        var desktop = $trigger.data('sbp-panel-width') || '560px';
+        var tablet = $trigger.data('sbp-panel-width-tablet') || desktop;
+        var mobile = $trigger.data('sbp-panel-width-mobile') || tablet;
+        var breakpoints = getElementorBreakpoints();
+
+        if (window.matchMedia && window.matchMedia('(max-width: ' + breakpoints.mobile + 'px)').matches) {
+            return mobile;
+        }
+
+        if (window.matchMedia && window.matchMedia('(max-width: ' + breakpoints.tablet + 'px)').matches) {
+            return tablet;
+        }
+
+        return desktop;
+    }
+
+    function getElementorBreakpoints() {
+        var responsiveConfig = window.elementorFrontend &&
+            window.elementorFrontend.config &&
+            window.elementorFrontend.config.responsive &&
+            window.elementorFrontend.config.responsive.activeBreakpoints
+            ? window.elementorFrontend.config.responsive.activeBreakpoints
+            : {};
+
+        return {
+            mobile: parseInt(responsiveConfig.mobile && responsiveConfig.mobile.value, 10) || 767,
+            tablet: parseInt(responsiveConfig.tablet && responsiveConfig.tablet.value, 10) || 1024
         };
     }
 

@@ -58,9 +58,9 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.3.3` keeps the v2.3 cart-shell package and moves the Budget Listing
-remove-button positioning control into **Style > Remove Button** using an
-Elementor Icon Box-like choose control.
+Version `2.3.4` keeps the v2.3 cart-shell package and makes the cart shell
+panel width responsive, so implementers can define separate desktop, tablet, and
+mobile widths for modal, drawer, and bottom-sheet layouts.
 
 ## License
 

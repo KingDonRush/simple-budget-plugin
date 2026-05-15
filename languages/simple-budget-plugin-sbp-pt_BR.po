@@ -283,163 +283,163 @@ msgstr ""
 msgid "Create and edit templates in Simple Budget > Templates."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:275
+#: includes/Elementor/Widgets/BudgetButton.php:283
 msgid "Post ID"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:338
+#: includes/Elementor/Widgets/BudgetButton.php:346
 msgid "Text"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:341
-#: includes/Elementor/Widgets/BudgetButton.php:342
+#: includes/Elementor/Widgets/BudgetButton.php:349
+#: includes/Elementor/Widgets/BudgetButton.php:350
 msgid "Adicionar ao orçamento"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:349
+#: includes/Elementor/Widgets/BudgetButton.php:357
 msgid "Type"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:353
+#: includes/Elementor/Widgets/BudgetButton.php:361
 msgid "Default"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:354
+#: includes/Elementor/Widgets/BudgetButton.php:362
 msgid "Info"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:355
+#: includes/Elementor/Widgets/BudgetButton.php:363
 msgid "Success"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:356
+#: includes/Elementor/Widgets/BudgetButton.php:364
 msgid "Warning"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:357
+#: includes/Elementor/Widgets/BudgetButton.php:365
 msgid "Danger"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:366
-#: includes/Elementor/Widgets/BudgetButton.php:694
+#: includes/Elementor/Widgets/BudgetButton.php:374
+#: includes/Elementor/Widgets/BudgetButton.php:702
 msgid "Size"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:370
+#: includes/Elementor/Widgets/BudgetButton.php:378
 msgid "Extra Small"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:371
+#: includes/Elementor/Widgets/BudgetButton.php:379
 msgid "Small"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:372
+#: includes/Elementor/Widgets/BudgetButton.php:380
 msgid "Medium"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:373
+#: includes/Elementor/Widgets/BudgetButton.php:381
 msgid "Large"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:374
+#: includes/Elementor/Widgets/BudgetButton.php:382
 msgid "Extra Large"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:382
-#: includes/Elementor/Widgets/BudgetButton.php:625
+#: includes/Elementor/Widgets/BudgetButton.php:390
+#: includes/Elementor/Widgets/BudgetButton.php:633
 msgid "Icon"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:636
+#: includes/Elementor/Widgets/BudgetButton.php:644
 msgid "Icon Position"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:641
+#: includes/Elementor/Widgets/BudgetButton.php:649
 #: includes/Elementor/Widgets/BudgetList.php:426
 msgid "Start"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:645
+#: includes/Elementor/Widgets/BudgetButton.php:653
 #: includes/Elementor/Widgets/BudgetList.php:430
 msgid "End"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:667
+#: includes/Elementor/Widgets/BudgetButton.php:675
 msgid "Icon Spacing"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:396
+#: includes/Elementor/Widgets/BudgetButton.php:404
 msgid "Button ID"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:400
+#: includes/Elementor/Widgets/BudgetButton.php:408
 msgid "Optional unique ID without spaces."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:412
+#: includes/Elementor/Widgets/BudgetButton.php:420
 msgid "Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:420
+#: includes/Elementor/Widgets/BudgetButton.php:428
 #: includes/Elementor/Widgets/BudgetList.php:421
 msgid "Position"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:424
+#: includes/Elementor/Widgets/BudgetButton.php:432
 msgid "Left"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:428
+#: includes/Elementor/Widgets/BudgetButton.php:436
 msgid "Center"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:432
+#: includes/Elementor/Widgets/BudgetButton.php:440
 msgid "Right"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:436
+#: includes/Elementor/Widgets/BudgetButton.php:444
 msgid "Stretch"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:468
-#: includes/Elementor/Widgets/BudgetButton.php:715
+#: includes/Elementor/Widgets/BudgetButton.php:476
+#: includes/Elementor/Widgets/BudgetButton.php:723
 #: includes/Elementor/Widgets/BudgetList.php:506
 msgid "Normal"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:475
-#: includes/Elementor/Widgets/BudgetButton.php:523
+#: includes/Elementor/Widgets/BudgetButton.php:483
+#: includes/Elementor/Widgets/BudgetButton.php:531
 #: includes/Elementor/Widgets/BudgetList.php:224
 #: includes/Elementor/Widgets/BudgetList.php:513
 #: includes/Elementor/Widgets/BudgetList.php:543
 msgid "Text Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:516
-#: includes/Elementor/Widgets/BudgetButton.php:736
+#: includes/Elementor/Widgets/BudgetButton.php:524
+#: includes/Elementor/Widgets/BudgetButton.php:744
 #: includes/Elementor/Widgets/BudgetList.php:536
 msgid "Hover"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:545
+#: includes/Elementor/Widgets/BudgetButton.php:553
 msgid "Border Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:564
+#: includes/Elementor/Widgets/BudgetButton.php:572
 msgid "Transition Duration"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:576
+#: includes/Elementor/Widgets/BudgetButton.php:584
 msgid "Hover Animation"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:596
+#: includes/Elementor/Widgets/BudgetButton.php:604
 #: includes/Elementor/Widgets/BudgetList.php:254
 #: includes/Elementor/Widgets/BudgetList.php:584
 msgid "Border Radius"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:608
+#: includes/Elementor/Widgets/BudgetButton.php:616
 #: includes/Elementor/Widgets/BudgetList.php:266
 #: includes/Elementor/Widgets/BudgetList.php:596
 msgid "Padding"
@@ -458,9 +458,9 @@ msgstr ""
 msgid "Show Image"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:232
-#: includes/Elementor/Widgets/BudgetButton.php:247
-#: includes/Elementor/Widgets/BudgetButton.php:262
+#: includes/Elementor/Widgets/BudgetButton.php:240
+#: includes/Elementor/Widgets/BudgetButton.php:255
+#: includes/Elementor/Widgets/BudgetButton.php:270
 #: includes/Elementor/Widgets/BudgetList.php:83
 #: includes/Elementor/Widgets/BudgetList.php:95
 #: includes/Elementor/Widgets/BudgetList.php:107
@@ -468,9 +468,9 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:233
-#: includes/Elementor/Widgets/BudgetButton.php:248
-#: includes/Elementor/Widgets/BudgetButton.php:263
+#: includes/Elementor/Widgets/BudgetButton.php:241
+#: includes/Elementor/Widgets/BudgetButton.php:256
+#: includes/Elementor/Widgets/BudgetButton.php:271
 #: includes/Elementor/Widgets/BudgetList.php:84
 #: includes/Elementor/Widgets/BudgetList.php:96
 #: includes/Elementor/Widgets/BudgetList.php:108
@@ -643,7 +643,7 @@ msgid "Slide"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:159
-#: includes/Elementor/Widgets/BudgetButton.php:324
+#: includes/Elementor/Widgets/BudgetButton.php:332
 #: includes/Elementor/Widgets/BudgetList.php:175
 msgid "None"
 msgstr ""
@@ -652,72 +652,72 @@ msgstr ""
 msgid "Panel Width"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:196
+#: includes/Elementor/Widgets/BudgetButton.php:204
 msgid "Overlay Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:208
+#: includes/Elementor/Widgets/BudgetButton.php:216
 msgid "Overlay Opacity"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:230
+#: includes/Elementor/Widgets/BudgetButton.php:238
 msgid "Close on Overlay Click"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:245
+#: includes/Elementor/Widgets/BudgetButton.php:253
 msgid "Close on ESC"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:260
+#: includes/Elementor/Widgets/BudgetButton.php:268
 msgid "Show Outside Close Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:288
+#: includes/Elementor/Widgets/BudgetButton.php:296
 #: includes/Elementor/Widgets/BudgetList.php:205
 msgid "Quantity"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:293
+#: includes/Elementor/Widgets/BudgetButton.php:301
 msgid "Initial quantity stored when this item is added to the budget."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:303
+#: includes/Elementor/Widgets/BudgetButton.php:311
 #: includes/Elementor/Widgets/BudgetList.php:154
 msgid "When Budget Is Empty"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:307
+#: includes/Elementor/Widgets/BudgetButton.php:315
 #: includes/Elementor/Widgets/BudgetList.php:159
 msgid "Disable button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:308
+#: includes/Elementor/Widgets/BudgetButton.php:316
 #: includes/Elementor/Widgets/BudgetList.php:158
 msgid "Hide button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:309
+#: includes/Elementor/Widgets/BudgetButton.php:317
 #: includes/Elementor/Widgets/BudgetList.php:160
 msgid "Keep visible and show message"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:320
+#: includes/Elementor/Widgets/BudgetButton.php:328
 #: includes/Elementor/Widgets/BudgetList.php:171
 msgid "Blocked Animation"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:325
+#: includes/Elementor/Widgets/BudgetButton.php:333
 #: includes/Elementor/Widgets/BudgetList.php:176
 msgid "Shake"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:326
+#: includes/Elementor/Widgets/BudgetButton.php:334
 #: includes/Elementor/Widgets/BudgetList.php:177
 msgid "Pulse"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:722
-#: includes/Elementor/Widgets/BudgetButton.php:743
+#: includes/Elementor/Widgets/BudgetButton.php:730
+#: includes/Elementor/Widgets/BudgetButton.php:751
 msgid "Color"
 msgstr ""
 

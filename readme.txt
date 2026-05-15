@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.3.3
+Stable tag: 2.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,17 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.3.4 =
+**PT-BR:**
+- Torna o controle **Panel Width** do Cart Shell responsivo no **Budget Button**.
+- Adiciona valores separados para desktop, tablet e mobile usando o controle responsivo nativo do Elementor.
+- O frontend agora escolhe a largura correta ao abrir o carrinho, respeitando os breakpoints ativos do Elementor quando disponíveis.
+
+**EN-US:**
+- Makes the Cart Shell **Panel Width** control responsive in **Budget Button**.
+- Adds separate desktop, tablet, and mobile values using Elementor's native responsive control.
+- The frontend now chooses the correct width when opening the cart, respecting Elementor active breakpoints when available.
+
 = 2.3.3 =
 **PT-BR:**
 - Move o posicionamento do botão remover do **Budget Listing** para **Style → Remove Button**.
