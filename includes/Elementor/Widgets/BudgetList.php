@@ -136,24 +136,6 @@ class BudgetList extends Widget_Base {
         );
 
         $this->add_control(
-            'remove_position',
-            [
-                'label'     => esc_html__( 'Remove Position', 'simple-budget-plugin-sbp' ),
-                'type'      => Controls_Manager::SELECT,
-                'default'   => 'inline_end',
-                'options'   => [
-                    'inline_start' => esc_html__( 'Left / start', 'simple-budget-plugin-sbp' ),
-                    'inline_end'   => esc_html__( 'Right / end', 'simple-budget-plugin-sbp' ),
-                    'top'          => esc_html__( 'Top', 'simple-budget-plugin-sbp' ),
-                    'bottom'       => esc_html__( 'Bottom', 'simple-budget-plugin-sbp' ),
-                ],
-                'condition' => [
-                    'show_remove' => 'yes',
-                ],
-            ]
-        );
-
-        $this->add_control(
             'show_submit',
             [
                 'label'        => esc_html__( 'Show Submit Button', 'simple-budget-plugin-sbp' ),
@@ -429,6 +411,58 @@ class BudgetList extends Widget_Base {
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'show_remove' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'remove_position',
+            [
+                'label'   => esc_html__( 'Position', 'simple-budget-plugin-sbp' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'default' => 'inline_end',
+                'options' => [
+                    'inline_start' => [
+                        'title' => esc_html__( 'Start', 'simple-budget-plugin-sbp' ),
+                        'icon'  => 'eicon-h-align-left',
+                    ],
+                    'inline_end'   => [
+                        'title' => esc_html__( 'End', 'simple-budget-plugin-sbp' ),
+                        'icon'  => 'eicon-h-align-right',
+                    ],
+                    'top'          => [
+                        'title' => esc_html__( 'Top', 'simple-budget-plugin-sbp' ),
+                        'icon'  => 'eicon-v-align-top',
+                    ],
+                    'bottom'       => [
+                        'title' => esc_html__( 'Bottom', 'simple-budget-plugin-sbp' ),
+                        'icon'  => 'eicon-v-align-bottom',
+                    ],
+                ],
+                'classes' => 'elementor-control-start-end',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'remove_spacing',
+            [
+                'label'      => esc_html__( 'Spacing', 'simple-budget-plugin-sbp' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
+                'range'      => [
+                    'px'  => [
+                        'max' => 100,
+                    ],
+                    'em'  => [
+                        'max' => 10,
+                    ],
+                    'rem' => [
+                        'max' => 10,
+                    ],
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .sbp-cart-item'          => 'gap: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .sbp-cart-item__actions' => 'gap: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );

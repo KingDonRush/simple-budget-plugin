@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,17 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.3.3 =
+**PT-BR:**
+- Move o posicionamento do botão remover do **Budget Listing** para **Style → Remove Button**.
+- Troca o seletor antigo por um controle visual no estilo do **Icon Box** do Elementor, com opções Start, End, Top e Bottom.
+- Mantém o mesmo ID interno `remove_position` para preservar compatibilidade com templates existentes.
+
+**EN-US:**
+- Moves the **Budget Listing** remove-button position control into **Style → Remove Button**.
+- Replaces the previous selector with an Elementor **Icon Box**-style visual control for Start, End, Top, and Bottom.
+- Keeps the same internal `remove_position` ID to preserve compatibility with existing templates.
+
 = 2.3.2 =
 **PT-BR:**
 - Adiciona remoção individual de templates na tela **Simple Budget → Templates**.
