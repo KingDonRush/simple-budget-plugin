@@ -65,31 +65,31 @@ msgstr "Enviar Orçamento via WhatsApp"
 #: includes/Elementor/Widgets/BudgetList.php:617
 #: includes/Public_/Public_.php:54
 #: includes/Support/CartRenderer.php:26
-#: includes/Templates/CartTemplateManager.php:246
+#: includes/Templates/CartTemplateManager.php:279
 msgid "Remover"
 msgstr "Remover"
 
-#: includes/Admin/Admin.php:42
+#: includes/Admin/Admin.php:43
 msgid "Configurações do Simple Budget Plugin"
 msgstr "Configurações do Simple Budget Plugin"
 
-#: includes/Admin/Admin.php:169
+#: includes/Admin/Admin.php:217
 msgid "Configurações do WhatsApp"
 msgstr "Configurações do WhatsApp"
 
-#: includes/Admin/Admin.php:176
+#: includes/Admin/Admin.php:224
 msgid "Número de WhatsApp"
 msgstr "Número de WhatsApp"
 
-#: includes/Admin/Admin.php:184
+#: includes/Admin/Admin.php:232
 msgid "Tipos de Conteúdo"
 msgstr "Tipos de Conteúdo"
 
-#: includes/Admin/Admin.php:195
+#: includes/Admin/Admin.php:243
 msgid "Insira o número de WhatsApp (apenas dígitos, com DDD). Ex.: 11999998888"
 msgstr "Insira o número de WhatsApp (apenas dígitos, com DDD). Ex.: 11999998888"
 
-#: includes/Admin/Admin.php:217
+#: includes/Admin/Admin.php:265
 msgid "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
 msgstr "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
 
@@ -103,7 +103,7 @@ msgstr "Erro ao carregar o carrinho."
 #: includes/Elementor/Widgets/BudgetList.php:610
 #: includes/Public_/Public_.php:46
 #: includes/Shortcodes/Shortcodes.php:19
-#: includes/Templates/CartTemplateManager.php:241
+#: includes/Templates/CartTemplateManager.php:274
 msgid "Seu carrinho está vazio."
 msgstr "Seu carrinho está vazio."
 
@@ -150,69 +150,69 @@ msgstr ""
 msgid "Guilherme Silva"
 msgstr ""
 
-#: includes/Admin/Admin.php:22
+#: includes/Admin/Admin.php:23
 msgid "Configurações SBP"
 msgstr ""
 
-#: includes/Admin/Admin.php:23
+#: includes/Admin/Admin.php:24
 #: includes/Elementor/ElementorIntegration.php:34
 msgid "Simple Budget"
 msgstr ""
 
-#: includes/Admin/Admin.php:32
+#: includes/Admin/Admin.php:33
 msgid "Budget Templates"
 msgstr ""
 
-#: includes/Admin/Admin.php:33
+#: includes/Admin/Admin.php:34
 msgid "Templates"
 msgstr ""
 
-#: includes/Admin/Admin.php:57
+#: includes/Admin/Admin.php:58
 msgid "Simple Budget Templates"
 msgstr ""
 
-#: includes/Admin/Admin.php:67
+#: includes/Admin/Admin.php:74
 msgid "Elementor must be active to create and edit Simple Budget templates."
 msgstr ""
 
-#: includes/Admin/Admin.php:72
+#: includes/Admin/Admin.php:79
 msgid "Create Elementor templates for the budget modal, then select one in a Budget Button configured as Open cart."
 msgstr ""
 
-#: includes/Admin/Admin.php:79
+#: includes/Admin/Admin.php:86
 msgid "Template title"
 msgstr ""
 
-#: includes/Admin/Admin.php:86
+#: includes/Admin/Admin.php:93
 #: includes/Templates/CartTemplateManager.php:84
 msgid "Simple Budget Cart Modal"
 msgstr ""
 
-#: includes/Admin/Admin.php:88
+#: includes/Admin/Admin.php:95
 msgid "Create cart template"
 msgstr ""
 
-#: includes/Admin/Admin.php:94
+#: includes/Admin/Admin.php:101
 msgid "Template"
 msgstr ""
 
-#: includes/Admin/Admin.php:95
+#: includes/Admin/Admin.php:102
 msgid "Status"
 msgstr ""
 
-#: includes/Admin/Admin.php:96
+#: includes/Admin/Admin.php:103
 msgid "Actions"
 msgstr ""
 
-#: includes/Admin/Admin.php:102
+#: includes/Admin/Admin.php:109
 msgid "No Simple Budget cart templates found yet."
 msgstr ""
 
-#: includes/Admin/Admin.php:116
+#: includes/Admin/Admin.php:123
 msgid "Edit in Elementor"
 msgstr ""
 
-#: includes/Admin/Admin.php:129
+#: includes/Admin/Admin.php:142
 msgid "You do not have permission to create Simple Budget templates."
 msgstr ""
 
@@ -321,7 +321,7 @@ msgid "Danger"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:366
-#: includes/Elementor/Widgets/BudgetButton.php:683
+#: includes/Elementor/Widgets/BudgetButton.php:694
 msgid "Size"
 msgstr ""
 
@@ -346,97 +346,97 @@ msgid "Extra Large"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:382
-#: includes/Elementor/Widgets/BudgetButton.php:672
+#: includes/Elementor/Widgets/BudgetButton.php:625
 msgid "Icon"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:396
+#: includes/Elementor/Widgets/BudgetButton.php:636
 msgid "Icon Position"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:401
+#: includes/Elementor/Widgets/BudgetButton.php:641
 msgid "Start"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:405
+#: includes/Elementor/Widgets/BudgetButton.php:645
 msgid "End"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:422
+#: includes/Elementor/Widgets/BudgetButton.php:667
 msgid "Icon Spacing"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:443
+#: includes/Elementor/Widgets/BudgetButton.php:396
 msgid "Button ID"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:447
+#: includes/Elementor/Widgets/BudgetButton.php:400
 msgid "Optional unique ID without spaces."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:459
+#: includes/Elementor/Widgets/BudgetButton.php:412
 msgid "Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:467
+#: includes/Elementor/Widgets/BudgetButton.php:420
 msgid "Position"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:471
+#: includes/Elementor/Widgets/BudgetButton.php:424
 msgid "Left"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:475
+#: includes/Elementor/Widgets/BudgetButton.php:428
 msgid "Center"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:479
+#: includes/Elementor/Widgets/BudgetButton.php:432
 msgid "Right"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:483
+#: includes/Elementor/Widgets/BudgetButton.php:436
 msgid "Stretch"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:515
-#: includes/Elementor/Widgets/BudgetButton.php:704
+#: includes/Elementor/Widgets/BudgetButton.php:468
+#: includes/Elementor/Widgets/BudgetButton.php:715
 #: includes/Elementor/Widgets/BudgetList.php:472
 msgid "Normal"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:522
-#: includes/Elementor/Widgets/BudgetButton.php:570
+#: includes/Elementor/Widgets/BudgetButton.php:475
+#: includes/Elementor/Widgets/BudgetButton.php:523
 #: includes/Elementor/Widgets/BudgetList.php:242
 #: includes/Elementor/Widgets/BudgetList.php:479
 #: includes/Elementor/Widgets/BudgetList.php:509
 msgid "Text Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:563
-#: includes/Elementor/Widgets/BudgetButton.php:725
+#: includes/Elementor/Widgets/BudgetButton.php:516
+#: includes/Elementor/Widgets/BudgetButton.php:736
 #: includes/Elementor/Widgets/BudgetList.php:502
 msgid "Hover"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:592
+#: includes/Elementor/Widgets/BudgetButton.php:545
 msgid "Border Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:611
+#: includes/Elementor/Widgets/BudgetButton.php:564
 msgid "Transition Duration"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:623
+#: includes/Elementor/Widgets/BudgetButton.php:576
 msgid "Hover Animation"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:643
+#: includes/Elementor/Widgets/BudgetButton.php:596
 #: includes/Elementor/Widgets/BudgetList.php:272
 #: includes/Elementor/Widgets/BudgetList.php:550
 msgid "Border Radius"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:655
+#: includes/Elementor/Widgets/BudgetButton.php:608
 #: includes/Elementor/Widgets/BudgetList.php:284
 #: includes/Elementor/Widgets/BudgetList.php:562
 msgid "Padding"
@@ -494,7 +494,7 @@ msgstr ""
 #: includes/Elementor/Widgets/BudgetList.php:209
 #: includes/Elementor/Widgets/BudgetList.php:576
 #: includes/Elementor/Widgets/BudgetList.php:611
-#: includes/Templates/CartTemplateManager.php:250
+#: includes/Templates/CartTemplateManager.php:283
 msgid "Enviar orçamento via WhatsApp"
 msgstr ""
 
@@ -573,11 +573,11 @@ msgstr ""
 msgid "Could not create the Elementor template."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:229
+#: includes/Templates/CartTemplateManager.php:262
 msgid "Your Budget"
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:261
+#: includes/Templates/CartTemplateManager.php:294
 msgid "Close"
 msgstr ""
 
@@ -713,8 +713,8 @@ msgstr ""
 msgid "Pulse"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:711
-#: includes/Elementor/Widgets/BudgetButton.php:732
+#: includes/Elementor/Widgets/BudgetButton.php:722
+#: includes/Elementor/Widgets/BudgetButton.php:743
 msgid "Color"
 msgstr ""
 
@@ -732,7 +732,7 @@ msgstr ""
 #: includes/Public_/Public_.php:55
 #: includes/Shortcodes/Shortcodes.php:47
 #: includes/Support/CartRenderer.php:29
-#: includes/Templates/CartTemplateManager.php:245
+#: includes/Templates/CartTemplateManager.php:278
 msgid "Quantidade"
 msgstr ""
 
@@ -758,4 +758,32 @@ msgstr ""
 
 #: includes/Elementor/Widgets/BudgetList.php:253
 msgid "Background"
+msgstr ""
+
+#: includes/Admin/Admin.php:68
+msgid "Template removed from the Simple Budget templates list."
+msgstr ""
+
+#: includes/Admin/Admin.php:125
+msgid "Remove this Simple Budget template?"
+msgstr ""
+
+#: includes/Admin/Admin.php:129
+msgid "Remove"
+msgstr ""
+
+#: includes/Admin/Admin.php:169
+msgid "You do not have permission to delete Simple Budget templates."
+msgstr ""
+
+#: includes/Templates/CartTemplateManager.php:167
+msgid "Simple Budget template not found."
+msgstr ""
+
+#: includes/Templates/CartTemplateManager.php:174
+msgid "You do not have permission to delete this template."
+msgstr ""
+
+#: includes/Templates/CartTemplateManager.php:187
+msgid "Could not delete the Simple Budget template."
 msgstr ""

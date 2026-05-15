@@ -158,6 +158,39 @@ class CartTemplateManager {
         return \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $template_id, true );
     }
 
+    public static function delete_cart_template( $template_id ) {
+        $template_id = absint( $template_id );
+
+        if ( ! self::is_cart_template( $template_id ) ) {
+            return new \WP_Error(
+                'sbp_template_not_found',
+                __( 'Simple Budget template not found.', 'simple-budget-plugin-sbp' )
+            );
+        }
+
+        if ( ! current_user_can( 'delete_post', $template_id ) ) {
+            return new \WP_Error(
+                'sbp_template_delete_permission',
+                __( 'You do not have permission to delete this template.', 'simple-budget-plugin-sbp' )
+            );
+        }
+
+        if ( defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS > 0 ) {
+            $deleted = wp_trash_post( $template_id );
+        } else {
+            $deleted = wp_delete_post( $template_id, true );
+        }
+
+        if ( ! $deleted ) {
+            return new \WP_Error(
+                'sbp_template_delete_failed',
+                __( 'Could not delete the Simple Budget template.', 'simple-budget-plugin-sbp' )
+            );
+        }
+
+        return true;
+    }
+
     private static function get_supported_document_type() {
         $documents = \Elementor\Plugin::$instance->documents;
 

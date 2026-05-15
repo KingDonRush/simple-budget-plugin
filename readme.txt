@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,17 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.3.2 =
+**PT-BR:**
+- Adiciona remoção individual de templates na tela **Simple Budget → Templates**.
+- Valida nonce, permissão e ownership do template antes de remover qualquer item.
+- Move o template para a lixeira quando o WordPress tiver lixeira ativa, evitando exclusão irreversível por engano.
+
+**EN-US:**
+- Adds individual template removal to **Simple Budget → Templates**.
+- Validates nonce, permissions, and template ownership before removing any item.
+- Moves the template to trash when WordPress trash is enabled, avoiding accidental irreversible deletion.
+
 = 2.3.1 =
 **PT-BR:**
 - Move os controles de posição e espaçamento do ícone do **Budget Button** para **Style → Icon**.

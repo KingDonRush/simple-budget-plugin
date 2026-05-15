@@ -58,10 +58,9 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.3.1` keeps the v2.3 cart-shell package and moves the button icon
-layout controls into the Style > Icon panel for a cleaner implementer workflow.
-It also tightens the internal autoloader guard to avoid exposing filesystem
-paths in debug logs.
+Version `2.3.2` keeps the v2.3 cart-shell package and adds individual template
+removal from **Simple Budget > Templates**, with nonce and capability checks so
+only Simple Budget-owned cart templates can be removed from that screen.
 
 ## License
 

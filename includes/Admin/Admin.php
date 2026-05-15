@@ -15,6 +15,7 @@ class Admin {
         add_action( 'admin_menu', [ $this, 'register_menu' ] );
         add_action( 'admin_init', [ $this, 'register_settings' ] );
         add_action( 'admin_post_sbp_create_cart_template', [ $this, 'handle_create_cart_template' ] );
+        add_action( 'admin_post_sbp_delete_cart_template', [ $this, 'handle_delete_cart_template' ] );
     }
 
     public function register_menu() {
@@ -59,6 +60,12 @@ class Admin {
             <?php if ( isset( $_GET['sbp_error'] ) ) : ?>
                 <div class="notice notice-error">
                     <p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['sbp_error'] ) ) ); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if ( isset( $_GET['sbp_notice'] ) && 'template_deleted' === sanitize_key( wp_unslash( $_GET['sbp_notice'] ) ) ) : ?>
+                <div class="notice notice-success is-dismissible">
+                    <p><?php esc_html_e( 'Template removed from the Simple Budget templates list.', 'simple-budget-plugin-sbp' ); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -115,6 +122,12 @@ class Admin {
                                     <a class="button button-primary" href="<?php echo esc_url( CartTemplateManager::get_edit_url( $template->ID ) ); ?>">
                                         <?php esc_html_e( 'Edit in Elementor', 'simple-budget-plugin-sbp' ); ?>
                                     </a>
+                                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline-block;margin-left:8px;" onsubmit="return confirm('<?php echo esc_js( __( 'Remove this Simple Budget template?', 'simple-budget-plugin-sbp' ) ); ?>');">
+                                        <?php wp_nonce_field( 'sbp_delete_cart_template_' . $template->ID ); ?>
+                                        <input type="hidden" name="action" value="sbp_delete_cart_template" />
+                                        <input type="hidden" name="template_id" value="<?php echo esc_attr( $template->ID ); ?>" />
+                                        <?php submit_button( __( 'Remove', 'simple-budget-plugin-sbp' ), 'delete', 'submit', false ); ?>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -148,6 +161,41 @@ class Admin {
         }
 
         wp_safe_redirect( CartTemplateManager::get_edit_url( $template_id ) );
+        exit;
+    }
+
+    public function handle_delete_cart_template() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to delete Simple Budget templates.', 'simple-budget-plugin-sbp' ) );
+        }
+
+        $template_id = isset( $_POST['template_id'] ) ? absint( $_POST['template_id'] ) : 0;
+        check_admin_referer( 'sbp_delete_cart_template_' . $template_id );
+
+        $deleted = CartTemplateManager::delete_cart_template( $template_id );
+
+        if ( is_wp_error( $deleted ) ) {
+            wp_safe_redirect(
+                add_query_arg(
+                    [
+                        'page'      => 'sbp-templates',
+                        'sbp_error' => $deleted->get_error_message(),
+                    ],
+                    admin_url( 'admin.php' )
+                )
+            );
+            exit;
+        }
+
+        wp_safe_redirect(
+            add_query_arg(
+                [
+                    'page'       => 'sbp-templates',
+                    'sbp_notice' => 'template_deleted',
+                ],
+                admin_url( 'admin.php' )
+            )
+        );
         exit;
     }
 
