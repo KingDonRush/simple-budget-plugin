@@ -46,8 +46,9 @@ class Ajax {
             wp_send_json_error( __( 'Carrinho vazio ou dados inválidos.', 'simple-budget-plugin-sbp' ) );
         }
 
-        $display = isset( $_POST['display'] ) ? (array) wp_unslash( $_POST['display'] ) : [];
-        $html    = CartRenderer::render_items( $product_ids, $display );
+        $display    = isset( $_POST['display'] ) ? (array) wp_unslash( $_POST['display'] ) : [];
+        $quantities = isset( $_POST['quantities'] ) ? CartRenderer::normalize_quantities( wp_unslash( $_POST['quantities'] ) ) : [];
+        $html       = CartRenderer::render_items( $product_ids, $display, $quantities );
 
         if ( '' === $html ) {
             wp_send_json_error( __( 'Nenhum item encontrado.', 'simple-budget-plugin-sbp' ) );
@@ -150,6 +151,7 @@ class Ajax {
             wp_send_json_error( __( 'Carrinho está vazio.', 'simple-budget-plugin-sbp' ) );
         }
 
+        $quantities = isset( $_POST['quantities'] ) ? CartRenderer::normalize_quantities( wp_unslash( $_POST['quantities'] ) ) : [];
         $message = __( "Olá! Eu gostaria de fazer um orçamento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' );
         $allowed_types = get_option( 'sbp_product_post_types', [] );
         $line_number = 1;
@@ -167,7 +169,12 @@ class Ajax {
 
             $title = get_the_title( $id );
             if ( $title ) {
-                $message .= $line_number . ' - ' . $title . "\n";
+                $quantity = max( 1, absint( $quantities[ (string) $id ] ?? 1 ) );
+                $message .= $line_number . ' - ' . $title . ' - ' . sprintf(
+                    /* translators: %d: item quantity. */
+                    __( 'Qtd: %d', 'simple-budget-plugin-sbp' ),
+                    $quantity
+                ) . "\n";
                 $line_number++;
             }
         }

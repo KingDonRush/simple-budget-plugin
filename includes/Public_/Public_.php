@@ -13,6 +13,7 @@ class Public_ {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
         add_action( 'wp_footer', [ $this, 'render_popup' ] );
         add_action( 'elementor/frontend/widget/before_render', [ $this, 'elementor_add_product_id' ] );
+        add_filter( 'body_class', [ $this, 'add_cart_template_editor_preview_body_class' ] );
     }
 
     public function enqueue_assets() {
@@ -51,6 +52,7 @@ class Public_ {
             'whatsapp_number_error' => __( 'Erro: Número de WhatsApp não configurado.', 'simple-budget-plugin-sbp' ),
             'whatsapp_intro'        => __( "Olá! Eu quero fazer um orçamento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' ),
             'remove_text'           => __( 'Remover', 'simple-budget-plugin-sbp' ),
+            'quantity_label'        => __( 'Quantidade', 'simple-budget-plugin-sbp' ),
             'template_loading'      => __( 'Carregando orçamento...', 'simple-budget-plugin-sbp' ),
             'template_error'        => __( 'Erro ao carregar o template do carrinho.', 'simple-budget-plugin-sbp' ),
             'close_cart'            => __( 'Fechar carrinho', 'simple-budget-plugin-sbp' ),
@@ -58,7 +60,7 @@ class Public_ {
     }
 
     public function render_popup() { ?>
-        <div id="sbp-custom-popup" class="sbp-custom-popup" role="dialog" aria-modal="true" aria-hidden="true" aria-label="<?php esc_attr_e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?>">
+        <div id="sbp-custom-popup" class="sbp-custom-popup" role="dialog" aria-modal="true" aria-hidden="true" data-sbp-shell="modal" data-sbp-animation="fade_scale" data-sbp-close-overlay="yes" data-sbp-close-escape="yes" data-sbp-show-close="yes" aria-label="<?php esc_attr_e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?>">
             <div class="sbp-custom-popup-content" role="document" tabindex="-1">
                 <button type="button" class="sbp-close-popup" aria-label="<?php esc_attr_e( 'Fechar carrinho', 'simple-budget-plugin-sbp' ); ?>">&times;</button>
 
@@ -84,5 +86,19 @@ class Public_ {
         if ( $current_id && $button_id === 'add-to-cart-button' ) {
             $widget->add_render_attribute( '_wrapper', 'data-product-id', $current_id );
         }
+    }
+
+    public function add_cart_template_editor_preview_body_class( $classes ) {
+        if ( ! is_singular( 'elementor_library' ) ) {
+            return $classes;
+        }
+
+        $post_id = get_queried_object_id();
+
+        if ( $post_id && 'cart_modal' === get_post_meta( $post_id, '_sbp_template_role', true ) ) {
+            $classes[] = 'sbp-cart-template-editor-preview';
+        }
+
+        return $classes;
     }
 }

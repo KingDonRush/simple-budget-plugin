@@ -15,13 +15,16 @@ custom post type.
 ## Current Capabilities
 
 - Native Elementor widgets:
-  - **Budget Button** for add, remove, toggle, open cart, and send actions.
-  - **Budget Listing** for cart display, empty state, item removal, and submit.
+  - **Budget Button** for add, toggle, open cart, close cart, and WhatsApp send
+    actions. The legacy remove action remains available for old templates.
+  - **Budget Listing** for cart display, quantity controls, empty state, item
+    removal, remove positioning, and submit.
 - Elementor cart template builder:
   - Create cart modal templates in **Simple Budget > Templates**.
   - Edit the modal content with Elementor free.
   - Select the template directly in a **Budget Button** configured as
     **Open budget popup**.
+  - Configure the opener shell as centered modal, side drawer, or bottom sheet.
 - Legacy Elementor mode with a regular Button widget using the
   `add-to-cart-button` CSS ID.
 - Shortcode fallback through `[sbp_cart]`.
@@ -55,9 +58,10 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.2.1` keeps the Elementor-based cart template builder and ensures
-cart modal templates open on Elementor Canvas, without theme header/footer in
-the editor preview.
+Version `2.3.0` adds cart-shell controls for modal/drawer presentation,
+quantity-aware budget listings, configurable empty-cart behavior for WhatsApp
+buttons, direct icon styling controls, and an Elementor editor preview shell for
+cart templates.
 
 ## License
 

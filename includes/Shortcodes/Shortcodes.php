@@ -41,7 +41,11 @@ class Shortcodes {
                                     action: 'sbp_get_cart_products',
                                     nonce: sbp_ajax.nonce,
                                     product_ids: productIds,
-                                    quantities: quantitiesObj
+                                    quantities: quantitiesObj,
+                                    display: {
+                                        show_quantity: 'yes',
+                                        quantity_label: '<?php echo esc_js( __( 'Quantidade', 'simple-budget-plugin-sbp' ) ); ?>'
+                                    }
                                 },
                                 success: function(response) {
                                     if (response.success) {
@@ -78,6 +82,7 @@ class Shortcodes {
                     }
 
                     localStorage.setItem('sbp_cart_quantities', JSON.stringify(cartQuantities));
+                    $(document).trigger('sbp:cart-updated');
                 });
 
                 $(document).on('click', '.sbp-remove-from-cart', function() {
@@ -93,6 +98,7 @@ class Shortcodes {
                         localStorage.setItem('sbp_cart', JSON.stringify(cart));
                         delete cartQuantities[productId];
                         localStorage.setItem('sbp_cart_quantities', JSON.stringify(cartQuantities));
+                        $(document).trigger('sbp:cart-updated');
                         displayCartProducts();
                     }
                 });

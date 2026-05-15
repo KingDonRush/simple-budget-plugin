@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.2.1
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,8 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 **PT-BR:**  
 - Criação de orçamentos personalizados via popup interativo.  
 - Templates de carrinho editáveis no Elementor via **Simple Budget → Templates**.
+- Shell do carrinho configurável como modal central, carrinho lateral ou bottom sheet.
+- Quantidades, posicionamento do botão remover e comportamento do WhatsApp vazio nos widgets.
 - Integração com **WhatsApp** para envio automático do pedido.  
 - Widgets nativos para **Elementor**: **Budget Button** e **Budget Listing**.
 - Modo legado compatível com botão Elementor usando o ID `add-to-cart-button`.
@@ -36,6 +38,8 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 **EN-US:**  
 - Create personalized quotes via an interactive popup.  
 - Elementor-editable cart templates through **Simple Budget → Templates**.
+- Configurable cart shell as centered modal, side cart, or bottom sheet.
+- Quantities, remove button positioning, and empty WhatsApp behavior in widgets.
 - **WhatsApp** integration for automatic message generation.  
 - Native **Elementor** widgets: **Budget Button** and **Budget Listing**.
 - Legacy mode remains compatible with an Elementor button using the `add-to-cart-button` ID.
@@ -102,6 +106,21 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.3.0 =
+**PT-BR:**
+- Adiciona controles de shell do carrinho no **Budget Button**: modal central, carrinho lateral esquerdo/direito e bottom sheet.
+- Adiciona quantidade ao fluxo do orçamento, com armazenamento local, renderização no **Budget Listing** e envio no texto do WhatsApp.
+- Move a UX principal de remoção para o **Budget Listing**, com posicionamento do botão remover por item.
+- Adiciona comportamento configurável para WhatsApp com carrinho vazio: esconder, desabilitar ou mostrar mensagem.
+- Adiciona controles de cor/tamanho do ícone do **Budget Button** e preview visual de shell no editor de templates do carrinho.
+
+**EN-US:**
+- Adds cart shell controls to **Budget Button**: centered modal, left/right side cart, and bottom sheet.
+- Adds quantity support to the budget flow, including local storage, **Budget Listing** rendering, and WhatsApp message output.
+- Moves the primary remove UX into **Budget Listing**, with per-item remove button positioning.
+- Adds configurable behavior for WhatsApp actions when the budget is empty: hide, disable, or show a message.
+- Adds **Budget Button** icon color/size controls and a visual shell preview for cart templates in the Elementor editor.
+
 = 2.2.1 =
 **PT-BR:**
 - Garante que templates de modal do carrinho sejam criados como Elementor Canvas, sem header/footer do tema no editor.

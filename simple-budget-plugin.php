@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Budget Plugin
  * Description: Plugin para orçamentos personalizados em sites com Elementor e CPTs.
- * Version: 2.2.1
+ * Version: 2.3.0
  * Author: Guilherme Silva
  * Text Domain: simple-budget-plugin-sbp
  * Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Definições de Constantes
  * ===========================
  */
-define( 'SBP_VERSION', '2.2.1' );
+define( 'SBP_VERSION', '2.3.0' );
 define( 'SBP_FILE', __FILE__ );
 define( 'SBP_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SBP_URL',  plugin_dir_url( __FILE__ ) );

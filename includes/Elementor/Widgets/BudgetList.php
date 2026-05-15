@@ -53,6 +53,7 @@ class BudgetList extends Widget_Base {
     protected function register_controls() {
         $this->register_content_controls();
         $this->register_list_style_controls();
+        $this->register_quantity_style_controls();
         $this->register_remove_button_style_controls();
         $this->register_submit_button_style_controls();
     }
@@ -99,11 +100,53 @@ class BudgetList extends Widget_Base {
         );
 
         $this->add_control(
+            'show_quantity',
+            [
+                'label'        => esc_html__( 'Show Quantity', 'simple-budget-plugin-sbp' ),
+                'type'         => Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Yes', 'simple-budget-plugin-sbp' ),
+                'label_off'    => esc_html__( 'No', 'simple-budget-plugin-sbp' ),
+                'return_value' => 'yes',
+                'default'      => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'quantity_label',
+            [
+                'label'     => esc_html__( 'Quantity Label', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::TEXT,
+                'default'   => esc_html__( 'Quantidade', 'simple-budget-plugin-sbp' ),
+                'condition' => [
+                    'show_quantity' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
             'remove_text',
             [
                 'label'     => esc_html__( 'Remove Text', 'simple-budget-plugin-sbp' ),
                 'type'      => Controls_Manager::TEXT,
                 'default'   => esc_html__( 'Remover', 'simple-budget-plugin-sbp' ),
+                'condition' => [
+                    'show_remove' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'remove_position',
+            [
+                'label'     => esc_html__( 'Remove Position', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::SELECT,
+                'default'   => 'inline_end',
+                'options'   => [
+                    'inline_start' => esc_html__( 'Left / start', 'simple-budget-plugin-sbp' ),
+                    'inline_end'   => esc_html__( 'Right / end', 'simple-budget-plugin-sbp' ),
+                    'top'          => esc_html__( 'Top', 'simple-budget-plugin-sbp' ),
+                    'bottom'       => esc_html__( 'Bottom', 'simple-budget-plugin-sbp' ),
+                ],
                 'condition' => [
                     'show_remove' => 'yes',
                 ],
@@ -124,6 +167,41 @@ class BudgetList extends Widget_Base {
         );
 
         $this->add_control(
+            'submit_empty_behavior',
+            [
+                'label'     => esc_html__( 'When Budget Is Empty', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::SELECT,
+                'default'   => 'hide',
+                'options'   => [
+                    'hide'       => esc_html__( 'Hide button', 'simple-budget-plugin-sbp' ),
+                    'disable'    => esc_html__( 'Disable button', 'simple-budget-plugin-sbp' ),
+                    'show_error' => esc_html__( 'Keep visible and show message', 'simple-budget-plugin-sbp' ),
+                ],
+                'condition' => [
+                    'show_submit' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'submit_empty_animation',
+            [
+                'label'     => esc_html__( 'Blocked Animation', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::SELECT,
+                'default'   => 'shake',
+                'options'   => [
+                    'none'  => esc_html__( 'None', 'simple-budget-plugin-sbp' ),
+                    'shake' => esc_html__( 'Shake', 'simple-budget-plugin-sbp' ),
+                    'pulse' => esc_html__( 'Pulse', 'simple-budget-plugin-sbp' ),
+                ],
+                'condition' => [
+                    'show_submit'           => 'yes',
+                    'submit_empty_behavior' => 'disable',
+                ],
+            ]
+        );
+
+        $this->add_control(
             'submit_text',
             [
                 'label'     => esc_html__( 'Submit Text', 'simple-budget-plugin-sbp' ),
@@ -131,6 +209,83 @@ class BudgetList extends Widget_Base {
                 'default'   => esc_html__( 'Enviar orçamento via WhatsApp', 'simple-budget-plugin-sbp' ),
                 'condition' => [
                     'show_submit' => 'yes',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    private function register_quantity_style_controls() {
+        $this->start_controls_section(
+            'section_quantity_style',
+            [
+                'label'     => esc_html__( 'Quantity', 'simple-budget-plugin-sbp' ),
+                'tab'       => Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'show_quantity' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'quantity_typography',
+                'selector' => '{{WRAPPER}} .sbp-quantity-field',
+            ]
+        );
+
+        $this->add_control(
+            'quantity_text_color',
+            [
+                'label'     => esc_html__( 'Text Color', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .sbp-quantity-field' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quantity_background',
+            [
+                'label'     => esc_html__( 'Background', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .sbp-quantity-field' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'quantity_border',
+                'selector' => '{{WRAPPER}} .sbp-quantity-field',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'quantity_radius',
+            [
+                'label'      => esc_html__( 'Border Radius', 'simple-budget-plugin-sbp' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%', 'em', 'rem' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .sbp-quantity-field' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'quantity_padding',
+            [
+                'label'      => esc_html__( 'Padding', 'simple-budget-plugin-sbp' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', 'rem' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .sbp-quantity-field' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -421,11 +576,16 @@ class BudgetList extends Widget_Base {
         $submit_text   = $settings['submit_text'] ?? __( 'Enviar orçamento via WhatsApp', 'simple-budget-plugin-sbp' );
 
         $this->add_render_attribute( 'wrapper', [
-            'class'                  => 'sbp-budget-listing',
-            'data-sbp-empty-message' => $empty_message,
-            'data-sbp-show-image'    => ( $settings['show_image'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
-            'data-sbp-show-remove'   => ( $settings['show_remove'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
-            'data-sbp-remove-text'   => $settings['remove_text'] ?? __( 'Remover', 'simple-budget-plugin-sbp' ),
+            'class'                           => 'sbp-budget-listing',
+            'data-sbp-empty-message'          => $empty_message,
+            'data-sbp-show-image'             => ( $settings['show_image'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
+            'data-sbp-show-remove'            => ( $settings['show_remove'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
+            'data-sbp-remove-text'            => $settings['remove_text'] ?? __( 'Remover', 'simple-budget-plugin-sbp' ),
+            'data-sbp-remove-position'        => $this->sanitize_remove_position( $settings['remove_position'] ?? 'inline_end' ),
+            'data-sbp-show-quantity'          => ( $settings['show_quantity'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
+            'data-sbp-quantity-label'         => $settings['quantity_label'] ?? __( 'Quantidade', 'simple-budget-plugin-sbp' ),
+            'data-sbp-submit-empty-behavior'  => $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ),
+            'data-sbp-submit-empty-animation' => $this->sanitize_empty_animation( $settings['submit_empty_animation'] ?? 'shake' ),
         ] );
         ?>
         <div <?php $this->print_render_attribute_string( 'wrapper' ); ?>>
@@ -434,7 +594,7 @@ class BudgetList extends Widget_Base {
             </div>
 
             <?php if ( ( $settings['show_submit'] ?? 'yes' ) === 'yes' ) : ?>
-                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit sbp-is-hidden" data-sbp-action="send_whatsapp" role="button">
+                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit sbp-is-hidden" data-sbp-action="send_whatsapp" data-sbp-empty-behavior="<?php echo esc_attr( $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ) ); ?>" data-sbp-empty-animation="<?php echo esc_attr( $this->sanitize_empty_animation( $settings['submit_empty_animation'] ?? 'shake' ) ); ?>" role="button">
                     <span class="elementor-button-content-wrapper">
                         <span class="elementor-button-text"><?php echo esc_html( $submit_text ); ?></span>
                     </span>
@@ -450,13 +610,23 @@ class BudgetList extends Widget_Base {
         var emptyMessage = settings.empty_message || '<?php echo esc_js( __( 'Seu carrinho está vazio.', 'simple-budget-plugin-sbp' ) ); ?>';
         var submitText = settings.submit_text || '<?php echo esc_js( __( 'Enviar orçamento via WhatsApp', 'simple-budget-plugin-sbp' ) ); ?>';
         #>
-        <div class="sbp-budget-listing">
+        <div class="sbp-budget-listing"
+            data-sbp-empty-message="{{ emptyMessage }}"
+            data-sbp-show-image="{{ settings.show_image || 'yes' }}"
+            data-sbp-show-remove="{{ settings.show_remove || 'yes' }}"
+            data-sbp-remove-text="{{ settings.remove_text || '<?php echo esc_js( __( 'Remover', 'simple-budget-plugin-sbp' ) ); ?>' }}"
+            data-sbp-remove-position="{{ settings.remove_position || 'inline_end' }}"
+            data-sbp-show-quantity="{{ settings.show_quantity || 'yes' }}"
+            data-sbp-quantity-label="{{ settings.quantity_label || '<?php echo esc_js( __( 'Quantidade', 'simple-budget-plugin-sbp' ) ); ?>' }}"
+            data-sbp-submit-empty-behavior="{{ settings.submit_empty_behavior || 'hide' }}"
+            data-sbp-submit-empty-animation="{{ settings.submit_empty_animation || 'shake' }}"
+        >
             <div class="sbp-budget-listing__items" aria-live="polite">
                 <p class="sbp-budget-listing__empty">{{{ emptyMessage }}}</p>
             </div>
 
             <# if ( 'yes' === settings.show_submit ) { #>
-                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit" data-sbp-action="send_whatsapp" role="button">
+                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit" data-sbp-action="send_whatsapp" data-sbp-empty-behavior="{{ settings.submit_empty_behavior || 'hide' }}" data-sbp-empty-animation="{{ settings.submit_empty_animation || 'shake' }}" role="button">
                     <span class="elementor-button-content-wrapper">
                         <span class="elementor-button-text">{{{ submitText }}}</span>
                     </span>
@@ -464,5 +634,23 @@ class BudgetList extends Widget_Base {
             <# } #>
         </div>
         <?php
+    }
+
+    private function sanitize_remove_position( $position ) {
+        $allowed = [ 'inline_start', 'inline_end', 'top', 'bottom' ];
+
+        return in_array( $position, $allowed, true ) ? $position : 'inline_end';
+    }
+
+    private function sanitize_empty_behavior( $behavior ) {
+        $allowed = [ 'hide', 'disable', 'show_error' ];
+
+        return in_array( $behavior, $allowed, true ) ? $behavior : 'hide';
+    }
+
+    private function sanitize_empty_animation( $animation ) {
+        $allowed = [ 'none', 'shake', 'pulse' ];
+
+        return in_array( $animation, $allowed, true ) ? $animation : 'shake';
     }
 }
