@@ -64,7 +64,7 @@ msgstr "Enviar Orçamento via WhatsApp"
 #: includes/Elementor/Widgets/BudgetList.php:428
 #: includes/Public_/Public_.php:53
 #: includes/Support/CartRenderer.php:25
-#: includes/Templates/CartTemplateManager.php:222
+#: includes/Templates/CartTemplateManager.php:244
 msgid "Remover"
 msgstr "Remover"
 
@@ -102,7 +102,7 @@ msgstr "Erro ao carregar o carrinho."
 #: includes/Elementor/Widgets/BudgetList.php:450
 #: includes/Public_/Public_.php:45
 #: includes/Shortcodes/Shortcodes.php:19
-#: includes/Templates/CartTemplateManager.php:219
+#: includes/Templates/CartTemplateManager.php:241
 msgid "Seu carrinho está vazio."
 msgstr "Seu carrinho está vazio."
 
@@ -183,7 +183,7 @@ msgid "Template title"
 msgstr ""
 
 #: includes/Admin/Admin.php:86
-#: includes/Templates/CartTemplateManager.php:77
+#: includes/Templates/CartTemplateManager.php:84
 msgid "Simple Budget Cart Modal"
 msgstr ""
 
@@ -486,7 +486,7 @@ msgstr ""
 #: includes/Elementor/Widgets/BudgetList.php:131
 #: includes/Elementor/Widgets/BudgetList.php:421
 #: includes/Elementor/Widgets/BudgetList.php:451
-#: includes/Templates/CartTemplateManager.php:224
+#: includes/Templates/CartTemplateManager.php:246
 msgid "Enviar orçamento via WhatsApp"
 msgstr ""
 
@@ -549,26 +549,26 @@ msgstr ""
 msgid "Fechar carrinho"
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:43
+#: includes/Templates/CartTemplateManager.php:50
 msgid "Legacy popup fallback"
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:64
+#: includes/Templates/CartTemplateManager.php:71
 msgid "Elementor must be active to create cart templates."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:71
+#: includes/Templates/CartTemplateManager.php:78
 msgid "You do not have permission to create Elementor templates."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:99
+#: includes/Templates/CartTemplateManager.php:105
 msgid "Could not create the Elementor template."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:207
+#: includes/Templates/CartTemplateManager.php:229
 msgid "Your Budget"
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:235
+#: includes/Templates/CartTemplateManager.php:257
 msgid "Close"
 msgstr ""

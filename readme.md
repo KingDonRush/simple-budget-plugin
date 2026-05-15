@@ -55,8 +55,9 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.2.0` adds an Elementor-based cart template builder for customizable
-modal content while preserving the older shortcode and CSS-ID integration.
+Version `2.2.1` keeps the Elementor-based cart template builder and ensures
+cart modal templates open on Elementor Canvas, without theme header/footer in
+the editor preview.
 
 ## License
 

@@ -11,6 +11,7 @@ class CartTemplateManager {
 
     const ROLE_META = '_sbp_template_role';
     const ROLE_CART_MODAL = 'cart_modal';
+    const EDITOR_PAGE_TEMPLATE = 'elementor_canvas';
 
     public static function is_elementor_available() {
         return did_action( 'elementor/loaded' ) && class_exists( '\Elementor\Plugin' );
@@ -21,7 +22,7 @@ class CartTemplateManager {
             return [];
         }
 
-        return get_posts([
+        $templates = get_posts([
             'post_type'      => 'elementor_library',
             'post_status'    => [ 'publish', 'draft', 'pending', 'private' ],
             'posts_per_page' => -1,
@@ -34,6 +35,12 @@ class CartTemplateManager {
                 ],
             ],
         ]);
+
+        foreach ( $templates as $template ) {
+            self::normalize_editor_surface( $template->ID );
+        }
+
+        return $templates;
     }
 
     public static function get_template_options( $include_empty = true ) {
@@ -77,9 +84,8 @@ class CartTemplateManager {
             $title = __( 'Simple Budget Cart Modal', 'simple-budget-plugin-sbp' );
         }
 
-        $type = self::get_supported_document_type();
         $document = \Elementor\Plugin::$instance->documents->create(
-            $type,
+            self::get_supported_document_type(),
             [
                 'post_title'  => $title,
                 'post_status' => 'publish',
@@ -102,11 +108,14 @@ class CartTemplateManager {
 
         $document->save([
             'elements' => self::get_starter_elements(),
-            'settings' => [],
+            'settings' => [
+                'template' => self::EDITOR_PAGE_TEMPLATE,
+            ],
         ]);
 
         $template_id = absint( $document->get_main_id() );
         update_post_meta( $template_id, self::ROLE_META, self::ROLE_CART_MODAL );
+        self::normalize_editor_surface( $template_id );
 
         return $template_id;
     }
@@ -152,15 +161,28 @@ class CartTemplateManager {
     private static function get_supported_document_type() {
         $documents = \Elementor\Plugin::$instance->documents;
 
-        if ( $documents->get_document_type( 'container', false ) ) {
-            return 'container';
-        }
-
-        if ( $documents->get_document_type( 'section', false ) ) {
-            return 'section';
+        if ( $documents->get_document_type( 'page', false ) ) {
+            return 'page';
         }
 
         return 'page';
+    }
+
+    private static function normalize_editor_surface( $template_id ) {
+        $template_id = absint( $template_id );
+
+        if ( ! $template_id || 'elementor_library' !== get_post_type( $template_id ) ) {
+            return;
+        }
+
+        update_post_meta( $template_id, '_elementor_template_type', 'page' );
+        update_post_meta( $template_id, '_wp_page_template', self::EDITOR_PAGE_TEMPLATE );
+
+        $page_settings = get_post_meta( $template_id, '_elementor_page_settings', true );
+        $page_settings = is_array( $page_settings ) ? $page_settings : [];
+        $page_settings['template'] = self::EDITOR_PAGE_TEMPLATE;
+
+        update_post_meta( $template_id, '_elementor_page_settings', $page_settings );
     }
 
     private static function get_starter_elements() {

@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,15 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 2.2.1 =
+**PT-BR:**
+- Garante que templates de modal do carrinho sejam criados como Elementor Canvas, sem header/footer do tema no editor.
+- Normaliza templates de carrinho existentes para o layout Canvas ao listar templates do plugin.
+
+**EN-US:**
+- Ensures cart modal templates are created as Elementor Canvas, without theme header/footer in the editor.
+- Normalizes existing cart templates to the Canvas layout when plugin templates are listed.
+
 = 2.2.0 =
 **PT-BR:**
 - Adiciona tela **Simple Budget → Templates** para criar templates de carrinho editáveis no Elementor.
