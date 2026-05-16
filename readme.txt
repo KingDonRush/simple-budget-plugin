@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 3.0.1
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 - Templates de carrinho editáveis no Elementor via **Simple Budget → Templates**.
 - Shell do carrinho configurável como modal central, carrinho lateral ou bottom sheet.
 - Quantidades, posicionamento do botão remover e comportamento do WhatsApp vazio nos widgets.
+- Prévia de design no editor para emular itens do carrinho enquanto o template é construído no Elementor.
 - Integração com **WhatsApp** para envio automático do pedido.  
 - Widgets nativos para **Elementor**: **Budget Button** e **Budget Listing**.
 - Prompt interno de configuração quando um botão de abertura ainda não tem template selecionado.
@@ -40,6 +41,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 - Elementor-editable cart templates through **Simple Budget → Templates**.
 - Configurable cart shell as centered modal, side cart, or bottom sheet.
 - Quantities, remove button positioning, and empty WhatsApp behavior in widgets.
+- Editor design preview to emulate cart items while building the template in Elementor.
 - **WhatsApp** integration for automatic message generation.  
 - Native **Elementor** widgets: **Budget Button** and **Budget Listing**.
 - Internal setup prompt when an open-cart button has no selected template.
@@ -106,6 +108,19 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 3.1.0 =
+**PT-BR:**
+- Adiciona seção **Design Preview** ao widget **Budget Listing**.
+- Permite escolher post type, IDs manuais, quantidade de itens e quantidade exibida apenas no editor do Elementor.
+- Renderiza posts reais quando disponíveis e usa placeholders seguros quando não houver itens para prévia.
+- Impede que ações de remover/enviar da prévia alterem o carrinho real no editor.
+
+**EN-US:**
+- Adds a **Design Preview** section to the **Budget Listing** widget.
+- Allows selecting post type, manual IDs, item count, and displayed quantity only inside the Elementor editor.
+- Renders real posts when available and safe placeholders when no preview items exist.
+- Prevents preview remove/send actions from changing the real cart in the editor.
+
 = 3.0.1 =
 **PT-BR:**
 - Endurece a renderização de templates do carrinho validando role, post type, status e permissão antes de carregar conteúdo Elementor.

@@ -255,6 +255,10 @@ jQuery(function ($) {
     }
 
     function renderBudgetListing($listing) {
+        if ('yes' === $listing.attr('data-sbp-editor-preview')) {
+            return;
+        }
+
         var cart = getCart();
 
         if (!cart.length) {
@@ -369,6 +373,11 @@ jQuery(function ($) {
 
         $('.sbp-budget-action[data-sbp-action="toggle"], .sbp-budget-action[data-sbp-action="add"], .sbp-budget-action[data-sbp-action="remove"]').each(function () {
             var $button = $(this);
+
+            if ($button.closest('[data-sbp-editor-preview="yes"]').length) {
+                return;
+            }
+
             var productId = getCurrentProductId($button);
             var isActive = productId && cart.indexOf(String(productId)) !== -1;
 
@@ -384,6 +393,11 @@ jQuery(function ($) {
 
         $('.sbp-budget-action[data-sbp-action="send_whatsapp"]').each(function () {
             var $button = $(this);
+
+            if ($button.closest('[data-sbp-editor-preview="yes"]').length) {
+                return;
+            }
+
             var behavior = $button.data('sbp-empty-behavior') || ($button.hasClass('sbp-budget-listing__submit') ? 'hide' : 'show_error');
 
             if (isEmpty) {
@@ -614,6 +628,11 @@ jQuery(function ($) {
         var $trigger = $(this);
         var action = $trigger.data('sbp-action');
 
+        if ($trigger.closest('[data-sbp-editor-preview="yes"]').length) {
+            event.preventDefault();
+            return;
+        }
+
         if (!action) {
             return;
         }
@@ -645,6 +664,11 @@ jQuery(function ($) {
 
     $(document).on('change', '.sbp-quantity-field, .sbp-quantity', function () {
         var $field = $(this);
+
+        if ($field.closest('[data-sbp-editor-preview="yes"]').length) {
+            return;
+        }
+
         var productId = $field.data('sbp-product-id');
 
         setCartQuantity(productId, $field.val());

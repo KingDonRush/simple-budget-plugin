@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Simple Budget Plugin plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Simple Budget Plugin 3.0.1\n"
+"Project-Id-Version: Simple Budget Plugin 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simple-budget-plugin\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-16T01:24:55+00:00\n"
+"POT-Creation-Date: 2026-05-16T14:46:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: simple-budget-plugin-sbp\n"
@@ -277,7 +277,7 @@ msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:159
 #: includes/Elementor/Widgets/BudgetButton.php:332
-#: includes/Elementor/Widgets/BudgetList.php:175
+#: includes/Elementor/Widgets/BudgetList.php:177
 msgid "None"
 msgstr ""
 
@@ -300,20 +300,22 @@ msgstr ""
 #: includes/Elementor/Widgets/BudgetButton.php:240
 #: includes/Elementor/Widgets/BudgetButton.php:255
 #: includes/Elementor/Widgets/BudgetButton.php:270
-#: includes/Elementor/Widgets/BudgetList.php:83
-#: includes/Elementor/Widgets/BudgetList.php:95
-#: includes/Elementor/Widgets/BudgetList.php:107
-#: includes/Elementor/Widgets/BudgetList.php:143
+#: includes/Elementor/Widgets/BudgetList.php:85
+#: includes/Elementor/Widgets/BudgetList.php:97
+#: includes/Elementor/Widgets/BudgetList.php:109
+#: includes/Elementor/Widgets/BudgetList.php:145
+#: includes/Elementor/Widgets/BudgetList.php:216
 msgid "Yes"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:241
 #: includes/Elementor/Widgets/BudgetButton.php:256
 #: includes/Elementor/Widgets/BudgetButton.php:271
-#: includes/Elementor/Widgets/BudgetList.php:84
-#: includes/Elementor/Widgets/BudgetList.php:96
-#: includes/Elementor/Widgets/BudgetList.php:108
-#: includes/Elementor/Widgets/BudgetList.php:144
+#: includes/Elementor/Widgets/BudgetList.php:86
+#: includes/Elementor/Widgets/BudgetList.php:98
+#: includes/Elementor/Widgets/BudgetList.php:110
+#: includes/Elementor/Widgets/BudgetList.php:146
+#: includes/Elementor/Widgets/BudgetList.php:217
 msgid "No"
 msgstr ""
 
@@ -330,7 +332,7 @@ msgid "Post ID"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:296
-#: includes/Elementor/Widgets/BudgetList.php:205
+#: includes/Elementor/Widgets/BudgetList.php:289
 msgid "Quantity"
 msgstr ""
 
@@ -339,37 +341,37 @@ msgid "Initial quantity stored when this item is added to the budget."
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:311
-#: includes/Elementor/Widgets/BudgetList.php:154
+#: includes/Elementor/Widgets/BudgetList.php:156
 msgid "When Budget Is Empty"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:315
-#: includes/Elementor/Widgets/BudgetList.php:159
+#: includes/Elementor/Widgets/BudgetList.php:161
 msgid "Disable button"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:316
-#: includes/Elementor/Widgets/BudgetList.php:158
+#: includes/Elementor/Widgets/BudgetList.php:160
 msgid "Hide button"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:317
-#: includes/Elementor/Widgets/BudgetList.php:160
+#: includes/Elementor/Widgets/BudgetList.php:162
 msgid "Keep visible and show message"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:328
-#: includes/Elementor/Widgets/BudgetList.php:171
+#: includes/Elementor/Widgets/BudgetList.php:173
 msgid "Blocked Animation"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:333
-#: includes/Elementor/Widgets/BudgetList.php:176
+#: includes/Elementor/Widgets/BudgetList.php:178
 msgid "Shake"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:334
-#: includes/Elementor/Widgets/BudgetList.php:177
+#: includes/Elementor/Widgets/BudgetList.php:179
 msgid "Pulse"
 msgstr ""
 
@@ -449,7 +451,7 @@ msgid "Button"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:428
-#: includes/Elementor/Widgets/BudgetList.php:421
+#: includes/Elementor/Widgets/BudgetList.php:505
 msgid "Position"
 msgstr ""
 
@@ -471,21 +473,21 @@ msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:476
 #: includes/Elementor/Widgets/BudgetButton.php:723
-#: includes/Elementor/Widgets/BudgetList.php:506
+#: includes/Elementor/Widgets/BudgetList.php:590
 msgid "Normal"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:483
 #: includes/Elementor/Widgets/BudgetButton.php:531
-#: includes/Elementor/Widgets/BudgetList.php:224
-#: includes/Elementor/Widgets/BudgetList.php:513
-#: includes/Elementor/Widgets/BudgetList.php:543
+#: includes/Elementor/Widgets/BudgetList.php:308
+#: includes/Elementor/Widgets/BudgetList.php:597
+#: includes/Elementor/Widgets/BudgetList.php:627
 msgid "Text Color"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:524
 #: includes/Elementor/Widgets/BudgetButton.php:744
-#: includes/Elementor/Widgets/BudgetList.php:536
+#: includes/Elementor/Widgets/BudgetList.php:620
 msgid "Hover"
 msgstr ""
 
@@ -502,14 +504,14 @@ msgid "Hover Animation"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:604
-#: includes/Elementor/Widgets/BudgetList.php:254
-#: includes/Elementor/Widgets/BudgetList.php:584
+#: includes/Elementor/Widgets/BudgetList.php:338
+#: includes/Elementor/Widgets/BudgetList.php:668
 msgid "Border Radius"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:616
-#: includes/Elementor/Widgets/BudgetList.php:266
-#: includes/Elementor/Widgets/BudgetList.php:596
+#: includes/Elementor/Widgets/BudgetList.php:350
+#: includes/Elementor/Widgets/BudgetList.php:680
 msgid "Padding"
 msgstr ""
 
@@ -518,12 +520,12 @@ msgid "Icon Position"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:649
-#: includes/Elementor/Widgets/BudgetList.php:426
+#: includes/Elementor/Widgets/BudgetList.php:510
 msgid "Start"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetButton.php:653
-#: includes/Elementor/Widgets/BudgetList.php:430
+#: includes/Elementor/Widgets/BudgetList.php:514
 msgid "End"
 msgstr ""
 
@@ -536,130 +538,168 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:26
-#: includes/Elementor/Widgets/BudgetList.php:65
+#: includes/Elementor/Widgets/BudgetList.php:27
+#: includes/Elementor/Widgets/BudgetList.php:67
 msgid "Budget Listing"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:72
+#: includes/Elementor/Widgets/BudgetList.php:74
 msgid "Empty Message"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:74
-#: includes/Elementor/Widgets/BudgetList.php:609
-#: includes/Elementor/Widgets/BudgetList.php:646
+#: includes/Elementor/Widgets/BudgetList.php:76
+#: includes/Elementor/Widgets/BudgetList.php:693
 #: includes/Public_/Public_.php:48
 #: includes/Templates/CartTemplateManager.php:289
 msgid "Seu carrinho está vazio."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:81
+#: includes/Elementor/Widgets/BudgetList.php:83
 msgid "Show Image"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:93
+#: includes/Elementor/Widgets/BudgetList.php:95
 msgid "Show Remove Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:105
+#: includes/Elementor/Widgets/BudgetList.php:107
 msgid "Show Quantity"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:117
+#: includes/Elementor/Widgets/BudgetList.php:119
 msgid "Quantity Label"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:119
-#: includes/Elementor/Widgets/BudgetList.php:622
-#: includes/Elementor/Widgets/BudgetList.php:658
+#: includes/Elementor/Widgets/BudgetList.php:121
+#: includes/Elementor/Widgets/BudgetList.php:708
+#: includes/Elementor/Widgets/BudgetList.php:775
 #: includes/Public_/Public_.php:52
 #: includes/Support/CartRenderer.php:34
 #: includes/Templates/CartTemplateManager.php:293
 msgid "Quantidade"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:129
+#: includes/Elementor/Widgets/BudgetList.php:131
 msgid "Remove Text"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:131
-#: includes/Elementor/Widgets/BudgetList.php:617
-#: includes/Elementor/Widgets/BudgetList.php:653
+#: includes/Elementor/Widgets/BudgetList.php:133
+#: includes/Elementor/Widgets/BudgetList.php:703
+#: includes/Elementor/Widgets/BudgetList.php:772
 #: includes/Public_/Public_.php:51
 #: includes/Support/CartRenderer.php:31
 #: includes/Templates/CartTemplateManager.php:294
 msgid "Remover"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:141
+#: includes/Elementor/Widgets/BudgetList.php:143
 msgid "Show Submit Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:189
+#: includes/Elementor/Widgets/BudgetList.php:191
 msgid "Submit Text"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:191
-#: includes/Elementor/Widgets/BudgetList.php:610
-#: includes/Elementor/Widgets/BudgetList.php:647
+#: includes/Elementor/Widgets/BudgetList.php:193
+#: includes/Elementor/Widgets/BudgetList.php:694
 #: includes/Templates/CartTemplateManager.php:298
 msgid "Enviar orçamento via WhatsApp"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:235
+#: includes/Elementor/Widgets/BudgetList.php:207
+msgid "Design Preview"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:214
+msgid "Preview Items in Editor"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:220
+msgid "Shows sample items only inside the Elementor editor. The frontend still uses the visitor cart."
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:227
+msgid "Preview Post Type"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:231
+msgid "Use a real post type to preview titles, images, quantity fields, and remove buttons while designing."
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:241
+msgid "Preview Item IDs"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:244
+msgid "Optional comma-separated post IDs. Leave empty to use recent posts from the selected post type."
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:254
+msgid "Preview Count"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:269
+msgid "Preview Quantity"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:319
 msgid "Background"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:282
+#: includes/Elementor/Widgets/BudgetList.php:366
 msgid "List"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:290
+#: includes/Elementor/Widgets/BudgetList.php:374
 msgid "Item Gap"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:308
+#: includes/Elementor/Widgets/BudgetList.php:392
 msgid "Item Padding"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:320
+#: includes/Elementor/Widgets/BudgetList.php:404
 msgid "Item Background"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:339
+#: includes/Elementor/Widgets/BudgetList.php:423
 msgid "Item Radius"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:351
+#: includes/Elementor/Widgets/BudgetList.php:435
 msgid "Image Size"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:383
+#: includes/Elementor/Widgets/BudgetList.php:467
 msgid "Title Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:394
+#: includes/Elementor/Widgets/BudgetList.php:478
 msgid "Empty Message Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:410
+#: includes/Elementor/Widgets/BudgetList.php:494
 msgid "Remove Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:434
+#: includes/Elementor/Widgets/BudgetList.php:518
 msgid "Top"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:438
+#: includes/Elementor/Widgets/BudgetList.php:522
 msgid "Bottom"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:449
+#: includes/Elementor/Widgets/BudgetList.php:533
 msgid "Spacing"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetList.php:479
+#: includes/Elementor/Widgets/BudgetList.php:563
 msgid "Submit Button"
+msgstr ""
+
+#: includes/Elementor/Widgets/BudgetList.php:836
+msgid "Use allowed post types"
 msgstr ""
 
 #: includes/Public_/Public_.php:47
@@ -698,6 +738,12 @@ msgstr ""
 
 #: includes/Public_/Public_.php:74
 msgid "Open Simple Budget Templates"
+msgstr ""
+
+#. translators: %d: preview item number.
+#: includes/Support/CartRenderer.php:173
+#, php-format
+msgid "Preview item %d"
 msgstr ""
 
 #: includes/Templates/CartTemplateManager.php:50

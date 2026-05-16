@@ -13,6 +13,7 @@ use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 use SBP\Elementor\ElementorIntegration;
+use SBP\Support\CartRenderer;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -52,6 +53,7 @@ class BudgetList extends Widget_Base {
 
     protected function register_controls() {
         $this->register_content_controls();
+        $this->register_preview_controls();
         $this->register_list_style_controls();
         $this->register_quantity_style_controls();
         $this->register_remove_button_style_controls();
@@ -191,6 +193,88 @@ class BudgetList extends Widget_Base {
                 'default'   => esc_html__( 'Enviar orçamento via WhatsApp', 'simple-budget-plugin-sbp' ),
                 'condition' => [
                     'show_submit' => 'yes',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    private function register_preview_controls() {
+        $this->start_controls_section(
+            'section_design_preview',
+            [
+                'label' => esc_html__( 'Design Preview', 'simple-budget-plugin-sbp' ),
+            ]
+        );
+
+        $this->add_control(
+            'preview_items',
+            [
+                'label'        => esc_html__( 'Preview Items in Editor', 'simple-budget-plugin-sbp' ),
+                'type'         => Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Yes', 'simple-budget-plugin-sbp' ),
+                'label_off'    => esc_html__( 'No', 'simple-budget-plugin-sbp' ),
+                'return_value' => 'yes',
+                'default'      => 'yes',
+                'description'  => esc_html__( 'Shows sample items only inside the Elementor editor. The frontend still uses the visitor cart.', 'simple-budget-plugin-sbp' ),
+            ]
+        );
+
+        $this->add_control(
+            'preview_post_type',
+            [
+                'label'       => esc_html__( 'Preview Post Type', 'simple-budget-plugin-sbp' ),
+                'type'        => Controls_Manager::SELECT,
+                'default'     => '',
+                'options'     => $this->get_preview_post_type_options(),
+                'description' => esc_html__( 'Use a real post type to preview titles, images, quantity fields, and remove buttons while designing.', 'simple-budget-plugin-sbp' ),
+                'condition'   => [
+                    'preview_items' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'preview_item_ids',
+            [
+                'label'       => esc_html__( 'Preview Item IDs', 'simple-budget-plugin-sbp' ),
+                'type'        => Controls_Manager::TEXT,
+                'placeholder' => '12, 34, 56',
+                'description' => esc_html__( 'Optional comma-separated post IDs. Leave empty to use recent posts from the selected post type.', 'simple-budget-plugin-sbp' ),
+                'condition'   => [
+                    'preview_items' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'preview_count',
+            [
+                'label'     => esc_html__( 'Preview Count', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::NUMBER,
+                'min'       => 1,
+                'max'       => 6,
+                'step'      => 1,
+                'default'   => 3,
+                'condition' => [
+                    'preview_items' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'preview_quantity',
+            [
+                'label'     => esc_html__( 'Preview Quantity', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::NUMBER,
+                'min'       => 1,
+                'max'       => CartRenderer::MAX_ITEM_QUANTITY,
+                'step'      => 1,
+                'default'   => 1,
+                'condition' => [
+                    'preview_items'  => 'yes',
+                    'show_quantity'  => 'yes',
                 ],
             ]
         );
@@ -358,7 +442,7 @@ class BudgetList extends Widget_Base {
                     ],
                 ],
                 'selectors'  => [
-                    '{{WRAPPER}} .sbp-cart-item img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .sbp-cart-item img, {{WRAPPER}} .sbp-cart-item__preview-media' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
                 ],
                 'condition'  => [
                     'show_image' => 'yes',
@@ -608,6 +692,8 @@ class BudgetList extends Widget_Base {
 
         $empty_message = $settings['empty_message'] ?? __( 'Seu carrinho está vazio.', 'simple-budget-plugin-sbp' );
         $submit_text   = $settings['submit_text'] ?? __( 'Enviar orçamento via WhatsApp', 'simple-budget-plugin-sbp' );
+        $is_preview    = $this->is_design_preview_enabled( $settings );
+        $preview_html  = $is_preview ? $this->render_design_preview_items( $settings ) : '';
 
         $this->add_render_attribute( 'wrapper', [
             'class'                           => 'sbp-budget-listing',
@@ -623,53 +709,27 @@ class BudgetList extends Widget_Base {
             'data-sbp-submit-empty-behavior'  => $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ),
             'data-sbp-submit-empty-animation' => $this->sanitize_empty_animation( $settings['submit_empty_animation'] ?? 'shake' ),
         ] );
+
+        if ( $is_preview ) {
+            $this->add_render_attribute( 'wrapper', 'data-sbp-editor-preview', 'yes' );
+        }
         ?>
         <div <?php $this->print_render_attribute_string( 'wrapper' ); ?>>
             <div class="sbp-budget-listing__items" aria-live="polite">
-                <p class="sbp-budget-listing__empty"><?php echo esc_html( $empty_message ); ?></p>
+                <?php if ( '' !== $preview_html ) : ?>
+                    <?php echo $preview_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <?php else : ?>
+                    <p class="sbp-budget-listing__empty"><?php echo esc_html( $empty_message ); ?></p>
+                <?php endif; ?>
             </div>
 
             <?php if ( ( $settings['show_submit'] ?? 'yes' ) === 'yes' ) : ?>
-                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit sbp-is-hidden" data-sbp-action="send_whatsapp" data-sbp-empty-behavior="<?php echo esc_attr( $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ) ); ?>" data-sbp-empty-animation="<?php echo esc_attr( $this->sanitize_empty_animation( $settings['submit_empty_animation'] ?? 'shake' ) ); ?>" role="button">
+                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit<?php echo $is_preview ? '' : ' sbp-is-hidden'; ?>" data-sbp-action="send_whatsapp" data-sbp-empty-behavior="<?php echo esc_attr( $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ) ); ?>" data-sbp-empty-animation="<?php echo esc_attr( $this->sanitize_empty_animation( $settings['submit_empty_animation'] ?? 'shake' ) ); ?>" role="button">
                     <span class="elementor-button-content-wrapper">
                         <span class="elementor-button-text"><?php echo esc_html( $submit_text ); ?></span>
                     </span>
                 </a>
             <?php endif; ?>
-        </div>
-        <?php
-    }
-
-    protected function content_template() {
-        ?>
-        <#
-        var emptyMessage = settings.empty_message || '<?php echo esc_js( __( 'Seu carrinho está vazio.', 'simple-budget-plugin-sbp' ) ); ?>';
-        var submitText = settings.submit_text || '<?php echo esc_js( __( 'Enviar orçamento via WhatsApp', 'simple-budget-plugin-sbp' ) ); ?>';
-        #>
-        <div class="sbp-budget-listing"
-            data-sbp-empty-message="{{ emptyMessage }}"
-            data-sbp-show-image="{{ settings.show_image || 'yes' }}"
-            data-sbp-show-remove="{{ settings.show_remove || 'yes' }}"
-            data-sbp-remove-text="{{ settings.remove_text || '<?php echo esc_js( __( 'Remover', 'simple-budget-plugin-sbp' ) ); ?>' }}"
-            data-sbp-remove-position="{{ settings.remove_position || 'inline_end' }}"
-            data-sbp-remove-position-tablet="{{ settings.remove_position_tablet || '' }}"
-            data-sbp-remove-position-mobile="{{ settings.remove_position_mobile || '' }}"
-            data-sbp-show-quantity="{{ settings.show_quantity || 'yes' }}"
-            data-sbp-quantity-label="{{ settings.quantity_label || '<?php echo esc_js( __( 'Quantidade', 'simple-budget-plugin-sbp' ) ); ?>' }}"
-            data-sbp-submit-empty-behavior="{{ settings.submit_empty_behavior || 'hide' }}"
-            data-sbp-submit-empty-animation="{{ settings.submit_empty_animation || 'shake' }}"
-        >
-            <div class="sbp-budget-listing__items" aria-live="polite">
-                <p class="sbp-budget-listing__empty">{{{ emptyMessage }}}</p>
-            </div>
-
-            <# if ( 'yes' === settings.show_submit ) { #>
-                <a href="#" class="elementor-button sbp-budget-action sbp-budget-listing__submit" data-sbp-action="send_whatsapp" data-sbp-empty-behavior="{{ settings.submit_empty_behavior || 'hide' }}" data-sbp-empty-animation="{{ settings.submit_empty_animation || 'shake' }}" role="button">
-                    <span class="elementor-button-content-wrapper">
-                        <span class="elementor-button-text">{{{ submitText }}}</span>
-                    </span>
-                </a>
-            <# } #>
         </div>
         <?php
     }
@@ -690,5 +750,101 @@ class BudgetList extends Widget_Base {
         $allowed = [ 'none', 'shake', 'pulse' ];
 
         return in_array( $animation, $allowed, true ) ? $animation : 'shake';
+    }
+
+    private function is_design_preview_enabled( array $settings ) {
+        return 'yes' === ( $settings['preview_items'] ?? 'yes' ) && $this->is_elementor_edit_mode();
+    }
+
+    private function is_elementor_edit_mode() {
+        return class_exists( '\Elementor\Plugin' )
+            && isset( \Elementor\Plugin::$instance->editor )
+            && method_exists( \Elementor\Plugin::$instance->editor, 'is_edit_mode' )
+            && \Elementor\Plugin::$instance->editor->is_edit_mode();
+    }
+
+    private function render_design_preview_items( array $settings ) {
+        $preview_ids = $this->resolve_preview_item_ids( $settings );
+
+        $display = [
+            'show_image'      => ( $settings['show_image'] ?? 'yes' ) === 'yes',
+            'show_remove'     => ( $settings['show_remove'] ?? 'yes' ) === 'yes',
+            'remove_text'     => $settings['remove_text'] ?? __( 'Remover', 'simple-budget-plugin-sbp' ),
+            'remove_position' => $this->sanitize_remove_position( $settings['remove_position'] ?? 'inline_end' ),
+            'show_quantity'   => ( $settings['show_quantity'] ?? 'yes' ) === 'yes',
+            'quantity_label'  => $settings['quantity_label'] ?? __( 'Quantidade', 'simple-budget-plugin-sbp' ),
+        ];
+        $quantity = min( CartRenderer::MAX_ITEM_QUANTITY, max( 1, absint( $settings['preview_quantity'] ?? 1 ) ) );
+        $quantities = [];
+
+        foreach ( $preview_ids as $preview_id ) {
+            $quantities[ (string) $preview_id ] = $quantity;
+        }
+
+        if ( ! empty( $preview_ids ) ) {
+            $preview_html = CartRenderer::render_items( $preview_ids, $display, $quantities, $this->sanitize_preview_post_type( $settings['preview_post_type'] ?? '' ) );
+
+            if ( '' !== trim( $preview_html ) ) {
+                return $preview_html;
+            }
+        }
+
+        return CartRenderer::render_placeholder_items( min( 6, max( 1, absint( $settings['preview_count'] ?? 3 ) ) ), $display, $quantity );
+    }
+
+    private function resolve_preview_item_ids( array $settings ) {
+        $manual_ids = $this->parse_preview_item_ids( $settings['preview_item_ids'] ?? '' );
+
+        if ( ! empty( $manual_ids ) ) {
+            return $manual_ids;
+        }
+
+        $post_type = $this->sanitize_preview_post_type( $settings['preview_post_type'] ?? '' );
+        $count     = min( 6, max( 1, absint( $settings['preview_count'] ?? 3 ) ) );
+
+        return CartRenderer::get_preview_item_ids( $post_type, $count );
+    }
+
+    private function parse_preview_item_ids( $value ) {
+        if ( is_array( $value ) ) {
+            return CartRenderer::normalize_product_ids( $value );
+        }
+
+        $ids = preg_split( '/[\s,]+/', (string) $value );
+
+        return CartRenderer::normalize_product_ids( $ids );
+    }
+
+    private function sanitize_preview_post_type( $post_type ) {
+        $post_type = sanitize_key( $post_type );
+
+        if ( '' === $post_type ) {
+            return '';
+        }
+
+        if ( ! post_type_exists( $post_type ) ) {
+            return '';
+        }
+
+        $post_type_object = get_post_type_object( $post_type );
+
+        return $post_type_object && $post_type_object->public ? $post_type : '';
+    }
+
+    private function get_preview_post_type_options() {
+        $options = [
+            '' => esc_html__( 'Use allowed post types', 'simple-budget-plugin-sbp' ),
+        ];
+        $post_types = get_post_types( [ 'public' => true ], 'objects' );
+
+        foreach ( $post_types as $post_type => $object ) {
+            if ( in_array( $post_type, [ 'attachment', 'elementor_library' ], true ) ) {
+                continue;
+            }
+
+            $options[ $post_type ] = $object->labels->singular_name ?: $object->label;
+        }
+
+        return $options;
     }
 }

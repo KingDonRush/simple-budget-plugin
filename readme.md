@@ -19,6 +19,8 @@ custom post type.
     actions.
   - **Budget Listing** for cart display, quantity controls, empty state, item
     removal, remove positioning, and submit.
+  - Editor-only **Design Preview** controls in Budget Listing to emulate cart
+    items while building Elementor templates.
 - Elementor cart template builder:
   - Create cart modal templates in **Simple Budget > Templates**.
   - Edit the modal content with Elementor free.
@@ -60,11 +62,10 @@ legacy cart.
 
 ## Repository Status
 
-Version `3.0.1` hardens the Elementor-only v3 flow. Template rendering now
-checks template role, post status, and edit capability; cart payloads and
-quantities are capped on both frontend and server; product validation is shared
-by listing and WhatsApp rendering; and hook registration avoids duplicated asset
-enqueue paths.
+Version `3.1.0` adds editor-only design preview controls to **Budget Listing**.
+Implementers can choose a preview post type, optional post IDs, item count, and
+quantity while styling cart templates in Elementor, without touching the visitor
+cart or frontend behavior.
 
 ## License
 

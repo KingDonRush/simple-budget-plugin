@@ -75,7 +75,7 @@ class CartRenderer {
         return empty( $allowed_types ) || in_array( $post->post_type, $allowed_types, true );
     }
 
-    public static function render_items( $product_ids, $args = [], $quantities = [] ) {
+    public static function render_items( $product_ids, $args = [], $quantities = [], $query_post_types = null ) {
         $product_ids = self::normalize_product_ids( $product_ids );
 
         if ( empty( $product_ids ) ) {
@@ -84,7 +84,7 @@ class CartRenderer {
 
         $display = self::normalize_display_args( $args );
         $quantities = self::normalize_quantities( $quantities );
-        $query   = self::query_items( $product_ids );
+        $query   = self::query_items( $product_ids, $query_post_types );
 
         if ( ! $query->have_posts() ) {
             return '';
@@ -148,9 +148,108 @@ class CartRenderer {
         return ob_get_clean();
     }
 
-    private static function query_items( array $product_ids ) {
-        $allowed_types = self::get_allowed_post_types();
-        $query_types   = ! empty( $allowed_types ) ? $allowed_types : 'any';
+    public static function render_placeholder_items( $count = 3, $args = [], $quantity = 1 ) {
+        $count    = min( 6, max( 1, absint( $count ) ) );
+        $display  = self::normalize_display_args( $args );
+        $quantity = min( self::MAX_ITEM_QUANTITY, max( 1, absint( $quantity ) ) );
+        ob_start();
+
+        for ( $index = 1; $index <= $count; $index++ ) :
+            $has_actions = $display['show_quantity'] || $display['show_remove'];
+            ?>
+            <div class="sbp-cart-item sbp-cart-item--actions-<?php echo esc_attr( $display['remove_position'] ); ?> sbp-cart-item--preview">
+                <?php if ( $display['show_image'] ) : ?>
+                    <div class="sbp-cart-item__media">
+                        <span class="sbp-cart-item__preview-media" aria-hidden="true"></span>
+                    </div>
+                <?php endif; ?>
+
+                <div class="sbp-cart-item__body">
+                    <h4 class="sbp-cart-item__title">
+                        <?php
+                        echo esc_html(
+                            sprintf(
+                                /* translators: %d: preview item number. */
+                                __( 'Preview item %d', 'simple-budget-plugin-sbp' ),
+                                $index
+                            )
+                        );
+                        ?>
+                    </h4>
+                </div>
+
+                <?php if ( $has_actions ) : ?>
+                    <div class="sbp-cart-item__actions">
+                        <?php if ( $display['show_quantity'] ) : ?>
+                            <label class="sbp-quantity-control">
+                                <span class="sbp-quantity-control__label"><?php echo esc_html( $display['quantity_label'] ); ?></span>
+                                <input
+                                    type="number"
+                                    class="sbp-quantity-field sbp-quantity"
+                                    min="1"
+                                    step="1"
+                                    value="<?php echo esc_attr( $quantity ); ?>"
+                                />
+                            </label>
+                        <?php endif; ?>
+
+                        <?php if ( $display['show_remove'] ) : ?>
+                            <button
+                                type="button"
+                                class="sbp-remove-from-cart sbp-budget-action"
+                                data-sbp-action="remove"
+                            >
+                                <?php echo esc_html( $display['remove_text'] ); ?>
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php
+        endfor;
+
+        return ob_get_clean();
+    }
+
+    public static function get_preview_item_ids( $post_type = '', $count = 3 ) {
+        $count = min( 6, max( 1, absint( $count ) ) );
+        $post_types = self::normalize_query_post_types( $post_type, true );
+
+        if ( empty( $post_types ) ) {
+            $post_types = self::get_allowed_post_types();
+        }
+
+        if ( empty( $post_types ) ) {
+            $post_types = self::get_public_preview_post_types();
+        }
+
+        if ( empty( $post_types ) ) {
+            return [];
+        }
+
+        $query = new \WP_Query([
+            'post_type'              => $post_types,
+            'posts_per_page'         => $count,
+            'post_status'            => 'publish',
+            'orderby'                => 'date',
+            'order'                  => 'DESC',
+            'fields'                 => 'ids',
+            'ignore_sticky_posts'    => true,
+            'no_found_rows'          => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+        ]);
+
+        return self::normalize_product_ids( $query->posts );
+    }
+
+    private static function query_items( array $product_ids, $query_post_types = null ) {
+        $query_types = self::normalize_query_post_types( $query_post_types, null !== $query_post_types );
+
+        if ( empty( $query_types ) ) {
+            $allowed_types = self::get_allowed_post_types();
+            $query_types   = ! empty( $allowed_types ) ? $allowed_types : 'any';
+        }
 
         return new \WP_Query([
             'post_type'      => $query_types,
@@ -159,6 +258,35 @@ class CartRenderer {
             'posts_per_page' => -1,
             'post_status'    => 'publish',
         ]);
+    }
+
+    private static function normalize_query_post_types( $post_types, $public_only = false ) {
+        $post_types = array_map( 'sanitize_key', (array) $post_types );
+        $post_types = array_filter(
+            array_unique( $post_types ),
+            function ( $post_type ) use ( $public_only ) {
+                if ( ! post_type_exists( $post_type ) ) {
+                    return false;
+                }
+
+                if ( ! $public_only ) {
+                    return true;
+                }
+
+                $post_type_object = get_post_type_object( $post_type );
+
+                return $post_type_object && $post_type_object->public;
+            }
+        );
+
+        return array_values( $post_types );
+    }
+
+    private static function get_public_preview_post_types() {
+        $post_types = get_post_types( [ 'public' => true ], 'names' );
+        $post_types = array_diff( $post_types, [ 'attachment', 'elementor_library' ] );
+
+        return array_values( $post_types );
     }
 
     private static function to_bool( $value ) {

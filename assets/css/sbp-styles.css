@@ -135,7 +135,8 @@
 }
 
 /* Imagem do produto ajustada à esquerda */
-.sbp-cart-item img {
+.sbp-cart-item img,
+.sbp-cart-item__preview-media {
     width: 58px;
     height: 58px;
     object-fit: cover;
@@ -143,6 +144,12 @@
     margin-right: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve na imagem */
     transition: transform 0.2s ease;
+}
+
+.sbp-cart-item__preview-media {
+    display: block;
+    background:
+        linear-gradient(135deg, rgba(148, 163, 184, 0.24), rgba(148, 163, 184, 0.42));
 }
 
 /* Zoom leve na imagem ao passar o mouse */
