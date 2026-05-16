@@ -12,6 +12,7 @@ Closes #
 
 ## Verification
 
+- [ ] `bash scripts/verify.sh` passed locally, or unavailable checks are explained.
 - [ ] WordPress local environment tested.
 - [ ] Add-to-budget button flow tested.
 - [ ] Modal/cart state tested.

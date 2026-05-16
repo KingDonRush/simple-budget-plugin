@@ -17,6 +17,8 @@ use Elementor\Icons_Manager;
 use Elementor\Widget_Base;
 use SBP\Elementor\ElementorIntegration;
 use SBP\Support\CartRenderer;
+use SBP\Support\CartShellConfig;
+use SBP\Support\RuntimeAssets;
 use SBP\Templates\CartTemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -796,6 +798,7 @@ class BudgetButton extends Widget_Base {
         }
 
         if ( 'open_cart' === $action ) {
+            RuntimeAssets::require_popup();
             $this->add_cart_shell_attributes( $settings );
         }
 
@@ -990,89 +993,9 @@ class BudgetButton extends Widget_Base {
     }
 
     private function add_cart_shell_attributes( array $settings ) {
-        $shell_desktop    = $this->sanitize_shell( $settings['cart_shell'] ?? 'modal' );
-        $shell_tablet     = $this->sanitize_shell( $settings['cart_shell_tablet'] ?? '', '' );
-        $shell_mobile     = $this->sanitize_shell( $settings['cart_shell_mobile'] ?? '', '' );
-        $animation_desktop = $this->sanitize_cart_animation( $settings['cart_animation'] ?? 'fade_scale' );
-        $animation_tablet  = $this->sanitize_cart_animation( $settings['cart_animation_tablet'] ?? '', '' );
-        $animation_mobile  = $this->sanitize_cart_animation( $settings['cart_animation_mobile'] ?? '', '' );
-        $width_desktop = $this->format_panel_width( $settings['cart_panel_width'] ?? [], '560px' );
-        $width_tablet  = $this->format_panel_width( $settings['cart_panel_width_tablet'] ?? [], '' );
-        $width_mobile  = $this->format_panel_width( $settings['cart_panel_width_mobile'] ?? [], '' );
-        $overlay_opacity_desktop = $this->format_percentage_slider( $settings['cart_overlay_opacity'] ?? [], 50 );
-        $overlay_opacity_tablet  = $this->format_percentage_slider( $settings['cart_overlay_opacity_tablet'] ?? [], '' );
-        $overlay_opacity_mobile  = $this->format_percentage_slider( $settings['cart_overlay_opacity_mobile'] ?? [], '' );
-
-        $this->add_render_attribute( 'button', 'data-sbp-shell', $shell_desktop );
-        if ( '' !== $shell_tablet ) {
-            $this->add_render_attribute( 'button', 'data-sbp-shell-tablet', $shell_tablet );
+        foreach ( CartShellConfig::get_data_attributes( $settings ) as $name => $value ) {
+            $this->add_render_attribute( 'button', $name, $value );
         }
-        if ( '' !== $shell_mobile ) {
-            $this->add_render_attribute( 'button', 'data-sbp-shell-mobile', $shell_mobile );
-        }
-        $this->add_render_attribute( 'button', 'data-sbp-animation', $animation_desktop );
-        if ( '' !== $animation_tablet ) {
-            $this->add_render_attribute( 'button', 'data-sbp-animation-tablet', $animation_tablet );
-        }
-        if ( '' !== $animation_mobile ) {
-            $this->add_render_attribute( 'button', 'data-sbp-animation-mobile', $animation_mobile );
-        }
-        $this->add_render_attribute( 'button', 'data-sbp-panel-width', $width_desktop );
-        if ( '' !== $width_tablet ) {
-            $this->add_render_attribute( 'button', 'data-sbp-panel-width-tablet', $width_tablet );
-        }
-        if ( '' !== $width_mobile ) {
-            $this->add_render_attribute( 'button', 'data-sbp-panel-width-mobile', $width_mobile );
-        }
-        $this->add_render_attribute( 'button', 'data-sbp-overlay-color', sanitize_hex_color( $settings['cart_overlay_color'] ?? '#000000' ) ?: '#000000' );
-        $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity', $overlay_opacity_desktop );
-        if ( '' !== $overlay_opacity_tablet ) {
-            $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity-tablet', $overlay_opacity_tablet );
-        }
-        if ( '' !== $overlay_opacity_mobile ) {
-            $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity-mobile', $overlay_opacity_mobile );
-        }
-        $this->add_render_attribute( 'button', 'data-sbp-close-overlay', ( $settings['cart_close_on_overlay'] ?? 'yes' ) === 'yes' ? 'yes' : 'no' );
-        $this->add_render_attribute( 'button', 'data-sbp-close-escape', ( $settings['cart_close_on_escape'] ?? 'yes' ) === 'yes' ? 'yes' : 'no' );
-        $this->add_render_attribute( 'button', 'data-sbp-show-close', ( $settings['cart_show_close'] ?? 'yes' ) === 'yes' ? 'yes' : 'no' );
-    }
-
-    private function format_panel_width( $value, $fallback ) {
-        if ( ! is_array( $value ) || ! isset( $value['size'] ) || '' === $value['size'] ) {
-            return $fallback;
-        }
-
-        $size = (float) $value['size'];
-        if ( $size <= 0 ) {
-            return $fallback;
-        }
-
-        $unit = isset( $value['unit'] ) && in_array( $value['unit'], [ 'px', 'vw' ], true ) ? $value['unit'] : 'px';
-        $size = rtrim( rtrim( (string) $size, '0' ), '.' );
-
-        return $size . $unit;
-    }
-
-    private function format_percentage_slider( $value, $fallback ) {
-        if ( ! is_array( $value ) || ! isset( $value['size'] ) || '' === $value['size'] ) {
-            return $fallback;
-        }
-
-        $size = max( 0, min( 100, (float) $value['size'] ) );
-
-        return rtrim( rtrim( (string) $size, '0' ), '.' );
-    }
-
-    private function sanitize_shell( $shell, $fallback = 'modal' ) {
-        $allowed = [ 'modal', 'drawer_right', 'drawer_left', 'bottom_sheet' ];
-
-        return in_array( $shell, $allowed, true ) ? $shell : $fallback;
-    }
-
-    private function sanitize_cart_animation( $animation, $fallback = 'fade_scale' ) {
-        $allowed = [ 'fade', 'fade_scale', 'slide', 'none' ];
-
-        return in_array( $animation, $allowed, true ) ? $animation : $fallback;
     }
 
     private function sanitize_empty_behavior( $behavior ) {

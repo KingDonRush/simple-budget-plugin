@@ -95,52 +95,17 @@ class CartRenderer {
         while ( $query->have_posts() ) {
             $query->the_post();
 
-            $id        = get_the_ID();
-            $image_url = get_the_post_thumbnail_url( $id, 'thumbnail' );
-            $quantity  = $quantities[ (string) $id ] ?? 1;
-            $has_actions = $display['show_quantity'] || $display['show_remove'];
-            ?>
-            <div class="sbp-cart-item sbp-cart-item--actions-<?php echo esc_attr( $display['remove_position'] ); ?>" data-sbp-product-id="<?php echo esc_attr( $id ); ?>">
-                <?php if ( $display['show_image'] && $image_url ) : ?>
-                    <div class="sbp-cart-item__media">
-                        <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>">
-                    </div>
-                <?php endif; ?>
-
-                <div class="sbp-cart-item__body">
-                    <h4 class="sbp-cart-item__title"><?php echo esc_html( get_the_title() ); ?></h4>
-                </div>
-
-                <?php if ( $has_actions ) : ?>
-                    <div class="sbp-cart-item__actions">
-                        <?php if ( $display['show_quantity'] ) : ?>
-                            <label class="sbp-quantity-control">
-                                <span class="sbp-quantity-control__label"><?php echo esc_html( $display['quantity_label'] ); ?></span>
-                                <input
-                                    type="number"
-                                    class="sbp-quantity-field sbp-quantity"
-                                    data-sbp-product-id="<?php echo esc_attr( $id ); ?>"
-                                    min="1"
-                                    step="1"
-                                    value="<?php echo esc_attr( max( 1, $quantity ) ); ?>"
-                                />
-                            </label>
-                        <?php endif; ?>
-
-                        <?php if ( $display['show_remove'] ) : ?>
-                            <button
-                                type="button"
-                                class="sbp-remove-from-cart sbp-budget-action"
-                                data-sbp-action="remove"
-                                data-sbp-product-id="<?php echo esc_attr( $id ); ?>"
-                            >
-                                <?php echo esc_html( $display['remove_text'] ); ?>
-                            </button>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <?php
+            $id = get_the_ID();
+            echo self::render_item_markup(
+                [
+                    'id'        => $id,
+                    'title'     => get_the_title(),
+                    'image_url' => get_the_post_thumbnail_url( $id, 'thumbnail' ),
+                    'quantity'  => $quantities[ (string) $id ] ?? 1,
+                    'preview'   => false,
+                ],
+                $display
+            ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
         wp_reset_postdata();
@@ -154,59 +119,21 @@ class CartRenderer {
         $quantity = min( self::MAX_ITEM_QUANTITY, max( 1, absint( $quantity ) ) );
         ob_start();
 
-        for ( $index = 1; $index <= $count; $index++ ) :
-            $has_actions = $display['show_quantity'] || $display['show_remove'];
-            ?>
-            <div class="sbp-cart-item sbp-cart-item--actions-<?php echo esc_attr( $display['remove_position'] ); ?> sbp-cart-item--preview">
-                <?php if ( $display['show_image'] ) : ?>
-                    <div class="sbp-cart-item__media">
-                        <span class="sbp-cart-item__preview-media" aria-hidden="true"></span>
-                    </div>
-                <?php endif; ?>
-
-                <div class="sbp-cart-item__body">
-                    <h4 class="sbp-cart-item__title">
-                        <?php
-                        echo esc_html(
-                            sprintf(
-                                /* translators: %d: preview item number. */
-                                __( 'Preview item %d', 'simple-budget-plugin-sbp' ),
-                                $index
-                            )
-                        );
-                        ?>
-                    </h4>
-                </div>
-
-                <?php if ( $has_actions ) : ?>
-                    <div class="sbp-cart-item__actions">
-                        <?php if ( $display['show_quantity'] ) : ?>
-                            <label class="sbp-quantity-control">
-                                <span class="sbp-quantity-control__label"><?php echo esc_html( $display['quantity_label'] ); ?></span>
-                                <input
-                                    type="number"
-                                    class="sbp-quantity-field sbp-quantity"
-                                    min="1"
-                                    step="1"
-                                    value="<?php echo esc_attr( $quantity ); ?>"
-                                />
-                            </label>
-                        <?php endif; ?>
-
-                        <?php if ( $display['show_remove'] ) : ?>
-                            <button
-                                type="button"
-                                class="sbp-remove-from-cart sbp-budget-action"
-                                data-sbp-action="remove"
-                            >
-                                <?php echo esc_html( $display['remove_text'] ); ?>
-                            </button>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <?php
-        endfor;
+        for ( $index = 1; $index <= $count; $index++ ) {
+            echo self::render_item_markup(
+                [
+                    'id'       => 0,
+                    'title'    => sprintf(
+                        /* translators: %d: preview item number. */
+                        __( 'Preview item %d', 'simple-budget-plugin-sbp' ),
+                        $index
+                    ),
+                    'quantity' => $quantity,
+                    'preview'  => true,
+                ],
+                $display
+            ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        }
 
         return ob_get_clean();
     }
@@ -287,6 +214,76 @@ class CartRenderer {
         $post_types = array_diff( $post_types, [ 'attachment', 'elementor_library' ] );
 
         return array_values( $post_types );
+    }
+
+    private static function render_item_markup( array $item, array $display ) {
+        $id          = absint( $item['id'] ?? 0 );
+        $title       = (string) ( $item['title'] ?? '' );
+        $image_url   = (string) ( $item['image_url'] ?? '' );
+        $quantity    = min( self::MAX_ITEM_QUANTITY, max( 1, absint( $item['quantity'] ?? 1 ) ) );
+        $is_preview  = ! empty( $item['preview'] );
+        $has_actions = $display['show_quantity'] || $display['show_remove'];
+        $classes     = [
+            'sbp-cart-item',
+            'sbp-cart-item--actions-' . $display['remove_position'],
+        ];
+
+        if ( $is_preview ) {
+            $classes[] = 'sbp-cart-item--preview';
+        }
+
+        $product_id_attribute         = $id ? 'data-sbp-product-id="' . esc_attr( $id ) . '"' : '';
+        $product_id_wrapper_attribute = $product_id_attribute ? ' ' . $product_id_attribute : '';
+
+        ob_start();
+        ?>
+        <div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>"<?php echo $product_id_wrapper_attribute; ?>>
+            <?php if ( $display['show_image'] && ( $image_url || $is_preview ) ) : ?>
+                <div class="sbp-cart-item__media">
+                    <?php if ( $image_url ) : ?>
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $title ); ?>">
+                    <?php else : ?>
+                        <span class="sbp-cart-item__preview-media" aria-hidden="true"></span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="sbp-cart-item__body">
+                <h4 class="sbp-cart-item__title"><?php echo esc_html( $title ); ?></h4>
+            </div>
+
+            <?php if ( $has_actions ) : ?>
+                <div class="sbp-cart-item__actions">
+                    <?php if ( $display['show_quantity'] ) : ?>
+                        <label class="sbp-quantity-control">
+                            <span class="sbp-quantity-control__label"><?php echo esc_html( $display['quantity_label'] ); ?></span>
+                            <input
+                                type="number"
+                                class="sbp-quantity-field sbp-quantity"
+                                <?php echo $product_id_attribute; ?>
+                                min="1"
+                                step="1"
+                                value="<?php echo esc_attr( $quantity ); ?>"
+                            />
+                        </label>
+                    <?php endif; ?>
+
+                    <?php if ( $display['show_remove'] ) : ?>
+                        <button
+                            type="button"
+                            class="sbp-remove-from-cart sbp-budget-action"
+                            data-sbp-action="remove"
+                            <?php echo $product_id_attribute; ?>
+                        >
+                            <?php echo esc_html( $display['remove_text'] ); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php
+
+        return ob_get_clean();
     }
 
     private static function to_bool( $value ) {

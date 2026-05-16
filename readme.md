@@ -62,10 +62,22 @@ legacy cart.
 
 ## Repository Status
 
-Version `3.1.0` adds editor-only design preview controls to **Budget Listing**.
-Implementers can choose a preview post type, optional post IDs, item count, and
-quantity while styling cart templates in Elementor, without touching the visitor
-cart or frontend behavior.
+Version `3.1.1` is a stabilization release guided by AI coding governance. It
+adds reproducible verification, reduces renderer/widget drift, fixes responsive
+panel-width number formatting, avoids write side effects while listing
+templates, stops exposing the WhatsApp number to frontend JavaScript, and only
+prints the popup shell when an open-cart button is present.
+
+## Verification
+
+Run the local verification script before releases:
+
+```bash
+bash scripts/verify.sh
+```
+
+Set `SBP_SKIP_WP_SMOKE=1` to run only syntax and whitespace checks when the
+local Docker WordPress runtime is unavailable.
 
 ## License
 

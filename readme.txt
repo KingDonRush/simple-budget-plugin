@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,23 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 3.1.1 =
+**PT-BR:**
+- Adiciona `scripts/verify.sh` e CI básico para validação reproduzível de PHP, JavaScript e smoke checks locais via WP-CLI.
+- Refatora a renderização de itens do carrinho para reduzir duplicação entre itens reais e placeholders de prévia.
+- Extrai a normalização do Cart Shell do **Budget Button** para uma classe compartilhada e corrige formatação de larguras como `640px`.
+- Remove escrita implícita durante listagem de templates; a normalização do editor Canvas agora acontece em criação e abertura explícita do editor.
+- Para de expor o número de WhatsApp no JavaScript público e registra assets sem enfileirar globalmente quando nenhum widget os usa.
+- Renderiza o shell do popup apenas quando há um botão de abertura de carrinho na página.
+
+**EN-US:**
+- Adds `scripts/verify.sh` and basic CI for reproducible PHP, JavaScript, and local WP-CLI smoke checks.
+- Refactors cart item rendering to reduce duplication between real items and preview placeholders.
+- Extracts Cart Shell normalization from **Budget Button** into a shared class and fixes width formatting such as `640px`.
+- Removes implicit writes while listing templates; Canvas editor normalization now happens on creation and explicit editor opening.
+- Stops exposing the WhatsApp number to public JavaScript and registers assets without globally enqueueing them when no widget uses them.
+- Renders the popup shell only when an open-cart button is present on the page.
+
 = 3.1.0 =
 **PT-BR:**
 - Adiciona seção **Design Preview** ao widget **Budget Listing**.

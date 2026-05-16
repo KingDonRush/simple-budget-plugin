@@ -36,10 +36,6 @@ class CartTemplateManager {
             ],
         ]);
 
-        foreach ( $templates as $template ) {
-            self::normalize_editor_surface( $template->ID );
-        }
-
         return $templates;
     }
 
@@ -115,13 +111,17 @@ class CartTemplateManager {
 
         $template_id = absint( $document->get_main_id() );
         update_post_meta( $template_id, self::ROLE_META, self::ROLE_CART_MODAL );
-        self::normalize_editor_surface( $template_id );
+        self::ensure_editor_surface( $template_id );
 
         return $template_id;
     }
 
     public static function get_edit_url( $template_id ) {
         $template_id = absint( $template_id );
+
+        if ( self::is_cart_template( $template_id ) ) {
+            self::ensure_editor_surface( $template_id );
+        }
 
         if ( self::is_elementor_available() ) {
             $document = \Elementor\Plugin::$instance->documents->get( $template_id );
@@ -204,6 +204,10 @@ class CartTemplateManager {
         }
 
         return true;
+    }
+
+    public static function ensure_editor_surface( $template_id ) {
+        self::normalize_editor_surface( $template_id );
     }
 
     private static function get_supported_document_type() {

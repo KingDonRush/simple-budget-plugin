@@ -6,6 +6,7 @@
 namespace SBP\Public_;
 
 use SBP\Support\CartRenderer;
+use SBP\Support\RuntimeAssets;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -18,14 +19,14 @@ class Public_ {
     }
 
     public function enqueue_assets() {
-        wp_enqueue_style(
+        wp_register_style(
             'sbp-styles',
             \SBP_URL . 'assets/css/sbp-styles.css',
             [],
             \SBP_VERSION
         );
 
-        wp_enqueue_script(
+        wp_register_script(
             'sbp-script',
             \SBP_URL . 'assets/js/sbp-script.js',
             [ 'jquery' ],
@@ -33,12 +34,9 @@ class Public_ {
             true
         );
 
-        $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
-
         wp_localize_script( 'sbp-script', 'sbp_ajax', [
             'ajax_url'          => admin_url( 'admin-ajax.php' ),
             'nonce'             => wp_create_nonce( 'sbp_nonce' ),
-            'whatsapp_number'   => $whatsapp_number,
             'max_cart_items'    => CartRenderer::MAX_CART_ITEMS,
             'max_item_quantity' => CartRenderer::MAX_ITEM_QUANTITY,
         ]);
@@ -57,6 +55,10 @@ class Public_ {
     }
 
     public function render_popup() {
+        if ( ! RuntimeAssets::is_popup_required() ) {
+            return;
+        }
+
         $templates_url = admin_url( 'admin.php?page=sbp-templates' );
         ?>
         <div id="sbp-custom-popup" class="sbp-custom-popup" role="dialog" aria-modal="true" aria-hidden="true" data-sbp-shell="modal" data-sbp-animation="fade_scale" data-sbp-close-overlay="yes" data-sbp-close-escape="yes" data-sbp-show-close="yes" aria-label="<?php esc_attr_e( 'Seu Carrinho', 'simple-budget-plugin-sbp' ); ?>">
