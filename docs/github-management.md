@@ -19,12 +19,12 @@ and Elementor without replacing the site builder's normal design workflow.
 - Audit current add-to-budget flow.
 - Audit CPT metadata capture.
 - Confirm modal and quote message behavior.
-- Document current shortcode/CSS hook API.
+- Document Elementor widget/template API.
 
 ### M2 - Product Polish
 
 - Add configurable destinations.
-- Decide CSS hook mode, widget mode, or both.
+- Keep the public UX centered on Elementor widgets and templates.
 - Improve settings UX.
 - Reuse styles without bloating the plugin.
 
@@ -39,6 +39,5 @@ and Elementor without replacing the site builder's normal design workflow.
 
 1. `[Flow]: audit current product-to-budget behavior`
 2. `[Channel]: design configurable quote destinations`
-3. `[Mode]: decide CSS hook mode versus Elementor widget mode`
+3. `[Mode]: document Elementor-only v3 flow`
 4. `[Docs]: rewrite README for international hiring signal`
-

@@ -80,9 +80,8 @@ class BudgetButton extends Widget_Base {
                     'open_cart'     => esc_html__( 'Open budget popup', 'simple-budget-plugin-sbp' ),
                     'close_cart'    => esc_html__( 'Close budget popup', 'simple-budget-plugin-sbp' ),
                     'send_whatsapp' => esc_html__( 'Send WhatsApp budget', 'simple-budget-plugin-sbp' ),
-                    'remove'        => esc_html__( 'Legacy: remove current item', 'simple-budget-plugin-sbp' ),
                 ],
-                'description' => esc_html__( 'Use Budget Listing controls for per-item remove buttons. The legacy remove action remains available for older templates.', 'simple-budget-plugin-sbp' ),
+                'description' => esc_html__( 'Use Budget Listing controls for per-item remove buttons.', 'simple-budget-plugin-sbp' ),
             ]
         );
 
@@ -97,7 +96,7 @@ class BudgetButton extends Widget_Base {
                     'manual'  => esc_html__( 'Manual post ID', 'simple-budget-plugin-sbp' ),
                 ],
                 'condition' => [
-                    'action' => [ 'add', 'remove', 'toggle' ],
+                    'action' => [ 'add', 'toggle' ],
                 ],
             ]
         );
@@ -284,7 +283,7 @@ class BudgetButton extends Widget_Base {
                 'type'      => Controls_Manager::NUMBER,
                 'min'       => 1,
                 'condition' => [
-                    'action'         => [ 'add', 'remove', 'toggle' ],
+                    'action'         => [ 'add', 'toggle' ],
                     'product_source' => 'manual',
                 ],
             ]
@@ -779,7 +778,7 @@ class BudgetButton extends Widget_Base {
         $this->add_render_attribute( 'button', 'role', 'button' );
         $this->add_render_attribute( 'button', 'data-sbp-action', $action );
 
-        if ( $product_id && in_array( $action, [ 'add', 'remove', 'toggle' ], true ) ) {
+        if ( $product_id && in_array( $action, [ 'add', 'toggle' ], true ) ) {
             $this->add_render_attribute( 'button', 'data-sbp-product-id', $product_id );
         }
 
@@ -833,7 +832,8 @@ class BudgetButton extends Widget_Base {
         view.addRenderAttribute( 'button', 'class', 'elementor-button sbp-budget-action' );
         view.addRenderAttribute( 'button', 'href', '#' );
         view.addRenderAttribute( 'button', 'role', 'button' );
-        view.addRenderAttribute( 'button', 'data-sbp-action', settings.action || 'add' );
+        var action = [ 'add', 'toggle', 'open_cart', 'close_cart', 'send_whatsapp' ].indexOf( settings.action ) !== -1 ? settings.action : 'add';
+        view.addRenderAttribute( 'button', 'data-sbp-action', action );
 
         if ( settings.size ) {
             view.addRenderAttribute( 'button', 'class', 'elementor-size-' + settings.size );
@@ -845,15 +845,15 @@ class BudgetButton extends Widget_Base {
             view.addRenderAttribute( 'button', 'id', settings.button_css_id );
         }
 
-        if ( 'open_cart' === settings.action && settings.cart_template_id ) {
+        if ( 'open_cart' === action && settings.cart_template_id ) {
             view.addRenderAttribute( 'button', 'data-sbp-template-id', settings.cart_template_id );
         }
 
-        if ( 'add' === settings.action || 'toggle' === settings.action ) {
+        if ( 'add' === action || 'toggle' === action ) {
             view.addRenderAttribute( 'button', 'data-sbp-quantity', settings.quantity || 1 );
         }
 
-        if ( 'open_cart' === settings.action ) {
+        if ( 'open_cart' === action ) {
             function sbpResponsiveWidth( value, fallback ) {
                 return value && value.size ? value.size + ( value.unit || 'px' ) : fallback;
             }
@@ -913,7 +913,7 @@ class BudgetButton extends Widget_Base {
             view.addRenderAttribute( 'button', 'data-sbp-show-close', settings.cart_show_close || 'yes' );
         }
 
-        if ( 'send_whatsapp' === settings.action ) {
+        if ( 'send_whatsapp' === action ) {
             view.addRenderAttribute( 'button', 'data-sbp-empty-behavior', settings.empty_cart_behavior || 'disable' );
             view.addRenderAttribute( 'button', 'data-sbp-empty-animation', settings.empty_cart_animation || 'shake' );
         }
@@ -979,7 +979,7 @@ class BudgetButton extends Widget_Base {
     }
 
     private function sanitize_action( $action ) {
-        $allowed = [ 'add', 'remove', 'toggle', 'open_cart', 'close_cart', 'send_whatsapp' ];
+        $allowed = [ 'add', 'toggle', 'open_cart', 'close_cart', 'send_whatsapp' ];
 
         return in_array( $action, $allowed, true ) ? $action : 'add';
     }

@@ -19,15 +19,6 @@ class Ajax {
         add_action( 'wp_ajax_sbp_render_cart_template', [ $this, 'render_cart_template' ] );
         add_action( 'wp_ajax_nopriv_sbp_render_cart_template', [ $this, 'render_cart_template' ] );
 
-        add_action( 'wp_ajax_sbp_get_product_titles', [ $this, 'get_product_titles' ] );
-        add_action( 'wp_ajax_nopriv_sbp_get_product_titles', [ $this, 'get_product_titles' ] );
-
-        add_action( 'wp_ajax_sbp_add_to_cart', [ $this, 'add_to_cart' ] );
-        add_action( 'wp_ajax_nopriv_sbp_add_to_cart', [ $this, 'add_to_cart' ] );
-
-        add_action( 'wp_ajax_sbp_remove_from_cart', [ $this, 'remove_from_cart' ] );
-        add_action( 'wp_ajax_nopriv_sbp_remove_from_cart', [ $this, 'remove_from_cart' ] );
-
         add_action( 'wp_ajax_sbp_send_whatsapp_message', [ $this, 'send_whatsapp_message' ] );
         add_action( 'wp_ajax_nopriv_sbp_send_whatsapp_message', [ $this, 'send_whatsapp_message' ] );
     }
@@ -76,71 +67,6 @@ class Ajax {
             'template_id' => $template_id,
             'html'        => $html,
         ]);
-    }
-
-    public function get_product_titles() {
-        $this->verify_nonce();
-
-        $product_ids = isset( $_POST['product_ids'] ) ? CartRenderer::normalize_product_ids( wp_unslash( $_POST['product_ids'] ) ) : [];
-        if ( empty( $product_ids ) ) {
-            wp_send_json_error( __( 'IDs de produtos não enviados.', 'simple-budget-plugin-sbp' ) );
-        }
-
-        $allowed_types = get_option( 'sbp_product_post_types', [] );
-        $allowed_types = ! empty( $allowed_types ) ? $allowed_types : null;
-
-        $titles = [];
-        foreach ( $product_ids as $id ) {
-            $post = get_post( $id );
-            if ( $post && get_post_status( $post ) === 'publish' ) {
-                if ( is_array( $allowed_types ) && ! in_array( $post->post_type, $allowed_types, true ) ) {
-                    continue;
-                }
-                $titles[] = $post->post_title;
-            }
-        }
-
-        if ( empty( $titles ) ) {
-            wp_send_json_error( __( 'Nenhum título encontrado.', 'simple-budget-plugin-sbp' ) );
-        }
-
-        wp_send_json_success( $titles );
-    }
-
-    public function add_to_cart() {
-        $this->verify_nonce();
-
-        $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
-        if ( ! $product_id ) {
-            wp_send_json_error( __( 'Produto inválido.', 'simple-budget-plugin-sbp' ) );
-        }
-
-        $allowed_types = get_option( 'sbp_product_post_types', [] );
-        $is_allowed    = empty( $allowed_types ) || in_array( get_post_type( $product_id ), $allowed_types, true );
-
-        if ( ! $is_allowed ) {
-            wp_send_json_error( __( 'Produto inválido.', 'simple-budget-plugin-sbp' ) );
-        }
-
-        wp_send_json_success( __( 'Produto adicionado ao carrinho.', 'simple-budget-plugin-sbp' ) );
-    }
-
-    public function remove_from_cart() {
-        $this->verify_nonce();
-
-        $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
-        if ( ! $product_id ) {
-            wp_send_json_error( __( 'Produto inválido.', 'simple-budget-plugin-sbp' ) );
-        }
-
-        $allowed_types = get_option( 'sbp_product_post_types', [] );
-        $is_allowed    = empty( $allowed_types ) || in_array( get_post_type( $product_id ), $allowed_types, true );
-
-        if ( ! $is_allowed ) {
-            wp_send_json_error( __( 'Produto inválido.', 'simple-budget-plugin-sbp' ) );
-        }
-
-        wp_send_json_success( __( 'Produto removido do carrinho.', 'simple-budget-plugin-sbp' ) );
     }
 
     public function send_whatsapp_message() {

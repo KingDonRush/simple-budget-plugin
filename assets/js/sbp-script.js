@@ -134,14 +134,14 @@ jQuery(function ($) {
     }
 
     function getCurrentProductId($trigger) {
-        var explicitId = $trigger.data('sbp-product-id') || $trigger.data('product-id');
+        var explicitId = $trigger.data('sbp-product-id');
 
         if (explicitId) {
             return String(explicitId);
         }
 
-        var $context = $trigger.closest('[data-sbp-product-id], [data-product-id]');
-        var contextId = $context.data('sbp-product-id') || $context.data('product-id');
+        var $context = $trigger.closest('[data-sbp-product-id]');
+        var contextId = $context.data('sbp-product-id');
 
         if (contextId) {
             return String(contextId);
@@ -158,23 +158,12 @@ jQuery(function ($) {
         return bodyMatch ? String(bodyMatch[1]) : null;
     }
 
-    function getLegacyFeedbackMode($trigger) {
-        return $trigger.is('#add-to-cart-button') ? 'alert' : 'none';
-    }
-
-    function notify(message, mode) {
-        if ('alert' === mode && message) {
-            alert(message);
-        }
-    }
-
     function publishCartUpdated() {
         $(document).trigger('sbp:cart-updated', [getCart()]);
     }
 
-    function addToCart(productId, feedbackMode, quantity) {
+    function addToCart(productId, quantity) {
         if (!productId) {
-            notify(i18n.product_add_error || 'Erro ao adicionar o produto ao carrinho.', feedbackMode);
             return;
         }
 
@@ -185,7 +174,6 @@ jQuery(function ($) {
             cart.push(productKey);
             saveCart(cart);
             setCartQuantity(productKey, quantity || 1, false);
-            notify(i18n.product_added || 'Produto adicionado ao carrinho!', feedbackMode);
             publishCartUpdated();
         } else {
             var quantities = getCartQuantities();
@@ -195,8 +183,6 @@ jQuery(function ($) {
                 saveCartQuantities(quantities);
                 publishCartUpdated();
             }
-
-            notify(i18n.product_exists || 'Produto já está no carrinho!', feedbackMode);
         }
     }
 
@@ -217,11 +203,11 @@ jQuery(function ($) {
         publishCartUpdated();
     }
 
-    function toggleCartItem(productId, feedbackMode, quantity) {
+    function toggleCartItem(productId, quantity) {
         var cart = getCart();
 
         if (cart.indexOf(String(productId)) === -1) {
-            addToCart(productId, feedbackMode, quantity);
+            addToCart(productId, quantity);
         } else {
             removeFromCart(productId);
         }
@@ -289,50 +275,6 @@ jQuery(function ($) {
         });
     }
 
-    function renderLegacyCart() {
-        var $legacyCart = $('#sbp-cart-items');
-
-        if (!$legacyCart.length) {
-            return;
-        }
-
-        var cart = getCart();
-
-        if (!cart.length) {
-            $legacyCart.html('<p>' + escapeHtml(i18n.cart_empty || 'Seu carrinho está vazio.') + '</p>');
-            $('#enviar-orcamento-whatsapp').hide();
-            return;
-        }
-
-        $.ajax({
-            url: config.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sbp_get_cart_products',
-                nonce: config.nonce,
-                product_ids: cart,
-                quantities: getCartQuantities(),
-                display: {
-                    show_quantity: 'yes',
-                    quantity_label: i18n.quantity_label || 'Quantidade'
-                }
-            },
-            success: function (response) {
-                if (response.success) {
-                    $legacyCart.html(response.data);
-                    $('#enviar-orcamento-whatsapp').show();
-                } else {
-                    $legacyCart.html('<p>' + escapeHtml(i18n.load_error || 'Erro ao carregar o carrinho.') + '</p>');
-                    $('#enviar-orcamento-whatsapp').hide();
-                }
-            },
-            error: function () {
-                $legacyCart.html('<p>' + escapeHtml(i18n.load_error || 'Erro ao carregar o carrinho.') + '</p>');
-                $('#enviar-orcamento-whatsapp').hide();
-            }
-        });
-    }
-
     function renderElementorTemplate($container, html) {
         $container.html(html);
         runElementorReadyTriggers($container);
@@ -359,8 +301,13 @@ jQuery(function ($) {
         $popup.find('#sbp-custom-popup-template').removeAttr('hidden');
     }
 
-    function showLegacyShell($popup) {
+    function showSetupFallback($popup) {
         $popup.find('#sbp-custom-popup-template').attr('hidden', true).empty();
+        $popup.find('.sbp-template-setup h2').text(i18n.template_setup_title || 'Create a cart template');
+        $popup.find('.sbp-template-setup p').text(
+            i18n.template_setup_text ||
+            'This Budget Button needs a Simple Budget template. Create one in Simple Budget > Templates, edit it with Elementor, then select it in the button settings.'
+        );
         $popup.find('#sbp-custom-popup-fallback').removeAttr('hidden');
     }
 
@@ -382,18 +329,17 @@ jQuery(function ($) {
                 if (response.success && response.data && response.data.html) {
                     renderElementorTemplate($template, response.data.html);
                 } else {
-                    $template.html('<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.template_error || 'Erro ao carregar o template do carrinho.') + '</p>');
+                    showSetupFallback($popup);
                 }
             },
             error: function () {
-                $template.html('<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.template_error || 'Erro ao carregar o template do carrinho.') + '</p>');
+                showSetupFallback($popup);
             }
         });
     }
 
     function renderAllCarts() {
         renderBudgetListings();
-        renderLegacyCart();
         updateActionStates();
     }
 
@@ -415,7 +361,7 @@ jQuery(function ($) {
     function updateSendWhatsAppStates(cart) {
         var isEmpty = !cart.length;
 
-        $('.sbp-budget-action[data-sbp-action="send_whatsapp"], #enviar-orcamento-whatsapp').each(function () {
+        $('.sbp-budget-action[data-sbp-action="send_whatsapp"]').each(function () {
             var $button = $(this);
             var behavior = $button.data('sbp-empty-behavior') || ($button.hasClass('sbp-budget-listing__submit') ? 'hide' : 'show_error');
 
@@ -559,8 +505,7 @@ jQuery(function ($) {
         if (templateId) {
             loadCartTemplate($popup, templateId);
         } else {
-            showLegacyShell($popup);
-            renderLegacyCart();
+            showSetupFallback($popup);
         }
 
         setTimeout(function () {
@@ -644,17 +589,9 @@ jQuery(function ($) {
             .replace(/'/g, '&#039;');
     }
 
-    $(document).on('click', '.sbp-budget-action, #add-to-cart-button, #open-cart-button, #enviar-orcamento-whatsapp', function (event) {
+    $(document).on('click', '.sbp-budget-action', function (event) {
         var $trigger = $(this);
         var action = $trigger.data('sbp-action');
-
-        if ($trigger.is('#add-to-cart-button')) {
-            action = 'add';
-        } else if ($trigger.is('#open-cart-button')) {
-            action = 'open_cart';
-        } else if ($trigger.is('#enviar-orcamento-whatsapp')) {
-            action = 'send_whatsapp';
-        }
 
         if (!action) {
             return;
@@ -663,15 +600,14 @@ jQuery(function ($) {
         event.preventDefault();
 
         var productId = getCurrentProductId($trigger);
-        var feedbackMode = getLegacyFeedbackMode($trigger);
         var quantity = getTriggerQuantity($trigger);
 
         if ('add' === action) {
-            addToCart(productId, feedbackMode, quantity);
+            addToCart(productId, quantity);
         } else if ('remove' === action) {
             removeFromCart(productId);
         } else if ('toggle' === action) {
-            toggleCartItem(productId, feedbackMode, quantity);
+            toggleCartItem(productId, quantity);
         } else if ('open_cart' === action) {
             openPopup($trigger.data('sbp-template-id') || '', $trigger);
         } else if ('close_cart' === action) {
@@ -688,7 +624,7 @@ jQuery(function ($) {
 
     $(document).on('change', '.sbp-quantity-field, .sbp-quantity', function () {
         var $field = $(this);
-        var productId = $field.data('sbp-product-id') || $field.data('product-id');
+        var productId = $field.data('sbp-product-id');
 
         setCartQuantity(productId, $field.val());
     });

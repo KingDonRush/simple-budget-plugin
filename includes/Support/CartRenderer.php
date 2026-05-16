@@ -1,6 +1,6 @@
 <?php
 /**
- * Shared cart item rendering for AJAX, shortcodes, and Elementor widgets.
+ * Shared cart item rendering for AJAX and Elementor widgets.
  */
 
 namespace SBP\Support;
@@ -94,7 +94,6 @@ class CartRenderer {
                                     type="number"
                                     class="sbp-quantity-field sbp-quantity"
                                     data-sbp-product-id="<?php echo esc_attr( $id ); ?>"
-                                    data-product-id="<?php echo esc_attr( $id ); ?>"
                                     min="1"
                                     step="1"
                                     value="<?php echo esc_attr( max( 1, $quantity ) ); ?>"
@@ -108,7 +107,6 @@ class CartRenderer {
                                 class="sbp-remove-from-cart sbp-budget-action"
                                 data-sbp-action="remove"
                                 data-sbp-product-id="<?php echo esc_attr( $id ); ?>"
-                                data-product-id="<?php echo esc_attr( $id ); ?>"
                             >
                                 <?php echo esc_html( $display['remove_text'] ); ?>
                             </button>

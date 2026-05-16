@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.3.5
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 - Quantidades, posicionamento do botão remover e comportamento do WhatsApp vazio nos widgets.
 - Integração com **WhatsApp** para envio automático do pedido.  
 - Widgets nativos para **Elementor**: **Budget Button** e **Budget Listing**.
-- Modo legado compatível com botão Elementor usando o ID `add-to-cart-button`.
+- Prompt interno de configuração quando um botão de abertura ainda não tem template selecionado.
 - Suporte a múltiplos **Custom Post Types (CPTs)**.  
 - Painel administrativo completo com opções de configuração.  
 - Totalmente responsivo e traduzível.  
@@ -42,7 +42,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 - Quantities, remove button positioning, and empty WhatsApp behavior in widgets.
 - **WhatsApp** integration for automatic message generation.  
 - Native **Elementor** widgets: **Budget Button** and **Budget Listing**.
-- Legacy mode remains compatible with an Elementor button using the `add-to-cart-button` ID.
+- Internal setup prompt when an open-cart button has no selected template.
 - Supports multiple **Custom Post Types (CPTs)**.  
 - Admin panel with full customization options.  
 - Fully responsive and translation-ready.  
@@ -60,7 +60,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 4. No Elementor, use o widget **Budget Button** dentro do card/template do item.
 5. Use o widget **Budget Listing** na página/template de orçamento para listar itens e remover produtos.
 6. Para customizar o modal, acesse **Simple Budget → Templates**, crie um template de carrinho, edite no Elementor e selecione esse template em um **Budget Button** com ação **Open budget popup**.
-7. Alternativamente, mantenha o modo legado com o shortcode `[sbp_cart]` e um botão Elementor com ID `add-to-cart-button`.
+7. Se nenhum template for selecionado, o popup mostra um prompt de configuração para orientar o implementador.
 
 **EN-US:**  
 1. Upload the `simple-budget-plugin` folder to `/wp-content/plugins/`.  
@@ -71,7 +71,7 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 4. In Elementor, use the **Budget Button** widget inside the item card/template.
 5. Use the **Budget Listing** widget on the quote page/template to list and remove products.
 6. To customize the modal, open **Simple Budget → Templates**, create a cart template, edit it in Elementor, and select it in a **Budget Button** configured as **Open budget popup**.
-7. Alternatively, keep the legacy mode with the `[sbp_cart]` shortcode and an Elementor button with the `add-to-cart-button` ID.
+7. If no template is selected, the popup shows a setup prompt to guide the implementer.
 
 ---
 
@@ -106,6 +106,19 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 3.0.0 =
+**PT-BR:**
+- Remove o shortcode `[sbp_cart]` e o suporte a botões legados por IDs fixos.
+- Remove a ação legada de remover item do widget **Budget Button**; remoção continua pertencendo ao **Budget Listing**.
+- Remove endpoints AJAX antigos que não participavam mais do fluxo Elementor.
+- Troca o fallback legado do popup por um prompt interno que orienta criar e selecionar um template em **Simple Budget → Templates**.
+
+**EN-US:**
+- Removes the `[sbp_cart]` shortcode and fixed-ID legacy button support.
+- Removes the legacy remove-current-item action from **Budget Button**; removal stays owned by **Budget Listing**.
+- Removes older AJAX endpoints that no longer belonged to the Elementor flow.
+- Replaces the legacy popup fallback with an internal setup prompt that guides users to create and select a template in **Simple Budget → Templates**.
+
 = 2.3.5 =
 **PT-BR:**
 - Torna responsivas outras opções estratégicas do Cart Shell: tipo de exibição, animação e opacidade do overlay.

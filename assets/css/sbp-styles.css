@@ -184,32 +184,6 @@
     transform: scale(0.95);
 }
 
-/* Botão de enviar orçamento via WhatsApp */
-#enviar-orcamento-whatsapp {
-    background-color: #25d366;
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px;
-    margin-top: 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    width: 100%; /* Largura total do botão */
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-/* Hover e active no botão de WhatsApp */
-#enviar-orcamento-whatsapp:hover {
-    background-color: #20c15a;
-    transform: translateY(-2px); /* Leve elevação */
-}
-
-#enviar-orcamento-whatsapp:active {
-    transform: translateY(2px);
-}
-
 /* Botão de fechar maior */
 .sbp-close-popup {
     background: transparent;
@@ -292,7 +266,6 @@
 
 /* Foco para acessibilidade */
 .sbp-remove-from-cart:focus,
-#enviar-orcamento-whatsapp:focus,
 .sbp-close-popup:focus {
     outline: 2px solid #007bff;
     outline-offset: 2px;
@@ -304,14 +277,6 @@
         background-color: #ff0000;
         color: #ffffff;
     }
-}
-
-/* Botão com ícone do WhatsApp */
-#enviar-orcamento-whatsapp::before {
-    content: "\f232"; /* Unicode do ícone WhatsApp */
-    font-family: "FontAwesome";
-    margin-right: 8px;
-    font-size: 18px;
 }
 
 /* Definindo altura mínima para o popup */
@@ -345,6 +310,28 @@
 
 .sbp-custom-popup-template {
     width: 100%;
+}
+
+.sbp-template-setup {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 28px 16px;
+    text-align: center;
+}
+
+.sbp-template-setup p {
+    margin: 0 auto 18px;
+    max-width: 42em;
+    color: #4b5563;
+    line-height: 1.55;
+}
+
+.sbp-template-setup__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    text-decoration: none;
 }
 
 .sbp-budget-listing__items {

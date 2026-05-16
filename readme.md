@@ -16,7 +16,7 @@ custom post type.
 
 - Native Elementor widgets:
   - **Budget Button** for add, toggle, open cart, close cart, and WhatsApp send
-    actions. The legacy remove action remains available for old templates.
+    actions.
   - **Budget Listing** for cart display, quantity controls, empty state, item
     removal, remove positioning, and submit.
 - Elementor cart template builder:
@@ -25,9 +25,7 @@ custom post type.
   - Select the template directly in a **Budget Button** configured as
     **Open budget popup**.
   - Configure the opener shell as centered modal, side drawer, or bottom sheet.
-- Legacy Elementor mode with a regular Button widget using the
-  `add-to-cart-button` CSS ID.
-- Shortcode fallback through `[sbp_cart]`.
+- Internal setup prompt when an open-cart button has no template selected.
 - Configurable allowed post types.
 - WhatsApp quote URL generation.
 - Modular PHP structure with namespaces and a small autoloader.
@@ -50,17 +48,21 @@ custom post type.
    template, edit it in Elementor, then select it in a **Budget Button** whose
    action is **Open budget popup**.
 
-## Legacy Mode
+## Elementor-Only Mode
 
-Existing Elementor pages can continue using a normal Button widget with the CSS
-ID `add-to-cart-button`. The plugin still injects the current post ID into the
-button wrapper and the frontend script keeps the original add-to-budget flow.
+Version 3 removes the old shortcode and fixed CSS ID behavior. The supported
+surface is now the native Elementor widget flow: **Budget Button**, **Budget
+Listing**, and cart templates managed in **Simple Budget > Templates**.
+
+If an open-cart button has no template selected, the popup shows a setup prompt
+that points implementers back to the template builder instead of rendering a
+legacy cart.
 
 ## Repository Status
 
-Version `2.3.5` keeps the v2.3 cart-shell package and expands responsive
-controls to strategic layout options: cart shell type, shell animation, overlay
-opacity, panel width, and Budget Listing remove-button position.
+Version `3.0.0` is an Elementor-only cleanup release. It removes the shortcode,
+fixed-ID button compatibility, unused AJAX actions, and legacy popup rendering
+while keeping a guided setup fallback for missing cart templates.
 
 ## License
 

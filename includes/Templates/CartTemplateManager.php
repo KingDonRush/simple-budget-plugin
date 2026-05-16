@@ -47,7 +47,7 @@ class CartTemplateManager {
         $options = [];
 
         if ( $include_empty ) {
-            $options[''] = __( 'Legacy popup fallback', 'simple-budget-plugin-sbp' );
+            $options[''] = __( 'No template selected - show setup prompt', 'simple-budget-plugin-sbp' );
         }
 
         foreach ( self::get_templates() as $template ) {
