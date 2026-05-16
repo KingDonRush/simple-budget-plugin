@@ -37,7 +37,7 @@ class Ajax {
             wp_send_json_error( __( 'Carrinho vazio ou dados inválidos.', 'simple-budget-plugin-sbp' ) );
         }
 
-        $display    = isset( $_POST['display'] ) ? (array) wp_unslash( $_POST['display'] ) : [];
+        $display    = isset( $_POST['display'] ) && is_array( $_POST['display'] ) ? (array) wp_unslash( $_POST['display'] ) : [];
         $quantities = isset( $_POST['quantities'] ) ? CartRenderer::normalize_quantities( wp_unslash( $_POST['quantities'] ) ) : [];
         $html       = CartRenderer::render_items( $product_ids, $display, $quantities );
 
@@ -79,17 +79,10 @@ class Ajax {
 
         $quantities = isset( $_POST['quantities'] ) ? CartRenderer::normalize_quantities( wp_unslash( $_POST['quantities'] ) ) : [];
         $message = __( "Olá! Eu gostaria de fazer um orçamento dos seguintes produtos:\n", 'simple-budget-plugin-sbp' );
-        $allowed_types = get_option( 'sbp_product_post_types', [] );
         $line_number = 1;
 
         foreach ( $cart as $id ) {
-            $post = get_post( $id );
-
-            if ( ! $post || 'publish' !== get_post_status( $post ) ) {
-                continue;
-            }
-
-            if ( is_array( $allowed_types ) && ! empty( $allowed_types ) && ! in_array( $post->post_type, $allowed_types, true ) ) {
+            if ( ! CartRenderer::is_valid_product_id( $id ) ) {
                 continue;
             }
 
@@ -109,13 +102,12 @@ class Ajax {
             wp_send_json_error( __( 'Nenhum título encontrado.', 'simple-budget-plugin-sbp' ) );
         }
 
-        $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
-        if ( empty( $whatsapp_number ) ) {
+        $whatsapp_number = preg_replace( '/[^0-9]/', '', (string) get_option( 'sbp_whatsapp_number', '' ) );
+        if ( strlen( $whatsapp_number ) < 10 ) {
             wp_send_json_error( __( 'Número de WhatsApp não configurado.', 'simple-budget-plugin-sbp' ) );
         }
 
-        $whatsapp_number = '+55' . preg_replace( '/[^0-9]/', '', $whatsapp_number );
-        $url = 'https://wa.me/' . rawurlencode( $whatsapp_number ) . '?text=' . rawurlencode( $message );
+        $url = 'https://wa.me/55' . rawurlencode( $whatsapp_number ) . '?text=' . rawurlencode( $message );
 
         wp_send_json_success( [ 'url' => $url ] );
     }

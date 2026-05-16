@@ -23,7 +23,6 @@ class Loader {
 
     /**
      * Inicializa automaticamente classes que possuam init_hooks().
-     * Também conecta enqueue_assets / enqueue_styles se existirem.
      */
     public function auto_init( array $classes ) {
         foreach ( $classes as $class_name ) {
@@ -34,12 +33,6 @@ class Loader {
 
             if ( method_exists( $instance, 'init_hooks' ) ) {
                 $instance->init_hooks();
-            }
-            if ( method_exists( $instance, 'enqueue_assets' ) ) {
-                add_action( 'wp_enqueue_scripts', [ $instance, 'enqueue_assets' ] );
-            }
-            if ( method_exists( $instance, 'enqueue_styles' ) ) {
-                add_action( 'admin_enqueue_scripts', [ $instance, 'enqueue_styles' ] );
             }
         }
     }

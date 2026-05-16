@@ -2,6 +2,8 @@ jQuery(function ($) {
     var config = window.sbp_ajax || {};
     var i18n = window.sbp_i18n_js || {};
     var debugMode = Boolean(window.sbp_debug || config.debug);
+    var maxCartItems = parseInt(config.max_cart_items, 10) || 100;
+    var maxItemQuantity = parseInt(config.max_item_quantity, 10) || 999;
 
     function debugLog() {
         if (debugMode && window.console) {
@@ -24,7 +26,7 @@ jQuery(function ($) {
 
         try {
             var cart = JSON.parse(storedCart);
-            return Array.isArray(cart) ? cart.map(String) : [];
+            return normalizeCartIds(cart);
         } catch (error) {
             debugWarn('Erro ao tentar parsear o carrinho:', error);
             return [];
@@ -52,7 +54,7 @@ jQuery(function ($) {
             if (!id || !quantity || quantity < 1) {
                 delete quantities[id];
             } else {
-                quantities[id] = quantity;
+                quantities[id] = Math.min(quantity, maxItemQuantity);
             }
         });
 
@@ -66,12 +68,13 @@ jQuery(function ($) {
 
         var uniqueCart = [];
 
-        cart.map(String).forEach(function (id) {
+        normalizeCartIds(cart).forEach(function (id) {
             if (id && uniqueCart.indexOf(id) === -1) {
                 uniqueCart.push(id);
             }
         });
 
+        uniqueCart = uniqueCart.slice(0, maxCartItems);
         localStorage.setItem('sbp_cart', JSON.stringify(uniqueCart));
         pruneQuantities(uniqueCart);
         debugLog('Carrinho salvo:', uniqueCart);
@@ -105,7 +108,25 @@ jQuery(function ($) {
     function normalizeQuantity(value) {
         var quantity = parseInt(value, 10);
 
-        return quantity && quantity > 0 ? quantity : 1;
+        return quantity && quantity > 0 ? Math.min(quantity, maxItemQuantity) : 1;
+    }
+
+    function normalizeCartIds(cart) {
+        if (!Array.isArray(cart)) {
+            return [];
+        }
+
+        var ids = [];
+
+        cart.forEach(function (id) {
+            id = String(id);
+
+            if (/^[1-9][0-9]*$/.test(id) && ids.indexOf(id) === -1) {
+                ids.push(id);
+            }
+        });
+
+        return ids.slice(0, maxCartItems);
     }
 
     function getTriggerQuantity($trigger) {

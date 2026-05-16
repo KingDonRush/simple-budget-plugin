@@ -16,6 +16,7 @@ use Elementor\Group_Control_Typography;
 use Elementor\Icons_Manager;
 use Elementor\Widget_Base;
 use SBP\Elementor\ElementorIntegration;
+use SBP\Support\CartRenderer;
 use SBP\Templates\CartTemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -778,16 +779,20 @@ class BudgetButton extends Widget_Base {
         $this->add_render_attribute( 'button', 'role', 'button' );
         $this->add_render_attribute( 'button', 'data-sbp-action', $action );
 
-        if ( $product_id && in_array( $action, [ 'add', 'toggle' ], true ) ) {
+        if ( $product_id && in_array( $action, [ 'add', 'toggle' ], true ) && CartRenderer::is_valid_product_id( $product_id ) ) {
             $this->add_render_attribute( 'button', 'data-sbp-product-id', $product_id );
         }
 
         if ( in_array( $action, [ 'add', 'toggle' ], true ) ) {
-            $this->add_render_attribute( 'button', 'data-sbp-quantity', max( 1, absint( $settings['quantity'] ?? 1 ) ) );
+            $this->add_render_attribute( 'button', 'data-sbp-quantity', min( CartRenderer::MAX_ITEM_QUANTITY, max( 1, absint( $settings['quantity'] ?? 1 ) ) ) );
         }
 
         if ( 'open_cart' === $action && ! empty( $settings['cart_template_id'] ) ) {
-            $this->add_render_attribute( 'button', 'data-sbp-template-id', absint( $settings['cart_template_id'] ) );
+            $template_id = absint( $settings['cart_template_id'] );
+
+            if ( CartTemplateManager::can_render_template( $template_id ) ) {
+                $this->add_render_attribute( 'button', 'data-sbp-template-id', $template_id );
+            }
         }
 
         if ( 'open_cart' === $action ) {

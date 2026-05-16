@@ -28,20 +28,20 @@ msgstr "Nenhum item encontrado."
 msgid "Carrinho está vazio."
 msgstr "Carrinho está vazio."
 
-#: includes/Ajax/Ajax.php:114
+#: includes/Ajax/Ajax.php:107
 msgid "Número de WhatsApp não configurado."
 msgstr "Número de WhatsApp não configurado."
 
-#: includes/Public_/Public_.php:58
+#: includes/Public_/Public_.php:62
 msgid "Seu Carrinho"
 msgstr "Seu Carrinho"
 
 #: includes/Elementor/Widgets/BudgetList.php:131
 #: includes/Elementor/Widgets/BudgetList.php:617
 #: includes/Elementor/Widgets/BudgetList.php:653
-#: includes/Public_/Public_.php:47
-#: includes/Support/CartRenderer.php:26
-#: includes/Templates/CartTemplateManager.php:279
+#: includes/Public_/Public_.php:51
+#: includes/Support/CartRenderer.php:31
+#: includes/Templates/CartTemplateManager.php:294
 msgid "Remover"
 msgstr "Remover"
 
@@ -69,23 +69,23 @@ msgstr "Insira o número de WhatsApp (apenas dígitos, com DDD). Ex.: 1199999888
 msgid "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
 msgstr "Deixe em branco para aceitar qualquer post type. Para restringir, informe os slugs (um por linha)."
 
-#: includes/Public_/Public_.php:45
+#: includes/Public_/Public_.php:49
 msgid "Erro ao carregar o carrinho."
 msgstr "Erro ao carregar o carrinho."
 
 #: includes/Elementor/Widgets/BudgetList.php:74
 #: includes/Elementor/Widgets/BudgetList.php:609
 #: includes/Elementor/Widgets/BudgetList.php:646
-#: includes/Public_/Public_.php:44
-#: includes/Templates/CartTemplateManager.php:274
+#: includes/Public_/Public_.php:48
+#: includes/Templates/CartTemplateManager.php:289
 msgid "Seu carrinho está vazio."
 msgstr "Seu carrinho está vazio."
 
-#: includes/Public_/Public_.php:43
+#: includes/Public_/Public_.php:47
 msgid "Erro: Popup do carrinho não foi encontrado na página."
 msgstr "Erro: Popup do carrinho não foi encontrado na página."
 
-#: includes/Public_/Public_.php:46
+#: includes/Public_/Public_.php:50
 msgid "Erro ao gerar a mensagem do WhatsApp."
 msgstr "Erro ao gerar a mensagem do WhatsApp."
 
@@ -178,7 +178,7 @@ msgstr ""
 msgid "Template não encontrado ou inválido."
 msgstr ""
 
-#: includes/Ajax/Ajax.php:109
+#: includes/Ajax/Ajax.php:102
 msgid "Nenhum título encontrado."
 msgstr ""
 
@@ -188,211 +188,211 @@ msgid ""
 ""
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:30
+#: includes/Elementor/Widgets/BudgetButton.php:31
 msgid "Budget Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:67
+#: includes/Elementor/Widgets/BudgetButton.php:68
 msgid "Budget Action"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:74
+#: includes/Elementor/Widgets/BudgetButton.php:75
 msgid "Action"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:78
+#: includes/Elementor/Widgets/BudgetButton.php:79
 msgid "Add current item"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:80
+#: includes/Elementor/Widgets/BudgetButton.php:81
 msgid "Open budget popup"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:81
+#: includes/Elementor/Widgets/BudgetButton.php:82
 msgid "Close budget popup"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:82
+#: includes/Elementor/Widgets/BudgetButton.php:83
 msgid "Send WhatsApp budget"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:91
+#: includes/Elementor/Widgets/BudgetButton.php:92
 msgid "Item Source"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:95
+#: includes/Elementor/Widgets/BudgetButton.php:96
 msgid "Current post"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:96
+#: includes/Elementor/Widgets/BudgetButton.php:97
 msgid "Manual post ID"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:107
+#: includes/Elementor/Widgets/BudgetButton.php:108
 msgid "Cart Template"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:111
+#: includes/Elementor/Widgets/BudgetButton.php:112
 msgid "Create and edit templates in Simple Budget > Templates."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:282
+#: includes/Elementor/Widgets/BudgetButton.php:283
 msgid "Post ID"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:345
+#: includes/Elementor/Widgets/BudgetButton.php:346
 msgid "Text"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:348
 #: includes/Elementor/Widgets/BudgetButton.php:349
+#: includes/Elementor/Widgets/BudgetButton.php:350
 msgid "Adicionar ao orçamento"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:356
+#: includes/Elementor/Widgets/BudgetButton.php:357
 msgid "Type"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:360
+#: includes/Elementor/Widgets/BudgetButton.php:361
 msgid "Default"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:361
+#: includes/Elementor/Widgets/BudgetButton.php:362
 msgid "Info"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:362
+#: includes/Elementor/Widgets/BudgetButton.php:363
 msgid "Success"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:363
+#: includes/Elementor/Widgets/BudgetButton.php:364
 msgid "Warning"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:364
+#: includes/Elementor/Widgets/BudgetButton.php:365
 msgid "Danger"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:373
-#: includes/Elementor/Widgets/BudgetButton.php:701
+#: includes/Elementor/Widgets/BudgetButton.php:374
+#: includes/Elementor/Widgets/BudgetButton.php:702
 msgid "Size"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:377
+#: includes/Elementor/Widgets/BudgetButton.php:378
 msgid "Extra Small"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:378
+#: includes/Elementor/Widgets/BudgetButton.php:379
 msgid "Small"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:379
+#: includes/Elementor/Widgets/BudgetButton.php:380
 msgid "Medium"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:380
+#: includes/Elementor/Widgets/BudgetButton.php:381
 msgid "Large"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:381
+#: includes/Elementor/Widgets/BudgetButton.php:382
 msgid "Extra Large"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:389
-#: includes/Elementor/Widgets/BudgetButton.php:632
+#: includes/Elementor/Widgets/BudgetButton.php:390
+#: includes/Elementor/Widgets/BudgetButton.php:633
 msgid "Icon"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:643
+#: includes/Elementor/Widgets/BudgetButton.php:644
 msgid "Icon Position"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:648
+#: includes/Elementor/Widgets/BudgetButton.php:649
 #: includes/Elementor/Widgets/BudgetList.php:426
 msgid "Start"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:652
+#: includes/Elementor/Widgets/BudgetButton.php:653
 #: includes/Elementor/Widgets/BudgetList.php:430
 msgid "End"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:674
+#: includes/Elementor/Widgets/BudgetButton.php:675
 msgid "Icon Spacing"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:403
+#: includes/Elementor/Widgets/BudgetButton.php:404
 msgid "Button ID"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:407
+#: includes/Elementor/Widgets/BudgetButton.php:408
 msgid "Optional unique ID without spaces."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:419
+#: includes/Elementor/Widgets/BudgetButton.php:420
 msgid "Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:427
+#: includes/Elementor/Widgets/BudgetButton.php:428
 #: includes/Elementor/Widgets/BudgetList.php:421
 msgid "Position"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:431
+#: includes/Elementor/Widgets/BudgetButton.php:432
 msgid "Left"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:435
+#: includes/Elementor/Widgets/BudgetButton.php:436
 msgid "Center"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:439
+#: includes/Elementor/Widgets/BudgetButton.php:440
 msgid "Right"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:443
+#: includes/Elementor/Widgets/BudgetButton.php:444
 msgid "Stretch"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:475
-#: includes/Elementor/Widgets/BudgetButton.php:722
+#: includes/Elementor/Widgets/BudgetButton.php:476
+#: includes/Elementor/Widgets/BudgetButton.php:723
 #: includes/Elementor/Widgets/BudgetList.php:506
 msgid "Normal"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:482
-#: includes/Elementor/Widgets/BudgetButton.php:530
+#: includes/Elementor/Widgets/BudgetButton.php:483
+#: includes/Elementor/Widgets/BudgetButton.php:531
 #: includes/Elementor/Widgets/BudgetList.php:224
 #: includes/Elementor/Widgets/BudgetList.php:513
 #: includes/Elementor/Widgets/BudgetList.php:543
 msgid "Text Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:523
-#: includes/Elementor/Widgets/BudgetButton.php:743
+#: includes/Elementor/Widgets/BudgetButton.php:524
+#: includes/Elementor/Widgets/BudgetButton.php:744
 #: includes/Elementor/Widgets/BudgetList.php:536
 msgid "Hover"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:552
+#: includes/Elementor/Widgets/BudgetButton.php:553
 msgid "Border Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:571
+#: includes/Elementor/Widgets/BudgetButton.php:572
 msgid "Transition Duration"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:583
+#: includes/Elementor/Widgets/BudgetButton.php:584
 msgid "Hover Animation"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:603
+#: includes/Elementor/Widgets/BudgetButton.php:604
 #: includes/Elementor/Widgets/BudgetList.php:254
 #: includes/Elementor/Widgets/BudgetList.php:584
 msgid "Border Radius"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:615
+#: includes/Elementor/Widgets/BudgetButton.php:616
 #: includes/Elementor/Widgets/BudgetList.php:266
 #: includes/Elementor/Widgets/BudgetList.php:596
 msgid "Padding"
@@ -411,9 +411,9 @@ msgstr ""
 msgid "Show Image"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:239
-#: includes/Elementor/Widgets/BudgetButton.php:254
-#: includes/Elementor/Widgets/BudgetButton.php:269
+#: includes/Elementor/Widgets/BudgetButton.php:240
+#: includes/Elementor/Widgets/BudgetButton.php:255
+#: includes/Elementor/Widgets/BudgetButton.php:270
 #: includes/Elementor/Widgets/BudgetList.php:83
 #: includes/Elementor/Widgets/BudgetList.php:95
 #: includes/Elementor/Widgets/BudgetList.php:107
@@ -421,9 +421,9 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:240
-#: includes/Elementor/Widgets/BudgetButton.php:255
-#: includes/Elementor/Widgets/BudgetButton.php:270
+#: includes/Elementor/Widgets/BudgetButton.php:241
+#: includes/Elementor/Widgets/BudgetButton.php:256
+#: includes/Elementor/Widgets/BudgetButton.php:271
 #: includes/Elementor/Widgets/BudgetList.php:84
 #: includes/Elementor/Widgets/BudgetList.php:96
 #: includes/Elementor/Widgets/BudgetList.php:108
@@ -450,7 +450,7 @@ msgstr ""
 #: includes/Elementor/Widgets/BudgetList.php:191
 #: includes/Elementor/Widgets/BudgetList.php:610
 #: includes/Elementor/Widgets/BudgetList.php:647
-#: includes/Templates/CartTemplateManager.php:283
+#: includes/Templates/CartTemplateManager.php:298
 msgid "Enviar orçamento via WhatsApp"
 msgstr ""
 
@@ -494,11 +494,11 @@ msgstr ""
 msgid "Submit Button"
 msgstr ""
 
-#: includes/Public_/Public_.php:49
+#: includes/Public_/Public_.php:53
 msgid "Carregando orçamento..."
 msgstr ""
 
-#: includes/Public_/Public_.php:60
+#: includes/Public_/Public_.php:64
 msgid "Fechar carrinho"
 msgstr ""
 
@@ -514,140 +514,140 @@ msgstr ""
 msgid "Could not create the Elementor template."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:262
+#: includes/Templates/CartTemplateManager.php:277
 msgid "Your Budget"
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:294
+#: includes/Templates/CartTemplateManager.php:309
 msgid "Close"
 msgstr ""
 
 #. translators: %d: item quantity.
-#: includes/Ajax/Ajax.php:101
+#: includes/Ajax/Ajax.php:94
 #, php-format
 msgid "Qtd: %d"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:79
+#: includes/Elementor/Widgets/BudgetButton.php:80
 msgid "Toggle current item (add/remove)"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:121
+#: includes/Elementor/Widgets/BudgetButton.php:122
 msgid "Cart Shell"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:133
+#: includes/Elementor/Widgets/BudgetButton.php:134
 msgid "Display Type"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:137
+#: includes/Elementor/Widgets/BudgetButton.php:138
 msgid "Centered modal"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:138
+#: includes/Elementor/Widgets/BudgetButton.php:139
 msgid "Side cart - right"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:139
+#: includes/Elementor/Widgets/BudgetButton.php:140
 msgid "Side cart - left"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:140
+#: includes/Elementor/Widgets/BudgetButton.php:141
 msgid "Bottom sheet"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:151
+#: includes/Elementor/Widgets/BudgetButton.php:152
 msgid "Animation"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:155
+#: includes/Elementor/Widgets/BudgetButton.php:156
 msgid "Fade"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:156
+#: includes/Elementor/Widgets/BudgetButton.php:157
 msgid "Fade + scale"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:157
+#: includes/Elementor/Widgets/BudgetButton.php:158
 msgid "Slide"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:158
-#: includes/Elementor/Widgets/BudgetButton.php:331
+#: includes/Elementor/Widgets/BudgetButton.php:159
+#: includes/Elementor/Widgets/BudgetButton.php:332
 #: includes/Elementor/Widgets/BudgetList.php:175
 msgid "None"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:169
+#: includes/Elementor/Widgets/BudgetButton.php:170
 msgid "Panel Width"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:203
+#: includes/Elementor/Widgets/BudgetButton.php:204
 msgid "Overlay Color"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:215
+#: includes/Elementor/Widgets/BudgetButton.php:216
 msgid "Overlay Opacity"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:237
+#: includes/Elementor/Widgets/BudgetButton.php:238
 msgid "Close on Overlay Click"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:252
+#: includes/Elementor/Widgets/BudgetButton.php:253
 msgid "Close on ESC"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:267
+#: includes/Elementor/Widgets/BudgetButton.php:268
 msgid "Show Outside Close Button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:295
+#: includes/Elementor/Widgets/BudgetButton.php:296
 #: includes/Elementor/Widgets/BudgetList.php:205
 msgid "Quantity"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:300
+#: includes/Elementor/Widgets/BudgetButton.php:301
 msgid "Initial quantity stored when this item is added to the budget."
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:310
+#: includes/Elementor/Widgets/BudgetButton.php:311
 #: includes/Elementor/Widgets/BudgetList.php:154
 msgid "When Budget Is Empty"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:314
+#: includes/Elementor/Widgets/BudgetButton.php:315
 #: includes/Elementor/Widgets/BudgetList.php:159
 msgid "Disable button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:315
+#: includes/Elementor/Widgets/BudgetButton.php:316
 #: includes/Elementor/Widgets/BudgetList.php:158
 msgid "Hide button"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:316
+#: includes/Elementor/Widgets/BudgetButton.php:317
 #: includes/Elementor/Widgets/BudgetList.php:160
 msgid "Keep visible and show message"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:327
+#: includes/Elementor/Widgets/BudgetButton.php:328
 #: includes/Elementor/Widgets/BudgetList.php:171
 msgid "Blocked Animation"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:332
+#: includes/Elementor/Widgets/BudgetButton.php:333
 #: includes/Elementor/Widgets/BudgetList.php:176
 msgid "Shake"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:333
+#: includes/Elementor/Widgets/BudgetButton.php:334
 #: includes/Elementor/Widgets/BudgetList.php:177
 msgid "Pulse"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:729
-#: includes/Elementor/Widgets/BudgetButton.php:750
+#: includes/Elementor/Widgets/BudgetButton.php:730
+#: includes/Elementor/Widgets/BudgetButton.php:751
 msgid "Color"
 msgstr ""
 
@@ -662,9 +662,9 @@ msgstr ""
 #: includes/Elementor/Widgets/BudgetList.php:119
 #: includes/Elementor/Widgets/BudgetList.php:622
 #: includes/Elementor/Widgets/BudgetList.php:658
-#: includes/Public_/Public_.php:48
-#: includes/Support/CartRenderer.php:29
-#: includes/Templates/CartTemplateManager.php:278
+#: includes/Public_/Public_.php:52
+#: includes/Support/CartRenderer.php:34
+#: includes/Templates/CartTemplateManager.php:293
 msgid "Quantidade"
 msgstr ""
 
@@ -696,15 +696,15 @@ msgstr ""
 msgid "You do not have permission to delete Simple Budget templates."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:167
+#: includes/Templates/CartTemplateManager.php:182
 msgid "Simple Budget template not found."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:174
+#: includes/Templates/CartTemplateManager.php:189
 msgid "You do not have permission to delete this template."
 msgstr ""
 
-#: includes/Templates/CartTemplateManager.php:187
+#: includes/Templates/CartTemplateManager.php:202
 msgid "Could not delete the Simple Budget template."
 msgstr ""
 
@@ -712,21 +712,21 @@ msgstr ""
 msgid "Spacing"
 msgstr ""
 
-#: includes/Elementor/Widgets/BudgetButton.php:84
+#: includes/Elementor/Widgets/BudgetButton.php:85
 msgid "Use Budget Listing controls for per-item remove buttons."
 msgstr ""
 
-#: includes/Public_/Public_.php:50
-#: includes/Public_/Public_.php:66
+#: includes/Public_/Public_.php:54
+#: includes/Public_/Public_.php:70
 msgid "Create a cart template"
 msgstr ""
 
-#: includes/Public_/Public_.php:51
-#: includes/Public_/Public_.php:67
+#: includes/Public_/Public_.php:55
+#: includes/Public_/Public_.php:71
 msgid "This Budget Button needs a Simple Budget template. Create one in Simple Budget > Templates, edit it with Elementor, then select it in the button settings."
 msgstr ""
 
-#: includes/Public_/Public_.php:70
+#: includes/Public_/Public_.php:74
 msgid "Open Simple Budget Templates"
 msgstr ""
 

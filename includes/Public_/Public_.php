@@ -5,6 +5,8 @@
 
 namespace SBP\Public_;
 
+use SBP\Support\CartRenderer;
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Public_ {
@@ -34,9 +36,11 @@ class Public_ {
         $whatsapp_number = get_option( 'sbp_whatsapp_number', '' );
 
         wp_localize_script( 'sbp-script', 'sbp_ajax', [
-            'ajax_url'        => admin_url( 'admin-ajax.php' ),
-            'nonce'           => wp_create_nonce( 'sbp_nonce' ),
-            'whatsapp_number' => $whatsapp_number,
+            'ajax_url'          => admin_url( 'admin-ajax.php' ),
+            'nonce'             => wp_create_nonce( 'sbp_nonce' ),
+            'whatsapp_number'   => $whatsapp_number,
+            'max_cart_items'    => CartRenderer::MAX_CART_ITEMS,
+            'max_item_quantity' => CartRenderer::MAX_ITEM_QUANTITY,
         ]);
 
         wp_localize_script( 'sbp-script', 'sbp_i18n_js', [

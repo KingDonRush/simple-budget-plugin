@@ -148,10 +148,25 @@ class CartTemplateManager {
             && self::ROLE_CART_MODAL === get_post_meta( $template_id, self::ROLE_META, true );
     }
 
+    public static function can_render_template( $template_id ) {
+        $template_id = absint( $template_id );
+        $template    = $template_id ? get_post( $template_id ) : null;
+
+        if ( ! $template || ! self::is_cart_template( $template_id ) ) {
+            return false;
+        }
+
+        if ( 'publish' === $template->post_status ) {
+            return true;
+        }
+
+        return is_user_logged_in() && current_user_can( 'edit_post', $template_id );
+    }
+
     public static function render_template( $template_id ) {
         $template_id = absint( $template_id );
 
-        if ( ! self::is_cart_template( $template_id ) || ! self::is_elementor_available() ) {
+        if ( ! self::can_render_template( $template_id ) || ! self::is_elementor_available() ) {
             return '';
         }
 

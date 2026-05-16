@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,23 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 3.0.1 =
+**PT-BR:**
+- Endurece a renderização de templates do carrinho validando role, post type, status e permissão antes de carregar conteúdo Elementor.
+- Centraliza validação de produtos, post types permitidos, quantidade máxima e limite de itens no renderer compartilhado.
+- Limita payloads do carrinho no frontend e no servidor para evitar requisições excessivas.
+- Valida melhor o número de WhatsApp antes de gerar a URL.
+- Remove registro duplicado de assets no loader interno.
+- Remove helpers globais mortos e limpa a opção de versão no uninstall.
+
+**EN-US:**
+- Hardens cart template rendering by validating role, post type, status, and capability before loading Elementor content.
+- Centralizes product validation, allowed post types, maximum quantity, and item limits in the shared renderer.
+- Caps cart payloads on the frontend and server to avoid excessive requests.
+- Validates the WhatsApp number more strictly before generating the URL.
+- Removes duplicated asset registration from the internal loader.
+- Removes dead global helpers and clears the version option on uninstall.
+
 = 3.0.0 =
 **PT-BR:**
 - Remove o shortcode `[sbp_cart]` e o suporte a botões legados por IDs fixos.

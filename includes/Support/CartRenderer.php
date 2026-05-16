@@ -9,11 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class CartRenderer {
 
-    public static function normalize_product_ids( $product_ids ) {
-        $product_ids = array_map( 'intval', (array) $product_ids );
-        $product_ids = array_filter( $product_ids );
+    const MAX_CART_ITEMS = 100;
+    const MAX_ITEM_QUANTITY = 999;
+    const MAX_LABEL_LENGTH = 80;
 
-        return array_values( array_unique( $product_ids ) );
+    public static function normalize_product_ids( $product_ids ) {
+        $product_ids = array_map( 'absint', (array) $product_ids );
+        $product_ids = array_filter( $product_ids );
+        $product_ids = array_values( array_unique( $product_ids ) );
+
+        return array_slice( $product_ids, 0, self::MAX_CART_ITEMS );
     }
 
     public static function normalize_display_args( $args = [] ) {
@@ -23,10 +28,10 @@ class CartRenderer {
         return [
             'show_image'      => self::to_bool( $args['show_image'] ?? true ),
             'show_remove'     => self::to_bool( $args['show_remove'] ?? true ),
-            'remove_text'     => sanitize_text_field( $args['remove_text'] ?? __( 'Remover', 'simple-budget-plugin-sbp' ) ),
+            'remove_text'     => self::normalize_label( $args['remove_text'] ?? '', __( 'Remover', 'simple-budget-plugin-sbp' ) ),
             'remove_position' => in_array( $remove_position, [ 'inline_start', 'inline_end', 'top', 'bottom' ], true ) ? $remove_position : 'inline_end',
             'show_quantity'   => self::to_bool( $args['show_quantity'] ?? false ),
-            'quantity_label'  => sanitize_text_field( $args['quantity_label'] ?? __( 'Quantidade', 'simple-budget-plugin-sbp' ) ),
+            'quantity_label'  => self::normalize_label( $args['quantity_label'] ?? '', __( 'Quantidade', 'simple-budget-plugin-sbp' ) ),
         ];
     }
 
@@ -42,11 +47,32 @@ class CartRenderer {
             $quantity   = absint( $quantity );
 
             if ( $product_id && $quantity > 0 ) {
-                $normalized[ (string) $product_id ] = $quantity;
+                $normalized[ (string) $product_id ] = min( $quantity, self::MAX_ITEM_QUANTITY );
             }
         }
 
         return $normalized;
+    }
+
+    public static function get_allowed_post_types() {
+        $allowed_types = get_option( 'sbp_product_post_types', [] );
+        $allowed_types = array_map( 'sanitize_key', (array) $allowed_types );
+        $allowed_types = array_filter( array_unique( $allowed_types ) );
+
+        return array_values( $allowed_types );
+    }
+
+    public static function is_valid_product_id( $product_id ) {
+        $product_id = absint( $product_id );
+        $post       = $product_id ? get_post( $product_id ) : null;
+
+        if ( ! $post || 'publish' !== get_post_status( $post ) ) {
+            return false;
+        }
+
+        $allowed_types = self::get_allowed_post_types();
+
+        return empty( $allowed_types ) || in_array( $post->post_type, $allowed_types, true );
     }
 
     public static function render_items( $product_ids, $args = [], $quantities = [] ) {
@@ -123,7 +149,7 @@ class CartRenderer {
     }
 
     private static function query_items( array $product_ids ) {
-        $allowed_types = get_option( 'sbp_product_post_types', [] );
+        $allowed_types = self::get_allowed_post_types();
         $query_types   = ! empty( $allowed_types ) ? $allowed_types : 'any';
 
         return new \WP_Query([
@@ -141,5 +167,19 @@ class CartRenderer {
         }
 
         return in_array( (string) $value, [ '1', 'true', 'yes', 'on' ], true );
+    }
+
+    private static function normalize_label( $value, $fallback ) {
+        $value = sanitize_text_field( $value );
+
+        if ( '' === $value ) {
+            return $fallback;
+        }
+
+        if ( function_exists( 'mb_substr' ) ) {
+            return mb_substr( $value, 0, self::MAX_LABEL_LENGTH );
+        }
+
+        return substr( $value, 0, self::MAX_LABEL_LENGTH );
     }
 }

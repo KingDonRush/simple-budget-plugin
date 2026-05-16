@@ -60,9 +60,11 @@ legacy cart.
 
 ## Repository Status
 
-Version `3.0.0` is an Elementor-only cleanup release. It removes the shortcode,
-fixed-ID button compatibility, unused AJAX actions, and legacy popup rendering
-while keeping a guided setup fallback for missing cart templates.
+Version `3.0.1` hardens the Elementor-only v3 flow. Template rendering now
+checks template role, post status, and edit capability; cart payloads and
+quantities are capped on both frontend and server; product validation is shared
+by listing and WhatsApp rendering; and hook registration avoids duplicated asset
+enqueue paths.
 
 ## License
 
