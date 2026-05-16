@@ -415,7 +415,7 @@ class BudgetList extends Widget_Base {
             ]
         );
 
-        $this->add_control(
+        $this->add_responsive_control(
             'remove_position',
             [
                 'label'   => esc_html__( 'Position', 'simple-budget-plugin-sbp' ),
@@ -616,6 +616,8 @@ class BudgetList extends Widget_Base {
             'data-sbp-show-remove'            => ( $settings['show_remove'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
             'data-sbp-remove-text'            => $settings['remove_text'] ?? __( 'Remover', 'simple-budget-plugin-sbp' ),
             'data-sbp-remove-position'        => $this->sanitize_remove_position( $settings['remove_position'] ?? 'inline_end' ),
+            'data-sbp-remove-position-tablet' => $this->sanitize_remove_position( $settings['remove_position_tablet'] ?? '', '' ),
+            'data-sbp-remove-position-mobile' => $this->sanitize_remove_position( $settings['remove_position_mobile'] ?? '', '' ),
             'data-sbp-show-quantity'          => ( $settings['show_quantity'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
             'data-sbp-quantity-label'         => $settings['quantity_label'] ?? __( 'Quantidade', 'simple-budget-plugin-sbp' ),
             'data-sbp-submit-empty-behavior'  => $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ),
@@ -650,6 +652,8 @@ class BudgetList extends Widget_Base {
             data-sbp-show-remove="{{ settings.show_remove || 'yes' }}"
             data-sbp-remove-text="{{ settings.remove_text || '<?php echo esc_js( __( 'Remover', 'simple-budget-plugin-sbp' ) ); ?>' }}"
             data-sbp-remove-position="{{ settings.remove_position || 'inline_end' }}"
+            data-sbp-remove-position-tablet="{{ settings.remove_position_tablet || '' }}"
+            data-sbp-remove-position-mobile="{{ settings.remove_position_mobile || '' }}"
             data-sbp-show-quantity="{{ settings.show_quantity || 'yes' }}"
             data-sbp-quantity-label="{{ settings.quantity_label || '<?php echo esc_js( __( 'Quantidade', 'simple-budget-plugin-sbp' ) ); ?>' }}"
             data-sbp-submit-empty-behavior="{{ settings.submit_empty_behavior || 'hide' }}"
@@ -670,10 +674,10 @@ class BudgetList extends Widget_Base {
         <?php
     }
 
-    private function sanitize_remove_position( $position ) {
+    private function sanitize_remove_position( $position, $fallback = 'inline_end' ) {
         $allowed = [ 'inline_start', 'inline_end', 'top', 'bottom' ];
 
-        return in_array( $position, $allowed, true ) ? $position : 'inline_end';
+        return in_array( $position, $allowed, true ) ? $position : $fallback;
     }
 
     private function sanitize_empty_behavior( $behavior ) {

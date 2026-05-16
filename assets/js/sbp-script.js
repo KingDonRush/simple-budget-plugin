@@ -232,7 +232,7 @@ jQuery(function ($) {
             show_image: $listing.data('sbp-show-image') || 'yes',
             show_remove: $listing.data('sbp-show-remove') || 'yes',
             remove_text: $listing.data('sbp-remove-text') || i18n.remove_text || 'Remover',
-            remove_position: $listing.data('sbp-remove-position') || 'inline_end',
+            remove_position: getResponsiveData($listing, 'sbp-remove-position', 'inline_end'),
             show_quantity: $listing.data('sbp-show-quantity') || 'no',
             quantity_label: $listing.data('sbp-quantity-label') || i18n.quantity_label || 'Quantidade'
         };
@@ -459,21 +459,21 @@ jQuery(function ($) {
         }
 
         return {
-            shell: $trigger.data('sbp-shell') || 'modal',
-            animation: $trigger.data('sbp-animation') || 'fade_scale',
-            panelWidth: getResponsivePanelWidth($trigger),
+            shell: getResponsiveData($trigger, 'sbp-shell', 'modal'),
+            animation: getResponsiveData($trigger, 'sbp-animation', 'fade_scale'),
+            panelWidth: getResponsiveData($trigger, 'sbp-panel-width', '560px'),
             overlayColor: $trigger.data('sbp-overlay-color') || '#000000',
-            overlayOpacity: $trigger.data('sbp-overlay-opacity') || 50,
+            overlayOpacity: getResponsiveData($trigger, 'sbp-overlay-opacity', 50),
             closeOverlay: $trigger.data('sbp-close-overlay') || 'yes',
             closeEscape: $trigger.data('sbp-close-escape') || 'yes',
             showClose: $trigger.data('sbp-show-close') || 'yes'
         };
     }
 
-    function getResponsivePanelWidth($trigger) {
-        var desktop = $trigger.data('sbp-panel-width') || '560px';
-        var tablet = $trigger.data('sbp-panel-width-tablet') || desktop;
-        var mobile = $trigger.data('sbp-panel-width-mobile') || tablet;
+    function getResponsiveData($element, baseName, fallback) {
+        var desktop = getDataOrFallback($element, baseName, fallback);
+        var tablet = getDataOrFallback($element, baseName + '-tablet', desktop);
+        var mobile = getDataOrFallback($element, baseName + '-mobile', tablet);
         var breakpoints = getElementorBreakpoints();
 
         if (window.matchMedia && window.matchMedia('(max-width: ' + breakpoints.mobile + 'px)').matches) {
@@ -485,6 +485,12 @@ jQuery(function ($) {
         }
 
         return desktop;
+    }
+
+    function getDataOrFallback($element, name, fallback) {
+        var value = $element.data(name);
+
+        return 'undefined' === typeof value || '' === value ? fallback : value;
     }
 
     function getElementorBreakpoints() {

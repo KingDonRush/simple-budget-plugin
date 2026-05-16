@@ -128,7 +128,7 @@ class BudgetButton extends Widget_Base {
             ]
         );
 
-        $this->add_control(
+        $this->add_responsive_control(
             'cart_shell',
             [
                 'label'     => esc_html__( 'Display Type', 'simple-budget-plugin-sbp' ),
@@ -146,7 +146,7 @@ class BudgetButton extends Widget_Base {
             ]
         );
 
-        $this->add_control(
+        $this->add_responsive_control(
             'cart_animation',
             [
                 'label'     => esc_html__( 'Animation', 'simple-budget-plugin-sbp' ),
@@ -210,7 +210,7 @@ class BudgetButton extends Widget_Base {
             ]
         );
 
-        $this->add_control(
+        $this->add_responsive_control(
             'cart_overlay_opacity',
             [
                 'label'      => esc_html__( 'Overlay Opacity', 'simple-budget-plugin-sbp' ),
@@ -858,13 +858,41 @@ class BudgetButton extends Widget_Base {
                 return value && value.size ? value.size + ( value.unit || 'px' ) : fallback;
             }
 
+            function sbpResponsiveValue( value, fallback ) {
+                return value || fallback || '';
+            }
+
+            function sbpResponsiveSliderSize( value, fallback ) {
+                return value && ( value.size || 0 === value.size ) ? value.size : fallback;
+            }
+
+            var shell = sbpResponsiveValue( settings.cart_shell, 'modal' );
+            var shellTablet = sbpResponsiveValue( settings.cart_shell_tablet, '' );
+            var shellMobile = sbpResponsiveValue( settings.cart_shell_mobile, '' );
+            var animation = sbpResponsiveValue( settings.cart_animation, 'fade_scale' );
+            var animationTablet = sbpResponsiveValue( settings.cart_animation_tablet, '' );
+            var animationMobile = sbpResponsiveValue( settings.cart_animation_mobile, '' );
             var width = sbpResponsiveWidth( settings.cart_panel_width, '560px' );
             var widthTablet = sbpResponsiveWidth( settings.cart_panel_width_tablet, '' );
             var widthMobile = sbpResponsiveWidth( settings.cart_panel_width_mobile, '' );
-            var opacity = settings.cart_overlay_opacity && settings.cart_overlay_opacity.size ? settings.cart_overlay_opacity.size : 50;
+            var opacity = sbpResponsiveSliderSize( settings.cart_overlay_opacity, 50 );
+            var opacityTablet = sbpResponsiveSliderSize( settings.cart_overlay_opacity_tablet, '' );
+            var opacityMobile = sbpResponsiveSliderSize( settings.cart_overlay_opacity_mobile, '' );
 
-            view.addRenderAttribute( 'button', 'data-sbp-shell', settings.cart_shell || 'modal' );
-            view.addRenderAttribute( 'button', 'data-sbp-animation', settings.cart_animation || 'fade_scale' );
+            view.addRenderAttribute( 'button', 'data-sbp-shell', shell );
+            if ( shellTablet ) {
+                view.addRenderAttribute( 'button', 'data-sbp-shell-tablet', shellTablet );
+            }
+            if ( shellMobile ) {
+                view.addRenderAttribute( 'button', 'data-sbp-shell-mobile', shellMobile );
+            }
+            view.addRenderAttribute( 'button', 'data-sbp-animation', animation );
+            if ( animationTablet ) {
+                view.addRenderAttribute( 'button', 'data-sbp-animation-tablet', animationTablet );
+            }
+            if ( animationMobile ) {
+                view.addRenderAttribute( 'button', 'data-sbp-animation-mobile', animationMobile );
+            }
             view.addRenderAttribute( 'button', 'data-sbp-panel-width', width );
             if ( widthTablet ) {
                 view.addRenderAttribute( 'button', 'data-sbp-panel-width-tablet', widthTablet );
@@ -874,6 +902,12 @@ class BudgetButton extends Widget_Base {
             }
             view.addRenderAttribute( 'button', 'data-sbp-overlay-color', settings.cart_overlay_color || '#000000' );
             view.addRenderAttribute( 'button', 'data-sbp-overlay-opacity', opacity );
+            if ( '' !== opacityTablet ) {
+                view.addRenderAttribute( 'button', 'data-sbp-overlay-opacity-tablet', opacityTablet );
+            }
+            if ( '' !== opacityMobile ) {
+                view.addRenderAttribute( 'button', 'data-sbp-overlay-opacity-mobile', opacityMobile );
+            }
             view.addRenderAttribute( 'button', 'data-sbp-close-overlay', settings.cart_close_on_overlay || 'yes' );
             view.addRenderAttribute( 'button', 'data-sbp-close-escape', settings.cart_close_on_escape || 'yes' );
             view.addRenderAttribute( 'button', 'data-sbp-show-close', settings.cart_show_close || 'yes' );
@@ -951,15 +985,33 @@ class BudgetButton extends Widget_Base {
     }
 
     private function add_cart_shell_attributes( array $settings ) {
+        $shell_desktop    = $this->sanitize_shell( $settings['cart_shell'] ?? 'modal' );
+        $shell_tablet     = $this->sanitize_shell( $settings['cart_shell_tablet'] ?? '', '' );
+        $shell_mobile     = $this->sanitize_shell( $settings['cart_shell_mobile'] ?? '', '' );
+        $animation_desktop = $this->sanitize_cart_animation( $settings['cart_animation'] ?? 'fade_scale' );
+        $animation_tablet  = $this->sanitize_cart_animation( $settings['cart_animation_tablet'] ?? '', '' );
+        $animation_mobile  = $this->sanitize_cart_animation( $settings['cart_animation_mobile'] ?? '', '' );
         $width_desktop = $this->format_panel_width( $settings['cart_panel_width'] ?? [], '560px' );
         $width_tablet  = $this->format_panel_width( $settings['cart_panel_width_tablet'] ?? [], '' );
         $width_mobile  = $this->format_panel_width( $settings['cart_panel_width_mobile'] ?? [], '' );
+        $overlay_opacity_desktop = $this->format_percentage_slider( $settings['cart_overlay_opacity'] ?? [], 50 );
+        $overlay_opacity_tablet  = $this->format_percentage_slider( $settings['cart_overlay_opacity_tablet'] ?? [], '' );
+        $overlay_opacity_mobile  = $this->format_percentage_slider( $settings['cart_overlay_opacity_mobile'] ?? [], '' );
 
-        $overlay_opacity = $settings['cart_overlay_opacity']['size'] ?? 50;
-        $overlay_opacity = max( 0, min( 100, (float) $overlay_opacity ) );
-
-        $this->add_render_attribute( 'button', 'data-sbp-shell', $this->sanitize_shell( $settings['cart_shell'] ?? 'modal' ) );
-        $this->add_render_attribute( 'button', 'data-sbp-animation', $this->sanitize_cart_animation( $settings['cart_animation'] ?? 'fade_scale' ) );
+        $this->add_render_attribute( 'button', 'data-sbp-shell', $shell_desktop );
+        if ( '' !== $shell_tablet ) {
+            $this->add_render_attribute( 'button', 'data-sbp-shell-tablet', $shell_tablet );
+        }
+        if ( '' !== $shell_mobile ) {
+            $this->add_render_attribute( 'button', 'data-sbp-shell-mobile', $shell_mobile );
+        }
+        $this->add_render_attribute( 'button', 'data-sbp-animation', $animation_desktop );
+        if ( '' !== $animation_tablet ) {
+            $this->add_render_attribute( 'button', 'data-sbp-animation-tablet', $animation_tablet );
+        }
+        if ( '' !== $animation_mobile ) {
+            $this->add_render_attribute( 'button', 'data-sbp-animation-mobile', $animation_mobile );
+        }
         $this->add_render_attribute( 'button', 'data-sbp-panel-width', $width_desktop );
         if ( '' !== $width_tablet ) {
             $this->add_render_attribute( 'button', 'data-sbp-panel-width-tablet', $width_tablet );
@@ -968,7 +1020,13 @@ class BudgetButton extends Widget_Base {
             $this->add_render_attribute( 'button', 'data-sbp-panel-width-mobile', $width_mobile );
         }
         $this->add_render_attribute( 'button', 'data-sbp-overlay-color', sanitize_hex_color( $settings['cart_overlay_color'] ?? '#000000' ) ?: '#000000' );
-        $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity', $overlay_opacity );
+        $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity', $overlay_opacity_desktop );
+        if ( '' !== $overlay_opacity_tablet ) {
+            $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity-tablet', $overlay_opacity_tablet );
+        }
+        if ( '' !== $overlay_opacity_mobile ) {
+            $this->add_render_attribute( 'button', 'data-sbp-overlay-opacity-mobile', $overlay_opacity_mobile );
+        }
         $this->add_render_attribute( 'button', 'data-sbp-close-overlay', ( $settings['cart_close_on_overlay'] ?? 'yes' ) === 'yes' ? 'yes' : 'no' );
         $this->add_render_attribute( 'button', 'data-sbp-close-escape', ( $settings['cart_close_on_escape'] ?? 'yes' ) === 'yes' ? 'yes' : 'no' );
         $this->add_render_attribute( 'button', 'data-sbp-show-close', ( $settings['cart_show_close'] ?? 'yes' ) === 'yes' ? 'yes' : 'no' );
@@ -990,16 +1048,26 @@ class BudgetButton extends Widget_Base {
         return $size . $unit;
     }
 
-    private function sanitize_shell( $shell ) {
-        $allowed = [ 'modal', 'drawer_right', 'drawer_left', 'bottom_sheet' ];
+    private function format_percentage_slider( $value, $fallback ) {
+        if ( ! is_array( $value ) || ! isset( $value['size'] ) || '' === $value['size'] ) {
+            return $fallback;
+        }
 
-        return in_array( $shell, $allowed, true ) ? $shell : 'modal';
+        $size = max( 0, min( 100, (float) $value['size'] ) );
+
+        return rtrim( rtrim( (string) $size, '0' ), '.' );
     }
 
-    private function sanitize_cart_animation( $animation ) {
+    private function sanitize_shell( $shell, $fallback = 'modal' ) {
+        $allowed = [ 'modal', 'drawer_right', 'drawer_left', 'bottom_sheet' ];
+
+        return in_array( $shell, $allowed, true ) ? $shell : $fallback;
+    }
+
+    private function sanitize_cart_animation( $animation, $fallback = 'fade_scale' ) {
         $allowed = [ 'fade', 'fade_scale', 'slide', 'none' ];
 
-        return in_array( $animation, $allowed, true ) ? $animation : 'fade_scale';
+        return in_array( $animation, $allowed, true ) ? $animation : $fallback;
     }
 
     private function sanitize_empty_behavior( $behavior ) {

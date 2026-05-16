@@ -58,9 +58,9 @@ button wrapper and the frontend script keeps the original add-to-budget flow.
 
 ## Repository Status
 
-Version `2.3.4` keeps the v2.3 cart-shell package and makes the cart shell
-panel width responsive, so implementers can define separate desktop, tablet, and
-mobile widths for modal, drawer, and bottom-sheet layouts.
+Version `2.3.5` keeps the v2.3 cart-shell package and expands responsive
+controls to strategic layout options: cart shell type, shell animation, overlay
+opacity, panel width, and Budget Listing remove-button position.
 
 ## License
 

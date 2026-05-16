@@ -62,7 +62,7 @@ msgstr "Enviar Orçamento via WhatsApp"
 
 #: includes/Elementor/Widgets/BudgetList.php:131
 #: includes/Elementor/Widgets/BudgetList.php:617
-#: includes/Elementor/Widgets/BudgetList.php:651
+#: includes/Elementor/Widgets/BudgetList.php:653
 #: includes/Public_/Public_.php:54
 #: includes/Support/CartRenderer.php:26
 #: includes/Templates/CartTemplateManager.php:279
@@ -100,7 +100,7 @@ msgstr "Erro ao carregar o carrinho."
 
 #: includes/Elementor/Widgets/BudgetList.php:74
 #: includes/Elementor/Widgets/BudgetList.php:609
-#: includes/Elementor/Widgets/BudgetList.php:644
+#: includes/Elementor/Widgets/BudgetList.php:646
 #: includes/Public_/Public_.php:46
 #: includes/Shortcodes/Shortcodes.php:19
 #: includes/Templates/CartTemplateManager.php:274
@@ -496,7 +496,7 @@ msgstr ""
 
 #: includes/Elementor/Widgets/BudgetList.php:191
 #: includes/Elementor/Widgets/BudgetList.php:610
-#: includes/Elementor/Widgets/BudgetList.php:645
+#: includes/Elementor/Widgets/BudgetList.php:647
 #: includes/Templates/CartTemplateManager.php:283
 msgid "Enviar orçamento via WhatsApp"
 msgstr ""
@@ -730,8 +730,8 @@ msgid "Quantity Label"
 msgstr ""
 
 #: includes/Elementor/Widgets/BudgetList.php:119
-#: includes/Elementor/Widgets/BudgetList.php:620
-#: includes/Elementor/Widgets/BudgetList.php:654
+#: includes/Elementor/Widgets/BudgetList.php:622
+#: includes/Elementor/Widgets/BudgetList.php:658
 #: includes/Public_/Public_.php:55
 #: includes/Shortcodes/Shortcodes.php:47
 #: includes/Support/CartRenderer.php:29
