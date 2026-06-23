@@ -6,6 +6,7 @@
 namespace SBP\Ajax;
 
 use SBP\Support\CartRenderer;
+use SBP\Support\Pricing;
 use SBP\Templates\CartTemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -89,11 +90,22 @@ class Ajax {
             $title = get_the_title( $id );
             if ( $title ) {
                 $quantity = max( 1, absint( $quantities[ (string) $id ] ?? 1 ) );
+                $price = Pricing::display_for_post( $id );
                 $message .= $line_number . ' - ' . $title . ' - ' . sprintf(
                     /* translators: %d: item quantity. */
                     __( 'Qtd: %d', 'simple-budget-plugin-sbp' ),
                     $quantity
-                ) . "\n";
+                );
+
+                if ( '' !== $price ) {
+                    $message .= ' - ' . sprintf(
+                        /* translators: %s: formatted item price or price range. */
+                        __( 'Price: %s', 'simple-budget-plugin-sbp' ),
+                        $price
+                    );
+                }
+
+                $message .= "\n";
                 $line_number++;
             }
         }

@@ -48,6 +48,7 @@ class Public_ {
             'whatsapp_error'        => __( 'Erro ao gerar a mensagem do WhatsApp.', 'simple-budget-plugin-sbp' ),
             'remove_text'           => __( 'Remover', 'simple-budget-plugin-sbp' ),
             'quantity_label'        => __( 'Quantidade', 'simple-budget-plugin-sbp' ),
+            'price_label'           => __( 'Preço', 'simple-budget-plugin-sbp' ),
             'template_loading'      => __( 'Carregando orçamento...', 'simple-budget-plugin-sbp' ),
             'template_setup_title'  => __( 'Create a cart template', 'simple-budget-plugin-sbp' ),
             'template_setup_text'   => __( 'This Budget Button needs a Simple Budget template. Create one in Simple Budget > Templates, edit it with Elementor, then select it in the button settings.', 'simple-budget-plugin-sbp' ),

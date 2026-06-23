@@ -366,6 +366,24 @@
     margin: 0;
 }
 
+.sbp-cart-item__price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px 0 0;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.sbp-cart-item__price-label {
+    font-weight: 600;
+}
+
+.sbp-cart-item__price-value {
+    color: #111827;
+}
+
 .sbp-budget-listing__empty {
     margin: 0;
 }

@@ -32,6 +32,8 @@ class CartRenderer {
             'remove_position' => in_array( $remove_position, [ 'inline_start', 'inline_end', 'top', 'bottom' ], true ) ? $remove_position : 'inline_end',
             'show_quantity'   => self::to_bool( $args['show_quantity'] ?? false ),
             'quantity_label'  => self::normalize_label( $args['quantity_label'] ?? '', __( 'Quantidade', 'simple-budget-plugin-sbp' ) ),
+            'show_price'      => self::to_bool( $args['show_price'] ?? false ),
+            'price_label'     => self::normalize_label( $args['price_label'] ?? '', __( 'Price', 'simple-budget-plugin-sbp' ) ),
         ];
     }
 
@@ -102,6 +104,7 @@ class CartRenderer {
                     'title'     => get_the_title(),
                     'image_url' => get_the_post_thumbnail_url( $id, 'thumbnail' ),
                     'quantity'  => $quantities[ (string) $id ] ?? 1,
+                    'pricing'   => Pricing::for_post( $id ),
                     'preview'   => false,
                 ],
                 $display
@@ -129,6 +132,7 @@ class CartRenderer {
                         $index
                     ),
                     'quantity' => $quantity,
+                    'pricing'  => Pricing::preview(),
                     'preview'  => true,
                 ],
                 $display
@@ -221,6 +225,7 @@ class CartRenderer {
         $title       = (string) ( $item['title'] ?? '' );
         $image_url   = (string) ( $item['image_url'] ?? '' );
         $quantity    = min( self::MAX_ITEM_QUANTITY, max( 1, absint( $item['quantity'] ?? 1 ) ) );
+        $price       = Pricing::display_from_data( $item['pricing'] ?? [] );
         $is_preview  = ! empty( $item['preview'] );
         $has_actions = $display['show_quantity'] || $display['show_remove'];
         $classes     = [
@@ -250,6 +255,12 @@ class CartRenderer {
 
             <div class="sbp-cart-item__body">
                 <h4 class="sbp-cart-item__title"><?php echo esc_html( $title ); ?></h4>
+                <?php if ( $display['show_price'] && '' !== $price ) : ?>
+                    <p class="sbp-cart-item__price">
+                        <span class="sbp-cart-item__price-label"><?php echo esc_html( $display['price_label'] ); ?></span>
+                        <span class="sbp-cart-item__price-value"><?php echo esc_html( $price ); ?></span>
+                    </p>
+                <?php endif; ?>
             </div>
 
             <?php if ( $has_actions ) : ?>

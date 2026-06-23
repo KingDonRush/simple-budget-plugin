@@ -10,6 +10,7 @@ use SBP\Admin\Admin;
 use SBP\Public_\Public_;   // Classe "Public_" fica no namespace SBP\Public_
 use SBP\Ajax\Ajax;
 use SBP\Elementor\ElementorIntegration;
+use SBP\Support\Pricing;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -28,6 +29,7 @@ class Main {
             Public_::class,
             Ajax::class,
             ElementorIntegration::class,
+            Pricing::class,
         ];
 
         $this->loader->auto_init( $modules );

@@ -55,6 +55,7 @@ class BudgetList extends Widget_Base {
         $this->register_content_controls();
         $this->register_preview_controls();
         $this->register_list_style_controls();
+        $this->register_price_style_controls();
         $this->register_quantity_style_controls();
         $this->register_remove_button_style_controls();
         $this->register_submit_button_style_controls();
@@ -110,6 +111,30 @@ class BudgetList extends Widget_Base {
                 'label_off'    => esc_html__( 'No', 'simple-budget-plugin-sbp' ),
                 'return_value' => 'yes',
                 'default'      => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'show_price',
+            [
+                'label'        => esc_html__( 'Show Price', 'simple-budget-plugin-sbp' ),
+                'type'         => Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Yes', 'simple-budget-plugin-sbp' ),
+                'label_off'    => esc_html__( 'No', 'simple-budget-plugin-sbp' ),
+                'return_value' => 'yes',
+                'default'      => 'no',
+            ]
+        );
+
+        $this->add_control(
+            'price_label',
+            [
+                'label'     => esc_html__( 'Price Label', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::TEXT,
+                'default'   => esc_html__( 'Preço', 'simple-budget-plugin-sbp' ),
+                'condition' => [
+                    'show_price' => 'yes',
+                ],
             ]
         );
 
@@ -352,6 +377,51 @@ class BudgetList extends Widget_Base {
                 'size_units' => [ 'px', 'em', 'rem' ],
                 'selectors'  => [
                     '{{WRAPPER}} .sbp-quantity-field' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    private function register_price_style_controls() {
+        $this->start_controls_section(
+            'section_price_style',
+            [
+                'label'     => esc_html__( 'Price', 'simple-budget-plugin-sbp' ),
+                'tab'       => Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'show_price' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'price_typography',
+                'selector' => '{{WRAPPER}} .sbp-cart-item__price',
+            ]
+        );
+
+        $this->add_control(
+            'price_text_color',
+            [
+                'label'     => esc_html__( 'Text Color', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .sbp-cart-item__price' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'price_value_color',
+            [
+                'label'     => esc_html__( 'Value Color', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .sbp-cart-item__price-value' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -706,6 +776,8 @@ class BudgetList extends Widget_Base {
             'data-sbp-remove-position-mobile' => $this->sanitize_remove_position( $settings['remove_position_mobile'] ?? '', '' ),
             'data-sbp-show-quantity'          => ( $settings['show_quantity'] ?? 'yes' ) === 'yes' ? 'yes' : 'no',
             'data-sbp-quantity-label'         => $settings['quantity_label'] ?? __( 'Quantidade', 'simple-budget-plugin-sbp' ),
+            'data-sbp-show-price'             => ( $settings['show_price'] ?? 'no' ) === 'yes' ? 'yes' : 'no',
+            'data-sbp-price-label'            => $settings['price_label'] ?? __( 'Preço', 'simple-budget-plugin-sbp' ),
             'data-sbp-submit-empty-behavior'  => $this->sanitize_empty_behavior( $settings['submit_empty_behavior'] ?? 'hide' ),
             'data-sbp-submit-empty-animation' => $this->sanitize_empty_animation( $settings['submit_empty_animation'] ?? 'shake' ),
         ] );
@@ -773,6 +845,8 @@ class BudgetList extends Widget_Base {
             'remove_position' => $this->sanitize_remove_position( $settings['remove_position'] ?? 'inline_end' ),
             'show_quantity'   => ( $settings['show_quantity'] ?? 'yes' ) === 'yes',
             'quantity_label'  => $settings['quantity_label'] ?? __( 'Quantidade', 'simple-budget-plugin-sbp' ),
+            'show_price'      => ( $settings['show_price'] ?? 'no' ) === 'yes',
+            'price_label'     => $settings['price_label'] ?? __( 'Preço', 'simple-budget-plugin-sbp' ),
         ];
         $quantity = min( CartRenderer::MAX_ITEM_QUANTITY, max( 1, absint( $settings['preview_quantity'] ?? 1 ) ) );
         $quantities = [];

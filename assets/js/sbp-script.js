@@ -241,7 +241,9 @@ jQuery(function ($) {
             remove_text: $listing.data('sbp-remove-text') || i18n.remove_text || 'Remover',
             remove_position: getResponsiveData($listing, 'sbp-remove-position', 'inline_end'),
             show_quantity: $listing.data('sbp-show-quantity') || 'no',
-            quantity_label: $listing.data('sbp-quantity-label') || i18n.quantity_label || 'Quantidade'
+            quantity_label: $listing.data('sbp-quantity-label') || i18n.quantity_label || 'Quantidade',
+            show_price: $listing.data('sbp-show-price') || 'no',
+            price_label: $listing.data('sbp-price-label') || i18n.price_label || 'Preço'
         };
     }
 
