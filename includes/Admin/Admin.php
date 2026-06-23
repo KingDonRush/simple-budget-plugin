@@ -5,6 +5,7 @@
 
 namespace SBP\Admin;
 
+use SBP\Support\BudgetValueFields;
 use SBP\Templates\CartTemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -212,6 +213,12 @@ class Admin {
             'default'           => [],
         ] );
 
+        register_setting( 'sbp_settings_group', BudgetValueFields::OPTION, [
+            'type'              => 'array',
+            'sanitize_callback' => [ BudgetValueFields::class, 'sanitize_fields' ],
+            'default'           => [],
+        ] );
+
         add_settings_section(
             'sbp_main_section',
             __( 'Configurações do WhatsApp', 'simple-budget-plugin-sbp' ),
@@ -225,6 +232,21 @@ class Admin {
             [ $this, 'render_whatsapp_field' ],
             'sbp-settings',
             'sbp_main_section'
+        );
+
+        add_settings_section(
+            'sbp_budget_values_section',
+            __( 'Budget Values (__SBP)', 'simple-budget-plugin-sbp' ),
+            null,
+            'sbp-settings'
+        );
+
+        add_settings_field(
+            BudgetValueFields::OPTION,
+            __( 'Custom Value Fields', 'simple-budget-plugin-sbp' ),
+            [ $this, 'render_budget_value_fields' ],
+            'sbp-settings',
+            'sbp_budget_values_section'
         );
 
         add_settings_field(
@@ -282,6 +304,10 @@ class Admin {
         });
         </script>
     <?php }
+
+    public function render_budget_value_fields() {
+        ( new BudgetValueFieldsPanel() )->render();
+    }
 
     public function sanitize_phone_number( $value ) {
         $value = preg_replace( '/[^0-9]/', '', (string) $value );

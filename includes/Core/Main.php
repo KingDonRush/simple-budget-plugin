@@ -9,6 +9,7 @@ use SBP\Core\Loader;
 use SBP\Admin\Admin;
 use SBP\Public_\Public_;   // Classe "Public_" fica no namespace SBP\Public_
 use SBP\Ajax\Ajax;
+use SBP\CLI\Command;
 use SBP\Elementor\ElementorIntegration;
 use SBP\Support\Pricing;
 
@@ -28,6 +29,7 @@ class Main {
             Admin::class,
             Public_::class,
             Ajax::class,
+            Command::class,
             ElementorIntegration::class,
             Pricing::class,
         ];

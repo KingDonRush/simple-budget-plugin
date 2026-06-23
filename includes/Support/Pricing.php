@@ -25,8 +25,8 @@ class Pricing {
         add_action( 'init', [ $this, 'register_meta' ], 20 );
         add_action( 'add_meta_boxes', [ $this, 'register_meta_boxes' ] );
         add_action( 'save_post', [ $this, 'save_meta_box' ] );
-        add_filter( 'eit_toolkit_field_catalog_entries', [ $this, 'add_eit_catalog_entries' ] );
-        add_filter( 'eit_toolkit_public_meta_fields_for_post_type', [ $this, 'add_eit_public_meta_fields' ], 10, 2 );
+        add_filter( 'eit_toolkit_field_catalog_entries', [ PricingEitCatalog::class, 'add_catalog_entries' ] );
+        add_filter( 'eit_toolkit_public_meta_fields_for_post_type', [ PricingEitCatalog::class, 'add_public_meta_fields' ], 10, 2 );
     }
 
     public static function modes() {
@@ -40,7 +40,7 @@ class Pricing {
 
     public function register_meta() {
         foreach ( self::supported_post_types() as $post_type ) {
-            foreach ( self::meta_schema() as $key => $schema ) {
+            foreach ( self::meta_schema() + BudgetValueFields::custom_meta_schema() as $key => $schema ) {
                 register_post_meta(
                     $post_type,
                     $key,
@@ -74,42 +74,7 @@ class Pricing {
     public function render_meta_box( $post ) {
         $pricing = self::for_post( $post->ID );
         wp_nonce_field( self::NONCE_ACTION, self::NONCE_NAME );
-        ?>
-        <div class="sbp-pricing-fields">
-            <p>
-                <label for="sbp-price-mode"><strong><?php esc_html_e( 'Mode', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <select id="sbp-price-mode" name="sbp_pricing[mode]" class="widefat">
-                    <?php foreach ( self::modes() as $mode => $label ) : ?>
-                        <option value="<?php echo esc_attr( $mode ); ?>" <?php selected( $pricing['mode'], $mode ); ?>><?php echo esc_html( $label ); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </p>
-            <p>
-                <label for="sbp-price"><strong><?php esc_html_e( 'Fixed / starting price', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <input id="sbp-price" type="number" min="0" step="0.01" name="sbp_pricing[price]" class="widefat" value="<?php echo esc_attr( $pricing['price'] ); ?>" />
-            </p>
-            <p>
-                <label for="sbp-price-min"><strong><?php esc_html_e( 'Range min', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <input id="sbp-price-min" type="number" min="0" step="0.01" name="sbp_pricing[price_min]" class="widefat" value="<?php echo esc_attr( $pricing['price_min'] ); ?>" />
-            </p>
-            <p>
-                <label for="sbp-price-max"><strong><?php esc_html_e( 'Range max', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <input id="sbp-price-max" type="number" min="0" step="0.01" name="sbp_pricing[price_max]" class="widefat" value="<?php echo esc_attr( $pricing['price_max'] ); ?>" />
-            </p>
-            <p>
-                <label for="sbp-price-currency"><strong><?php esc_html_e( 'Currency', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <input id="sbp-price-currency" type="text" maxlength="3" name="sbp_pricing[currency]" class="widefat" value="<?php echo esc_attr( $pricing['currency'] ); ?>" />
-            </p>
-            <p>
-                <label for="sbp-price-unit"><strong><?php esc_html_e( 'Unit', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <input id="sbp-price-unit" type="text" maxlength="32" name="sbp_pricing[unit]" class="widefat" value="<?php echo esc_attr( $pricing['unit'] ); ?>" placeholder="<?php echo esc_attr__( 'per room, m², package...', 'simple-budget-plugin-sbp' ); ?>" />
-            </p>
-            <p>
-                <label for="sbp-price-label"><strong><?php esc_html_e( 'Custom label', 'simple-budget-plugin-sbp' ); ?></strong></label>
-                <input id="sbp-price-label" type="text" maxlength="80" name="sbp_pricing[label]" class="widefat" value="<?php echo esc_attr( $pricing['label'] ); ?>" />
-            </p>
-        </div>
-        <?php
+        PricingMetaBox::render( $pricing );
     }
 
     public function save_meta_box( $post_id ) {
@@ -139,6 +104,9 @@ class Pricing {
         update_post_meta( $post_id, self::META_CURRENCY, $pricing['currency'] );
         update_post_meta( $post_id, self::META_UNIT, $pricing['unit'] );
         update_post_meta( $post_id, self::META_LABEL, $pricing['label'] );
+
+        $raw_values = isset( $_POST['sbp_pricing_values'] ) && is_array( $_POST['sbp_pricing_values'] ) ? wp_unslash( $_POST['sbp_pricing_values'] ) : [];
+        BudgetValueMeta::save_for_post( $post_id, $raw_values );
     }
 
     public static function for_post( $post_id ) {
@@ -157,6 +125,7 @@ class Pricing {
                 'currency'  => get_post_meta( $post_id, self::META_CURRENCY, true ),
                 'unit'      => get_post_meta( $post_id, self::META_UNIT, true ),
                 'label'     => get_post_meta( $post_id, self::META_LABEL, true ),
+                'values'    => BudgetValueMeta::values_for_post( $post_id ),
             ]
         );
     }
@@ -181,19 +150,27 @@ class Pricing {
             $display = self::format_range( $pricing );
         }
 
+        if ( '' !== $display ) {
+            if ( '' !== $pricing['label'] ) {
+                $display = $pricing['label'] . ': ' . $display;
+            }
+
+            if ( '' !== $pricing['unit'] ) {
+                $display .= ' / ' . $pricing['unit'];
+            }
+        }
+
+        $values = BudgetValueMeta::display_values( $pricing['values'] );
+
+        if ( empty( $values ) ) {
+            return $display;
+        }
+
         if ( '' === $display ) {
-            return '';
+            return implode( '; ', $values );
         }
 
-        if ( '' !== $pricing['label'] ) {
-            $display = $pricing['label'] . ': ' . $display;
-        }
-
-        if ( '' !== $pricing['unit'] ) {
-            $display .= ' / ' . $pricing['unit'];
-        }
-
-        return $display;
+        return $display . '; ' . implode( '; ', $values );
     }
 
     public static function preview() {
@@ -205,56 +182,6 @@ class Pricing {
                 'currency' => self::DEFAULT_CURRENCY,
             ]
         );
-    }
-
-    public function add_eit_catalog_entries( $entries ) {
-        $entries = is_array( $entries ) ? $entries : [];
-
-        foreach ( self::supported_post_types() as $post_type ) {
-            $post_type_object = get_post_type_object( $post_type );
-            $post_type_label = $post_type_object && ! empty( $post_type_object->labels->singular_name )
-                ? $post_type_object->labels->singular_name
-                : $post_type;
-
-            foreach ( self::eit_fields() as $key => $field ) {
-                $entries[] = [
-                    'key'       => $key,
-                    'label'     => sprintf(
-                        /* translators: 1: post type label, 2: field label, 3: meta key. */
-                        __( '%1$s / Simple Budget / %2$s (%3$s)', 'simple-budget-plugin-sbp' ),
-                        $post_type_label,
-                        $field['label'],
-                        $key
-                    ),
-                    'source'    => 'meta',
-                    'type'      => $field['type'],
-                    'post_type' => $post_type,
-                ];
-            }
-        }
-
-        return $entries;
-    }
-
-    public function add_eit_public_meta_fields( $fields, $post_type ) {
-        $fields = is_array( $fields ) ? $fields : [];
-        $post_type = sanitize_key( $post_type );
-
-        if ( ! in_array( $post_type, self::supported_post_types(), true ) ) {
-            return $fields;
-        }
-
-        foreach ( self::eit_fields() as $key => $field ) {
-            $fields[ $key ] = [
-                'key'          => $key,
-                'label'        => $field['label'],
-                'type'         => $field['type'],
-                'default'      => '',
-                'show_in_rest' => true,
-            ];
-        }
-
-        return $fields;
     }
 
     public static function supported_post_types() {
@@ -287,6 +214,7 @@ class Pricing {
             'currency'  => self::DEFAULT_CURRENCY,
             'unit'      => '',
             'label'     => '',
+            'values'    => [],
         ];
     }
 
@@ -301,6 +229,7 @@ class Pricing {
         $payload['currency'] = self::sanitize_currency( $raw['currency'] ?? self::DEFAULT_CURRENCY );
         $payload['unit'] = self::limit_text( sanitize_text_field( $raw['unit'] ?? '' ), 32 );
         $payload['label'] = self::limit_text( sanitize_text_field( $raw['label'] ?? '' ), 80 );
+        $payload['values'] = BudgetValueMeta::sanitize_values_payload( $raw['values'] ?? [] );
 
         return $payload;
     }
@@ -341,23 +270,6 @@ class Pricing {
                 'sanitize_callback' => function ( $value ) {
                     return self::limit_text( sanitize_text_field( $value ), 80 );
                 },
-            ],
-        ];
-    }
-
-    private static function eit_fields() {
-        return [
-            self::META_PRICE => [
-                'label' => __( 'Budget price', 'simple-budget-plugin-sbp' ),
-                'type'  => 'number',
-            ],
-            self::META_PRICE_MIN => [
-                'label' => __( 'Budget price min', 'simple-budget-plugin-sbp' ),
-                'type'  => 'number',
-            ],
-            self::META_PRICE_MAX => [
-                'label' => __( 'Budget price max', 'simple-budget-plugin-sbp' ),
-                'type'  => 'number',
             ],
         ];
     }
