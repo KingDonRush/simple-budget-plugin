@@ -676,6 +676,25 @@ jQuery(function ($) {
         setCartQuantity(productId, $field.val());
     });
 
+    $(document).on('click', '.sbp-budget-quantity__step', function (event) {
+        event.preventDefault();
+
+        var $button = $(this);
+
+        if ($button.closest('[data-sbp-editor-preview="yes"]').length) {
+            return;
+        }
+
+        var $field = $button.closest('.sbp-budget-quantity__control').find('.sbp-budget-quantity__input').first();
+        var step = parseInt($button.data('sbp-step'), 10) || 0;
+
+        if (!$field.length || !step) {
+            return;
+        }
+
+        $field.val(normalizeQuantity(parseInt($field.val(), 10) + step)).trigger('change');
+    });
+
     $(document).on('click', '.sbp-close-popup', function () {
         closePopup();
     });

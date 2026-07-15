@@ -439,6 +439,53 @@
     padding: 6px 8px;
 }
 
+.sbp-budget-quantity {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sbp-budget-quantity__control {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 4px;
+}
+
+.sbp-budget-quantity__input {
+    width: 64px;
+    min-height: 36px;
+    margin: 0;
+    border: 1px solid #d7dbe3;
+    border-radius: 4px;
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.sbp-budget-quantity__step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    border: 1px solid #d7dbe3;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.sbp-budget-quantity__step:hover,
+.sbp-budget-quantity__step:focus-visible {
+    border-color: currentColor;
+}
+
+.sbp-budget-quantity__step svg {
+    width: 1em;
+    height: 1em;
+}
+
 .sbp-budget-listing__submit {
     display: inline-flex;
     margin-top: 16px;

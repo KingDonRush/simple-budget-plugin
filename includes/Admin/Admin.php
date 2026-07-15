@@ -6,7 +6,7 @@
 namespace SBP\Admin;
 
 use SBP\Support\BudgetValueFields;
-use SBP\Templates\CartTemplateManager;
+use SBP\Templates\TemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -15,8 +15,8 @@ class Admin {
     public function init_hooks() {
         add_action( 'admin_menu', [ $this, 'register_menu' ] );
         add_action( 'admin_init', [ $this, 'register_settings' ] );
-        add_action( 'admin_post_sbp_create_cart_template', [ $this, 'handle_create_cart_template' ] );
-        add_action( 'admin_post_sbp_delete_cart_template', [ $this, 'handle_delete_cart_template' ] );
+        add_action( 'admin_post_sbp_create_template', [ $this, 'handle_create_template' ] );
+        add_action( 'admin_post_sbp_delete_template', [ $this, 'handle_delete_template' ] );
     }
 
     public function register_menu() {
@@ -40,6 +40,9 @@ class Admin {
     }
 
     public function render_settings_page() { ?>
+        <?php if ( ! current_user_can( 'manage_options' ) ) : ?>
+            <?php wp_die( esc_html__( 'You do not have permission to access this page.', 'simple-budget-plugin-sbp' ) ); ?>
+        <?php endif; ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Configurações do Simple Budget Plugin', 'simple-budget-plugin-sbp' ); ?></h1>
             <form method="post" action="options.php">
@@ -53,9 +56,12 @@ class Admin {
     <?php }
 
     public function render_templates_page() {
-        $templates = CartTemplateManager::get_templates();
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to access this page.', 'simple-budget-plugin-sbp' ) );
+        }
+
         ?>
-        <div class="wrap">
+        <div class="wrap sbp-admin sbp-admin--templates">
             <h1><?php esc_html_e( 'Simple Budget Templates', 'simple-budget-plugin-sbp' ); ?></h1>
 
             <?php if ( isset( $_GET['sbp_error'] ) ) : ?>
@@ -70,83 +76,32 @@ class Admin {
                 </div>
             <?php endif; ?>
 
-            <?php if ( ! CartTemplateManager::is_elementor_available() ) : ?>
+            <?php if ( ! TemplateManager::is_elementor_available() ) : ?>
                 <div class="notice notice-warning">
                     <p><?php esc_html_e( 'Elementor must be active to create and edit Simple Budget templates.', 'simple-budget-plugin-sbp' ); ?></p>
                 </div>
             <?php endif; ?>
 
             <p>
-                <?php esc_html_e( 'Create Elementor templates for the budget modal, then select one in a Budget Button configured as Open cart.', 'simple-budget-plugin-sbp' ); ?>
+                <?php esc_html_e( 'Build cart shells, repeated items, and optional summaries with native Elementor widgets and Simple Budget context.', 'simple-budget-plugin-sbp' ); ?>
             </p>
 
-            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin: 18px 0 24px;">
-                <?php wp_nonce_field( 'sbp_create_cart_template' ); ?>
-                <input type="hidden" name="action" value="sbp_create_cart_template" />
-                <label for="sbp_template_title" class="screen-reader-text">
-                    <?php esc_html_e( 'Template title', 'simple-budget-plugin-sbp' ); ?>
-                </label>
-                <input
-                    id="sbp_template_title"
-                    type="text"
-                    name="template_title"
-                    class="regular-text"
-                    placeholder="<?php echo esc_attr__( 'Simple Budget Cart Modal', 'simple-budget-plugin-sbp' ); ?>"
-                />
-                <?php submit_button( __( 'Create cart template', 'simple-budget-plugin-sbp' ), 'primary', 'submit', false ); ?>
-            </form>
-
-            <table class="widefat striped">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e( 'Template', 'simple-budget-plugin-sbp' ); ?></th>
-                        <th><?php esc_html_e( 'Status', 'simple-budget-plugin-sbp' ); ?></th>
-                        <th><?php esc_html_e( 'Actions', 'simple-budget-plugin-sbp' ); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ( empty( $templates ) ) : ?>
-                        <tr>
-                            <td colspan="3"><?php esc_html_e( 'No Simple Budget cart templates found yet.', 'simple-budget-plugin-sbp' ); ?></td>
-                        </tr>
-                    <?php else : ?>
-                        <?php foreach ( $templates as $template ) : ?>
-                            <?php $status = get_post_status_object( $template->post_status ); ?>
-                            <tr>
-                                <td>
-                                    <strong><?php echo esc_html( get_the_title( $template ) ); ?></strong>
-                                    <br />
-                                    <code><?php echo esc_html( '#' . $template->ID ); ?></code>
-                                </td>
-                                <td><?php echo esc_html( $status ? $status->label : $template->post_status ); ?></td>
-                                <td>
-                                    <a class="button button-primary" href="<?php echo esc_url( CartTemplateManager::get_edit_url( $template->ID ) ); ?>">
-                                        <?php esc_html_e( 'Edit in Elementor', 'simple-budget-plugin-sbp' ); ?>
-                                    </a>
-                                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline-block;margin-left:8px;" onsubmit="return confirm('<?php echo esc_js( __( 'Remove this Simple Budget template?', 'simple-budget-plugin-sbp' ) ); ?>');">
-                                        <?php wp_nonce_field( 'sbp_delete_cart_template_' . $template->ID ); ?>
-                                        <input type="hidden" name="action" value="sbp_delete_cart_template" />
-                                        <input type="hidden" name="template_id" value="<?php echo esc_attr( $template->ID ); ?>" />
-                                        <?php submit_button( __( 'Remove', 'simple-budget-plugin-sbp' ), 'delete', 'submit', false ); ?>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+            <?php foreach ( TemplateManager::roles() as $role => $definition ) : ?>
+                <?php $this->render_template_group( $role, $definition ); ?>
+            <?php endforeach; ?>
         </div>
     <?php }
 
-    public function handle_create_cart_template() {
+    public function handle_create_template() {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have permission to create Simple Budget templates.', 'simple-budget-plugin-sbp' ) );
         }
 
-        check_admin_referer( 'sbp_create_cart_template' );
+        check_admin_referer( 'sbp_create_template' );
 
+        $role = isset( $_POST['template_role'] ) ? sanitize_key( wp_unslash( $_POST['template_role'] ) ) : '';
         $title = isset( $_POST['template_title'] ) ? sanitize_text_field( wp_unslash( $_POST['template_title'] ) ) : '';
-        $template_id = CartTemplateManager::create_cart_modal_template( $title );
+        $template_id = TemplateManager::create_template( $role, $title );
 
         if ( is_wp_error( $template_id ) ) {
             wp_safe_redirect(
@@ -161,19 +116,20 @@ class Admin {
             exit;
         }
 
-        wp_safe_redirect( CartTemplateManager::get_edit_url( $template_id ) );
+        wp_safe_redirect( TemplateManager::get_edit_url( $template_id ) );
         exit;
     }
 
-    public function handle_delete_cart_template() {
+    public function handle_delete_template() {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have permission to delete Simple Budget templates.', 'simple-budget-plugin-sbp' ) );
         }
 
         $template_id = isset( $_POST['template_id'] ) ? absint( $_POST['template_id'] ) : 0;
-        check_admin_referer( 'sbp_delete_cart_template_' . $template_id );
+        $role = isset( $_POST['template_role'] ) ? sanitize_key( wp_unslash( $_POST['template_role'] ) ) : '';
+        check_admin_referer( 'sbp_delete_template_' . $template_id );
 
-        $deleted = CartTemplateManager::delete_cart_template( $template_id );
+        $deleted = TemplateManager::delete_template( $template_id, $role );
 
         if ( is_wp_error( $deleted ) ) {
             wp_safe_redirect(
@@ -198,6 +154,85 @@ class Admin {
             )
         );
         exit;
+    }
+
+    private function render_template_group( $role, array $definition ) {
+        $templates = TemplateManager::get_templates( $role );
+        $field_id = 'sbp-template-title-' . sanitize_html_class( $role );
+        ?>
+        <section class="sbp-admin__template-group" aria-labelledby="sbp-template-group-<?php echo esc_attr( $role ); ?>">
+            <h2 id="sbp-template-group-<?php echo esc_attr( $role ); ?>"><?php echo esc_html( $definition['label'] ); ?></h2>
+            <p class="description"><?php echo esc_html( $definition['description'] ); ?></p>
+
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin: 14px 0 18px;">
+                <?php wp_nonce_field( 'sbp_create_template' ); ?>
+                <input type="hidden" name="action" value="sbp_create_template" />
+                <input type="hidden" name="template_role" value="<?php echo esc_attr( $role ); ?>" />
+                <label for="<?php echo esc_attr( $field_id ); ?>" class="screen-reader-text">
+                    <?php echo esc_html( $definition['default_title'] ); ?>
+                </label>
+                <input
+                    id="<?php echo esc_attr( $field_id ); ?>"
+                    type="text"
+                    name="template_title"
+                    class="regular-text"
+                    placeholder="<?php echo esc_attr( $definition['default_title'] ); ?>"
+                />
+                <?php
+                submit_button(
+                    sprintf(
+                        /* translators: %s: template type. */
+                        __( 'Create %s', 'simple-budget-plugin-sbp' ),
+                        $definition['singular']
+                    ),
+                    'secondary',
+                    'submit',
+                    false
+                );
+                ?>
+            </form>
+
+            <table class="widefat striped">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e( 'Template', 'simple-budget-plugin-sbp' ); ?></th>
+                        <th><?php esc_html_e( 'Status', 'simple-budget-plugin-sbp' ); ?></th>
+                        <th><?php esc_html_e( 'Actions', 'simple-budget-plugin-sbp' ); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ( empty( $templates ) ) : ?>
+                        <tr>
+                            <td colspan="3"><?php esc_html_e( 'No templates of this type yet.', 'simple-budget-plugin-sbp' ); ?></td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ( $templates as $template ) : ?>
+                            <?php $status = get_post_status_object( $template->post_status ); ?>
+                            <tr>
+                                <td>
+                                    <strong><?php echo esc_html( get_the_title( $template ) ); ?></strong><br />
+                                    <code><?php echo esc_html( '#' . $template->ID ); ?></code>
+                                </td>
+                                <td><?php echo esc_html( $status ? $status->label : $template->post_status ); ?></td>
+                                <td>
+                                    <a class="button button-primary" href="<?php echo esc_url( TemplateManager::get_edit_url( $template->ID ) ); ?>">
+                                        <?php esc_html_e( 'Edit in Elementor', 'simple-budget-plugin-sbp' ); ?>
+                                    </a>
+                                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline-block;margin-left:8px;" onsubmit="return confirm('<?php echo esc_js( __( 'Remove this Simple Budget template?', 'simple-budget-plugin-sbp' ) ); ?>');">
+                                        <?php wp_nonce_field( 'sbp_delete_template_' . $template->ID ); ?>
+                                        <input type="hidden" name="action" value="sbp_delete_template" />
+                                        <input type="hidden" name="template_id" value="<?php echo esc_attr( $template->ID ); ?>" />
+                                        <input type="hidden" name="template_role" value="<?php echo esc_attr( $role ); ?>" />
+                                        <?php submit_button( __( 'Remove', 'simple-budget-plugin-sbp' ), 'delete', 'submit', false ); ?>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </section>
+        <?php
     }
 
     public function register_settings() {

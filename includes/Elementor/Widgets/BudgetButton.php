@@ -16,10 +16,13 @@ use Elementor\Group_Control_Typography;
 use Elementor\Icons_Manager;
 use Elementor\Widget_Base;
 use SBP\Elementor\ElementorIntegration;
+use SBP\Support\BudgetContext;
 use SBP\Support\CartRenderer;
 use SBP\Support\CartShellConfig;
 use SBP\Support\RuntimeAssets;
 use SBP\Templates\CartTemplateManager;
+use SBP\Templates\TemplateManager;
+use SBP\Templates\TemplateRequest;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -64,6 +67,18 @@ class BudgetButton extends Widget_Base {
     }
 
     private function register_content_controls() {
+        $action_options = [
+            'add'           => esc_html__( 'Add current item', 'simple-budget-plugin-sbp' ),
+            'toggle'        => esc_html__( 'Toggle current item (add/remove)', 'simple-budget-plugin-sbp' ),
+            'open_cart'     => esc_html__( 'Open budget popup', 'simple-budget-plugin-sbp' ),
+            'close_cart'    => esc_html__( 'Close budget popup', 'simple-budget-plugin-sbp' ),
+            'send_whatsapp' => esc_html__( 'Send WhatsApp budget', 'simple-budget-plugin-sbp' ),
+        ];
+
+        if ( TemplateRequest::is_role( TemplateManager::ROLE_BUDGET_ITEM ) ) {
+            $action_options['remove'] = esc_html__( 'Remove current item', 'simple-budget-plugin-sbp' );
+        }
+
         $this->start_controls_section(
             'section_budget_action',
             [
@@ -77,14 +92,8 @@ class BudgetButton extends Widget_Base {
                 'label'   => esc_html__( 'Action', 'simple-budget-plugin-sbp' ),
                 'type'    => Controls_Manager::SELECT,
                 'default' => 'add',
-                'options' => [
-                    'add'           => esc_html__( 'Add current item', 'simple-budget-plugin-sbp' ),
-                    'toggle'        => esc_html__( 'Toggle current item (add/remove)', 'simple-budget-plugin-sbp' ),
-                    'open_cart'     => esc_html__( 'Open budget popup', 'simple-budget-plugin-sbp' ),
-                    'close_cart'    => esc_html__( 'Close budget popup', 'simple-budget-plugin-sbp' ),
-                    'send_whatsapp' => esc_html__( 'Send WhatsApp budget', 'simple-budget-plugin-sbp' ),
-                ],
-                'description' => esc_html__( 'Use Budget Listing controls for per-item remove buttons.', 'simple-budget-plugin-sbp' ),
+                'options' => $action_options,
+                'description' => esc_html__( 'Remove current item is available inside Budget Item Templates.', 'simple-budget-plugin-sbp' ),
             ]
         );
 
@@ -781,7 +790,11 @@ class BudgetButton extends Widget_Base {
         $this->add_render_attribute( 'button', 'role', 'button' );
         $this->add_render_attribute( 'button', 'data-sbp-action', $action );
 
-        if ( $product_id && in_array( $action, [ 'add', 'toggle' ], true ) && CartRenderer::is_valid_product_id( $product_id ) ) {
+        if ( 'remove' === $action && ! BudgetContext::has_item() && TemplateRequest::is_role( TemplateManager::ROLE_BUDGET_ITEM ) ) {
+            $this->add_render_attribute( 'wrapper', 'data-sbp-editor-preview', 'yes' );
+        }
+
+        if ( $product_id && in_array( $action, [ 'add', 'toggle', 'remove' ], true ) && CartRenderer::is_valid_product_id( $product_id ) ) {
             $this->add_render_attribute( 'button', 'data-sbp-product-id', $product_id );
         }
 
@@ -840,8 +853,12 @@ class BudgetButton extends Widget_Base {
         view.addRenderAttribute( 'button', 'class', 'elementor-button sbp-budget-action' );
         view.addRenderAttribute( 'button', 'href', '#' );
         view.addRenderAttribute( 'button', 'role', 'button' );
-        var action = [ 'add', 'toggle', 'open_cart', 'close_cart', 'send_whatsapp' ].indexOf( settings.action ) !== -1 ? settings.action : 'add';
+        var action = [ 'add', 'toggle', 'remove', 'open_cart', 'close_cart', 'send_whatsapp' ].indexOf( settings.action ) !== -1 ? settings.action : 'add';
         view.addRenderAttribute( 'button', 'data-sbp-action', action );
+
+        if ( 'remove' === action ) {
+            view.addRenderAttribute( 'wrapper', 'data-sbp-editor-preview', 'yes' );
+        }
 
         if ( settings.size ) {
             view.addRenderAttribute( 'button', 'class', 'elementor-size-' + settings.size );
@@ -979,6 +996,12 @@ class BudgetButton extends Widget_Base {
     }
 
     private function resolve_product_id( array $settings ) {
+        if ( 'remove' === ( $settings['action'] ?? '' ) ) {
+            $item = BudgetContext::current_item();
+
+            return absint( $item['id'] ?? 0 );
+        }
+
         if ( 'manual' === ( $settings['product_source'] ?? '' ) ) {
             return absint( $settings['product_id'] ?? 0 );
         }
@@ -987,7 +1010,7 @@ class BudgetButton extends Widget_Base {
     }
 
     private function sanitize_action( $action ) {
-        $allowed = [ 'add', 'toggle', 'open_cart', 'close_cart', 'send_whatsapp' ];
+        $allowed = [ 'add', 'toggle', 'remove', 'open_cart', 'close_cart', 'send_whatsapp' ];
 
         return in_array( $action, $allowed, true ) ? $action : 'add';
     }
