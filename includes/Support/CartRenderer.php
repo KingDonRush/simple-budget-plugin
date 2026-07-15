@@ -78,40 +78,53 @@ class CartRenderer {
     }
 
     public static function render_items( $product_ids, $args = [], $quantities = [], $query_post_types = null ) {
+        $display = self::normalize_display_args( $args );
+        $items = self::get_items_data( $product_ids, $quantities, $query_post_types );
+
+        return self::render_item_records( $items, $display );
+    }
+
+    public static function get_items_data( $product_ids, $quantities = [], $query_post_types = null ) {
         $product_ids = self::normalize_product_ids( $product_ids );
 
         if ( empty( $product_ids ) ) {
-            return '';
+            return [];
         }
 
-        $display = self::normalize_display_args( $args );
         $quantities = self::normalize_quantities( $quantities );
-        $query   = self::query_items( $product_ids, $query_post_types );
-
-        if ( ! $query->have_posts() ) {
-            return '';
-        }
-
-        ob_start();
+        $query = self::query_items( $product_ids, $query_post_types );
+        $items = [];
 
         while ( $query->have_posts() ) {
             $query->the_post();
 
             $id = get_the_ID();
-            echo self::render_item_markup(
-                [
-                    'id'        => $id,
-                    'title'     => get_the_title(),
-                    'image_url' => get_the_post_thumbnail_url( $id, 'thumbnail' ),
-                    'quantity'  => $quantities[ (string) $id ] ?? 1,
-                    'pricing'   => Pricing::for_post( $id ),
-                    'preview'   => false,
-                ],
-                $display
-            ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            $items[] = [
+                'id'        => $id,
+                'title'     => get_the_title(),
+                'image_url' => get_the_post_thumbnail_url( $id, 'thumbnail' ),
+                'quantity'  => $quantities[ (string) $id ] ?? 1,
+                'pricing'   => Pricing::for_post( $id ),
+                'preview'   => false,
+            ];
         }
 
         wp_reset_postdata();
+
+        return $items;
+    }
+
+    public static function render_item_records( array $items, array $display ) {
+        if ( empty( $items ) ) {
+            return '';
+        }
+
+        $display = self::normalize_display_args( $display );
+        ob_start();
+
+        foreach ( $items as $item ) {
+            echo self::render_item_markup( $item, $display ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        }
 
         return ob_get_clean();
     }

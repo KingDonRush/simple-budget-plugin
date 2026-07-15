@@ -301,7 +301,7 @@ class Pricing {
         return '';
     }
 
-    private static function format_money( $value, $currency ) {
+    public static function format_money( $value, $currency ) {
         $number = (float) $value;
         $currency = self::sanitize_currency( $currency );
         $formatted = number_format( $number, 2, ',', '.' );

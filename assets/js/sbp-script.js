@@ -4,6 +4,7 @@ jQuery(function ($) {
     var debugMode = Boolean(window.sbp_debug || config.debug);
     var maxCartItems = parseInt(config.max_cart_items, 10) || 100;
     var maxItemQuantity = parseInt(config.max_item_quantity, 10) || 999;
+    var listingRequestSequence = 0;
 
     function debugLog() {
         if (debugMode && window.console) {
@@ -247,12 +248,28 @@ jQuery(function ($) {
         };
     }
 
+    function getListingConfig($listing) {
+        return {
+            item_layout: $listing.data('sbp-item-layout') || 'built_in',
+            item_template_id: parseInt($listing.data('sbp-item-template-id'), 10) || 0,
+            summary_mode: $listing.data('sbp-summary-mode') || 'hidden',
+            summary_template_id: parseInt($listing.data('sbp-summary-template-id'), 10) || 0,
+            subtotal_label: $listing.data('sbp-subtotal-label') || 'Subtotal',
+            adjustment_type: $listing.data('sbp-adjustment-type') || 'none',
+            adjustment_label: $listing.data('sbp-adjustment-label') || 'Adjustment',
+            adjustment_value: $listing.data('sbp-adjustment-value') || 0,
+            estimated_range_label: $listing.data('sbp-estimated-range-label') || 'Estimated range',
+            display: getListingDisplay($listing)
+        };
+    }
+
     function renderEmptyListing($listing) {
         var emptyMessage = $listing.data('sbp-empty-message') || i18n.cart_empty || 'Seu carrinho está vazio.';
 
         $listing.find('.sbp-budget-listing__items').html(
             '<p class="sbp-budget-listing__empty">' + escapeHtml(emptyMessage) + '</p>'
         );
+        $listing.find('.sbp-budget-listing__summary').empty();
         updateActionStates();
     }
 
@@ -268,7 +285,17 @@ jQuery(function ($) {
             return;
         }
 
-        $.ajax({
+        var previousRequest = $listing.data('sbp-listing-request');
+
+        if (previousRequest && typeof previousRequest.abort === 'function') {
+            previousRequest.abort();
+        }
+
+        listingRequestSequence += 1;
+        var requestId = listingRequestSequence;
+        $listing.data('sbp-listing-request-id', requestId);
+
+        var request = $.ajax({
             url: config.ajax_url,
             type: 'POST',
             data: {
@@ -276,24 +303,41 @@ jQuery(function ($) {
                 nonce: config.nonce,
                 product_ids: cart,
                 quantities: getCartQuantities(),
-                display: getListingDisplay($listing)
+                listing: getListingConfig($listing)
             },
             success: function (response) {
-                if (response.success) {
-                    $listing.find('.sbp-budget-listing__items').html(response.data);
+                if ($listing.data('sbp-listing-request-id') !== requestId) {
+                    return;
+                }
+
+                if (response.success && response.data && 'string' === typeof response.data.items_html) {
+                    var $items = $listing.find('.sbp-budget-listing__items');
+                    var $summary = $listing.find('.sbp-budget-listing__summary');
+
+                    $items.html(response.data.items_html);
+                    $summary.html(response.data.summary_html || '');
+                    runElementorReadyTriggers($items);
+                    runElementorReadyTriggers($summary);
                     $listing.find('.sbp-budget-listing__submit').removeClass('sbp-is-hidden');
                 } else {
                     renderEmptyListing($listing);
                 }
                 updateActionStates();
             },
-            error: function () {
+            error: function (xhr, status) {
+                if ('abort' === status || $listing.data('sbp-listing-request-id') !== requestId) {
+                    return;
+                }
+
                 $listing.find('.sbp-budget-listing__items').html(
                     '<p class="sbp-budget-listing__empty">' + escapeHtml(i18n.load_error || 'Erro ao carregar o carrinho.') + '</p>'
                 );
+                $listing.find('.sbp-budget-listing__summary').empty();
                 updateActionStates();
             }
         });
+
+        $listing.data('sbp-listing-request', request);
     }
 
     function renderBudgetListings() {

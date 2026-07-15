@@ -6,6 +6,7 @@
 namespace SBP\Ajax;
 
 use SBP\Support\CartRenderer;
+use SBP\Support\BudgetListingRenderer;
 use SBP\Support\Pricing;
 use SBP\Templates\CartTemplateManager;
 
@@ -38,15 +39,17 @@ class Ajax {
             wp_send_json_error( __( 'Carrinho vazio ou dados inválidos.', 'simple-budget-plugin-sbp' ) );
         }
 
+        $listing    = isset( $_POST['listing'] ) && is_array( $_POST['listing'] ) ? (array) wp_unslash( $_POST['listing'] ) : [];
         $display    = isset( $_POST['display'] ) && is_array( $_POST['display'] ) ? (array) wp_unslash( $_POST['display'] ) : [];
         $quantities = isset( $_POST['quantities'] ) ? CartRenderer::normalize_quantities( wp_unslash( $_POST['quantities'] ) ) : [];
-        $html       = CartRenderer::render_items( $product_ids, $display, $quantities );
+        $listing['display'] = $listing['display'] ?? $display;
+        $rendered = BudgetListingRenderer::render( $product_ids, $listing, $quantities );
 
-        if ( '' === $html ) {
+        if ( '' === $rendered['items_html'] ) {
             wp_send_json_error( __( 'Nenhum item encontrado.', 'simple-budget-plugin-sbp' ) );
         }
 
-        wp_send_json_success( $html );
+        wp_send_json_success( $rendered );
     }
 
     public function render_cart_template() {

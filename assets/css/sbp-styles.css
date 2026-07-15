@@ -347,6 +347,48 @@
     gap: 12px;
 }
 
+.sbp-budget-listing__template-item,
+.sbp-budget-listing__summary-template {
+    width: 100%;
+}
+
+.sbp-budget-listing__summary:empty {
+    display: none;
+}
+
+.sbp-budget-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #d7dbe3;
+}
+
+.sbp-budget-summary__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e6e8ec;
+}
+
+.sbp-budget-summary__row--estimated-range {
+    font-size: 1.08em;
+}
+
+.sbp-budget-summary__value {
+    text-align: end;
+}
+
+.sbp-budget-summary__status {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.875em;
+    line-height: 1.45;
+}
+
 .sbp-budget-listing .sbp-cart-item {
     border: 1px solid #e6e8ec;
     border-radius: 6px;
