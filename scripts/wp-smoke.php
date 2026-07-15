@@ -66,6 +66,7 @@ sbp_smoke_assert(
     ),
     'listing-controls'
 );
+sbp_smoke_assert( ! isset( $listing_controls['show_submit'], $listing_controls['submit_text'] ), 'inline-submit-removed' );
 
 $tags = \Elementor\Plugin::$instance->dynamic_tags->get_tags();
 $expected_tags = [
@@ -87,6 +88,20 @@ $context_value = \SBP\Support\BudgetContext::with_item(
     }
 );
 sbp_smoke_assert( 'Scoped item' === $context_value && ! \SBP\Support\BudgetContext::has_item(), 'item-context-scope' );
+$nested_context = \SBP\Support\BudgetContext::with_item(
+    [ 'title' => 'Outer item' ],
+    function () {
+        $inner = \SBP\Support\BudgetContext::with_item(
+            [ 'title' => 'Inner item' ],
+            function () {
+                return \SBP\Support\BudgetContext::item_value( 'title' );
+            }
+        );
+
+        return [ $inner, \SBP\Support\BudgetContext::item_value( 'title' ) ];
+    }
+);
+sbp_smoke_assert( [ 'Inner item', 'Outer item' ] === $nested_context && ! \SBP\Support\BudgetContext::has_item(), 'nested-item-context-scope' );
 
 $exact = \SBP\Support\BudgetCalculator::calculate(
     [ [ 'quantity' => 2, 'pricing' => [ 'mode' => 'fixed', 'price' => 1000, 'currency' => 'BRL' ] ] ],
@@ -128,7 +143,14 @@ sbp_smoke_assert( 'partial' === $invalid['status'] && 1 === $invalid['invalid_co
 
 $administrators = get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] );
 sbp_smoke_assert( ! empty( $administrators ), 'administrator-fixture' );
-wp_set_current_user( absint( $administrators[0] ) );
+$administrator_id = absint( $administrators[0] );
+wp_set_current_user( 0 );
+$denied_template = \SBP\Templates\TemplateManager::create_template(
+    \SBP\Templates\TemplateManager::ROLE_BUDGET_ITEM,
+    'SBP smoke denied'
+);
+sbp_smoke_assert( is_wp_error( $denied_template ) && 'sbp_template_permission' === $denied_template->get_error_code(), 'template-permission' );
+wp_set_current_user( $administrator_id );
 
 $created_ids = [];
 
@@ -152,6 +174,35 @@ try {
     $created_ids[] = $post_a;
     $created_ids[] = $post_b;
 
+    $legacy_document = wp_insert_post(
+        [
+            'post_type'   => 'page',
+            'post_status' => 'draft',
+            'post_title'  => 'SBP smoke legacy inline submit',
+        ]
+    );
+    $created_ids[] = $legacy_document;
+    update_post_meta(
+        $legacy_document,
+        '_elementor_data',
+        wp_slash(
+            wp_json_encode(
+                [
+                    [
+                        'elType'    => 'widget',
+                        'widgetType' => 'sbp-budget-list',
+                        'settings'  => [ 'show_submit' => 'yes' ],
+                        'elements'  => [],
+                    ],
+                ]
+            )
+        )
+    );
+    sbp_smoke_assert(
+        in_array( $legacy_document, \SBP\Support\InlineSubmitAudit::find_affected_posts(), true ),
+        'inline-submit-audit'
+    );
+
     update_post_meta( $post_a, \SBP\Support\Pricing::META_MODE, 'fixed' );
     update_post_meta( $post_a, \SBP\Support\Pricing::META_PRICE, 1000 );
     update_post_meta( $post_a, \SBP\Support\Pricing::META_CURRENCY, 'BRL' );
@@ -160,11 +211,43 @@ try {
     update_post_meta( $post_b, \SBP\Support\Pricing::META_PRICE_MAX, 800 );
     update_post_meta( $post_b, \SBP\Support\Pricing::META_CURRENCY, 'BRL' );
 
+    $cart_template = \SBP\Templates\TemplateManager::create_template( \SBP\Templates\TemplateManager::ROLE_CART_MODAL, 'SBP smoke cart' );
     $item_template = \SBP\Templates\TemplateManager::create_template( \SBP\Templates\TemplateManager::ROLE_BUDGET_ITEM, 'SBP smoke item' );
     $summary_template = \SBP\Templates\TemplateManager::create_template( \SBP\Templates\TemplateManager::ROLE_BUDGET_SUMMARY, 'SBP smoke summary' );
-    sbp_smoke_assert( ! is_wp_error( $item_template ) && ! is_wp_error( $summary_template ), 'template-creation' );
+    sbp_smoke_assert( ! is_wp_error( $cart_template ) && ! is_wp_error( $item_template ) && ! is_wp_error( $summary_template ), 'template-creation' );
+    $created_ids[] = $cart_template;
     $created_ids[] = $item_template;
     $created_ids[] = $summary_template;
+    sbp_smoke_assert(
+        \SBP\Templates\TemplateManager::ROLE_CART_MODAL === \SBP\Templates\TemplateManager::get_template_role( $cart_template )
+        && \SBP\Templates\TemplateManager::ROLE_BUDGET_ITEM === \SBP\Templates\TemplateManager::get_template_role( $item_template )
+        && \SBP\Templates\TemplateManager::ROLE_BUDGET_SUMMARY === \SBP\Templates\TemplateManager::get_template_role( $summary_template )
+        && ! \SBP\Templates\TemplateManager::can_render_template( $item_template, \SBP\Templates\TemplateManager::ROLE_BUDGET_SUMMARY ),
+        'template-roles'
+    );
+    $_REQUEST['post'] = $item_template;
+    $item_editor_role = \SBP\Templates\TemplateRequest::current_role();
+    $_REQUEST['post'] = $summary_template;
+    $summary_editor_role = \SBP\Templates\TemplateRequest::current_role();
+    $_REQUEST['post'] = $post_a;
+    $normal_editor_role = \SBP\Templates\TemplateRequest::current_role();
+    unset( $_REQUEST['post'] );
+    sbp_smoke_assert(
+        \SBP\Templates\TemplateManager::ROLE_BUDGET_ITEM === $item_editor_role
+        && \SBP\Templates\TemplateManager::ROLE_BUDGET_SUMMARY === $summary_editor_role
+        && '' === $normal_editor_role,
+        'template-editor-context'
+    );
+
+    $cart_template_html = \SBP\Templates\TemplateManager::render_template(
+        $cart_template,
+        \SBP\Templates\TemplateManager::ROLE_CART_MODAL
+    );
+    sbp_smoke_assert(
+        false !== strpos( $cart_template_html, 'sbp-budget-listing' )
+        && false !== strpos( $cart_template_html, 'data-sbp-action="send_whatsapp"' ),
+        'cart-template-render'
+    );
 
     $rendered = \SBP\Support\BudgetListingRenderer::render(
         [ $post_a, $post_b ],
@@ -183,6 +266,23 @@ try {
         && false !== strpos( $rendered['items_html'], 'data-sbp-action="remove"' )
         && false !== strpos( $rendered['summary_html'], 'R$ 2.750,00' ),
         'template-listing-render'
+    );
+
+    $fallback = \SBP\Support\BudgetListingRenderer::render(
+        [ $post_a, $post_b ],
+        [
+            'item_layout'         => 'template',
+            'item_template_id'    => 999999,
+            'summary_mode'        => 'template',
+            'summary_template_id' => 999999,
+        ]
+    );
+    sbp_smoke_assert(
+        $fallback['item_template_fallback']
+        && $fallback['summary_template_fallback']
+        && false !== strpos( $fallback['items_html'], 'sbp-cart-item' )
+        && false !== strpos( $fallback['summary_html'], 'sbp-budget-summary' ),
+        'listing-template-fallbacks'
     );
 } finally {
     foreach ( array_reverse( array_filter( $created_ids, 'is_numeric' ) ) as $created_id ) {

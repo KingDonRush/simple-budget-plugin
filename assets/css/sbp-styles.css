@@ -294,13 +294,11 @@
 }
 
 /* Elementor widgets */
-.sbp-budget-button .elementor-button,
-.sbp-budget-listing__submit.elementor-button {
+.sbp-budget-button .elementor-button {
     cursor: pointer;
 }
 
-.sbp-budget-button .elementor-button-content-wrapper,
-.sbp-budget-listing__submit .elementor-button-content-wrapper {
+.sbp-budget-button .elementor-button-content-wrapper {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -526,11 +524,6 @@
 .sbp-budget-quantity__step svg {
     width: 1em;
     height: 1em;
-}
-
-.sbp-budget-listing__submit {
-    display: inline-flex;
-    margin-top: 16px;
 }
 
 .sbp-is-disabled {

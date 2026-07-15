@@ -142,7 +142,7 @@ class Pricing {
             $display = self::format_money( $pricing['price'], $pricing['currency'] );
         } elseif ( 'from' === $pricing['mode'] && '' !== $pricing['price'] ) {
             $display = sprintf(
-                /* translators: %s: formatted item price. */
+                /* translators: %s: formatted price or estimate. */
                 __( 'From %s', 'simple-budget-plugin-sbp' ),
                 self::format_money( $pricing['price'], $pricing['currency'] )
             );
@@ -284,7 +284,7 @@ class Pricing {
 
         if ( $min ) {
             return sprintf(
-                /* translators: %s: formatted item price. */
+                /* translators: %s: formatted price or estimate. */
                 __( 'From %s', 'simple-budget-plugin-sbp' ),
                 $min
             );

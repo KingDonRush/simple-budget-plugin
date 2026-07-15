@@ -6,6 +6,7 @@
 namespace SBP\Admin;
 
 use SBP\Support\BudgetValueFields;
+use SBP\Support\InlineSubmitAudit;
 use SBP\Templates\TemplateManager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -81,6 +82,8 @@ class Admin {
                     <p><?php esc_html_e( 'Elementor must be active to create and edit Simple Budget templates.', 'simple-budget-plugin-sbp' ); ?></p>
                 </div>
             <?php endif; ?>
+
+            <?php $this->render_inline_submit_audit(); ?>
 
             <p>
                 <?php esc_html_e( 'Build cart shells, repeated items, and optional summaries with native Elementor widgets and Simple Budget context.', 'simple-budget-plugin-sbp' ); ?>
@@ -232,6 +235,32 @@ class Admin {
                 </tbody>
             </table>
         </section>
+        <?php
+    }
+
+    private function render_inline_submit_audit() {
+        $affected_posts = InlineSubmitAudit::find_affected_posts();
+
+        if ( empty( $affected_posts ) ) {
+            return;
+        }
+        ?>
+        <div class="notice notice-warning">
+            <p>
+                <strong><?php esc_html_e( 'Budget Listing inline send was removed in 4.0.', 'simple-budget-plugin-sbp' ); ?></strong>
+                <?php esc_html_e( 'Add a separate Budget Button configured as Send WhatsApp budget to these Elementor documents:', 'simple-budget-plugin-sbp' ); ?>
+            </p>
+            <ul>
+                <?php foreach ( $affected_posts as $post_id ) : ?>
+                    <li>
+                        <a href="<?php echo esc_url( TemplateManager::get_edit_url( $post_id ) ); ?>">
+                            <?php echo esc_html( get_the_title( $post_id ) ?: __( 'Untitled', 'simple-budget-plugin-sbp' ) ); ?>
+                            <code><?php echo esc_html( '#' . $post_id ); ?></code>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
         <?php
     }
 

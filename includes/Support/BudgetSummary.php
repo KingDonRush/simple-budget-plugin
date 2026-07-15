@@ -76,7 +76,7 @@ class BudgetSummary {
 
         if ( null === $max ) {
             return sprintf(
-                /* translators: %s: formatted minimum estimate. */
+                /* translators: %s: formatted price or estimate. */
                 __( 'From %s', 'simple-budget-plugin-sbp' ),
                 $min_display
             );

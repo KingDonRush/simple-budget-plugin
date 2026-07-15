@@ -318,7 +318,6 @@ jQuery(function ($) {
                     $summary.html(response.data.summary_html || '');
                     runElementorReadyTriggers($items);
                     runElementorReadyTriggers($summary);
-                    $listing.find('.sbp-budget-listing__submit').removeClass('sbp-is-hidden');
                 } else {
                     renderEmptyListing($listing);
                 }
@@ -444,7 +443,7 @@ jQuery(function ($) {
                 return;
             }
 
-            var behavior = $button.data('sbp-empty-behavior') || ($button.hasClass('sbp-budget-listing__submit') ? 'hide' : 'show_error');
+            var behavior = $button.data('sbp-empty-behavior') || 'show_error';
 
             if (isEmpty) {
                 if ('hide' === behavior) {

@@ -4,7 +4,7 @@ Tags: orçamento, whatsapp, carrinho, elementor, custom post types
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 3.1.1
+Stable tag: 4.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,12 +24,15 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 == Features ==
 **PT-BR:**  
 - Criação de orçamentos personalizados via popup interativo.  
-- Templates de carrinho editáveis no Elementor via **Simple Budget → Templates**.
+- Templates contextuais de carrinho, item e resumo editáveis no Elementor via **Simple Budget → Templates**.
 - Shell do carrinho configurável como modal central, carrinho lateral ou bottom sheet.
-- Quantidades, posicionamento do botão remover e comportamento do WhatsApp vazio nos widgets.
+- Itens e resumos podem usar layout nativo ou templates Elementor reutilizáveis.
+- Cálculo agregado para preços fixos, iniciais, faixas, ocultos e ajustes fixos/percentuais.
+- Tags dinâmicas contextuais para imagem, textos, preço, subtotal, ajuste, faixa e estado.
+- Quantidade acessível via input ou stepper no widget **Budget Quantity**.
 - Prévia de design no editor para emular itens do carrinho enquanto o template é construído no Elementor.
 - Integração com **WhatsApp** para envio automático do pedido.  
-- Widgets nativos para **Elementor**: **Budget Button** e **Budget Listing**.
+- Widgets nativos para **Elementor**: **Budget Button**, **Budget Listing** e **Budget Quantity**.
 - Prompt interno de configuração quando um botão de abertura ainda não tem template selecionado.
 - Suporte a múltiplos **Custom Post Types (CPTs)**.  
 - Painel administrativo completo com opções de configuração.  
@@ -38,12 +41,15 @@ Perfect for catalog sites, service providers, and businesses that want to automa
 
 **EN-US:**  
 - Create personalized quotes via an interactive popup.  
-- Elementor-editable cart templates through **Simple Budget → Templates**.
+- Contextual cart, item, and summary templates through **Simple Budget → Templates**.
 - Configurable cart shell as centered modal, side cart, or bottom sheet.
-- Quantities, remove button positioning, and empty WhatsApp behavior in widgets.
+- Built-in or reusable Elementor layouts for Listing items and summaries.
+- Aggregate estimates for fixed, from, range, and hidden prices plus fixed/percentage adjustments.
+- Contextual dynamic tags for image, copy, price, subtotal, adjustment, range, and status.
+- Accessible numeric input or stepper through **Budget Quantity**.
 - Editor design preview to emulate cart items while building the template in Elementor.
 - **WhatsApp** integration for automatic message generation.  
-- Native **Elementor** widgets: **Budget Button** and **Budget Listing**.
+- Native **Elementor** widgets: **Budget Button**, **Budget Listing**, and **Budget Quantity**.
 - Internal setup prompt when an open-cart button has no selected template.
 - Supports multiple **Custom Post Types (CPTs)**.  
 - Admin panel with full customization options.  
@@ -60,9 +66,10 @@ Perfect for catalog sites, service providers, and businesses that want to automa
    - Número de WhatsApp  
    - Tipos de post aceitos (CPTs)  
 4. No Elementor, use o widget **Budget Button** dentro do card/template do item.
-5. Use o widget **Budget Listing** na página/template de orçamento para listar itens e remover produtos.
-6. Para customizar o modal, acesse **Simple Budget → Templates**, crie um template de carrinho, edite no Elementor e selecione esse template em um **Budget Button** com ação **Open budget popup**.
-7. Se nenhum template for selecionado, o popup mostra um prompt de configuração para orientar o implementador.
+5. Use o widget **Budget Listing** na página/template de orçamento e escolha os modos de item e resumo.
+6. Em **Simple Budget → Templates**, crie templates de carrinho, item e resumo e edite-os no Elementor.
+7. Adicione um **Budget Button** separado com ação **Send WhatsApp budget** onde o envio deve aparecer.
+8. Se nenhum template de carrinho for selecionado, o popup mostra um prompt de configuração.
 
 **EN-US:**  
 1. Upload the `simple-budget-plugin` folder to `/wp-content/plugins/`.  
@@ -71,9 +78,10 @@ Perfect for catalog sites, service providers, and businesses that want to automa
    - WhatsApp number  
    - Allowed post types (CPTs)  
 4. In Elementor, use the **Budget Button** widget inside the item card/template.
-5. Use the **Budget Listing** widget on the quote page/template to list and remove products.
-6. To customize the modal, open **Simple Budget → Templates**, create a cart template, edit it in Elementor, and select it in a **Budget Button** configured as **Open budget popup**.
-7. If no template is selected, the popup shows a setup prompt to guide the implementer.
+5. Use **Budget Listing** on the quote page/template and choose its item and summary modes.
+6. In **Simple Budget → Templates**, create cart, item, and summary templates and edit them with Elementor.
+7. Add a separate **Budget Button** configured as **Send WhatsApp budget** wherever sending should be available.
+8. If no cart template is selected, the popup shows a setup prompt.
 
 ---
 
@@ -108,6 +116,25 @@ Absolutely. You can select which post types are used from the plugin settings pa
 ---
 
 == Changelog ==
+= 4.0.0 =
+**PT-BR:**
+- Generaliza o gerenciador para templates de carrinho, item e resumo, com starters nativos do Elementor.
+- Adiciona oito tags dinâmicas contextuais e contextos empilháveis sem vazamento entre itens.
+- Adiciona o widget **Budget Quantity** e a ação contextual **Remove current item** ao **Budget Button**.
+- Permite que **Budget Listing** componha itens e resumos built-in ou via template Elementor, com fallback seguro.
+- Adiciona cálculo agregado em centavos para preços fixed/from/range/hidden, quantidades, ajustes e moedas mistas.
+- Protege atualizações AJAX contra respostas obsoletas e reinicializa widgets Elementor apó injeção.
+- Remove definitivamente o envio embutido do **Budget Listing** e audita documentos que ainda dependem de `show_submit`.
+
+**EN-US:**
+- Generalizes the manager for cart, item, and summary templates with native Elementor starters.
+- Adds eight contextual dynamic tags and stack-scoped contexts that do not leak across items.
+- Adds **Budget Quantity** and the contextual **Remove current item** action to **Budget Button**.
+- Lets **Budget Listing** compose built-in or Elementor-templated items and summaries with safe fallbacks.
+- Adds cent-based aggregate calculation for fixed/from/range/hidden prices, quantities, adjustments, and mixed currencies.
+- Rejects stale AJAX responses and reinitializes Elementor widgets after injection.
+- Permanently removes inline send from **Budget Listing** and audits documents still depending on `show_submit`.
+
 = 3.1.1 =
 **PT-BR:**
 - Adiciona `scripts/verify.sh` e CI básico para validação reproduzível de PHP, JavaScript e smoke checks locais via WP-CLI.
@@ -299,12 +326,10 @@ Absolutely. You can select which post types are used from the plugin settings pa
 
 == Upgrade Notice ==
 **PT-BR:**  
-Antes de atualizar para a versão 2.0.0, remova quaisquer versões antigas do plugin.  
-Essa atualização é uma reestruturação completa e requer reconfiguração das opções no painel.
+Na versão 4.0.0, o envio embutido do **Budget Listing** foi removido. Abra **Simple Budget → Templates** e adicione um **Budget Button** separado com ação **Send WhatsApp budget** aos documentos listados pela auditoria. O upgrade não reescreve JSON do Elementor.
 
 **EN-US:**  
-Before upgrading to version 2.0.0, remove any previous plugin versions.  
-This update is a complete refactor and requires resetting settings from the admin panel.
+Version 4.0.0 removes inline send from **Budget Listing**. Open **Simple Budget → Templates** and add a separate **Budget Button** with the **Send WhatsApp budget** action to every document reported by the audit. The upgrade does not rewrite Elementor JSON.
 
 ---
 

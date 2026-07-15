@@ -107,11 +107,37 @@ class BudgetQuantity extends Widget_Base {
         );
 
         $this->add_control(
+            'decrement_text',
+            [
+                'label'       => esc_html__( 'Decrease Text', 'simple-budget-plugin-sbp' ),
+                'type'        => Controls_Manager::TEXT,
+                'default'     => '−',
+                'description' => esc_html__( 'Used when no decrease icon is selected.', 'simple-budget-plugin-sbp' ),
+                'condition'   => [
+                    'mode' => 'stepper',
+                ],
+            ]
+        );
+
+        $this->add_control(
             'increment_icon',
             [
                 'label'     => esc_html__( 'Increase Icon', 'simple-budget-plugin-sbp' ),
                 'type'      => Controls_Manager::ICONS,
                 'condition' => [
+                    'mode' => 'stepper',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'increment_text',
+            [
+                'label'       => esc_html__( 'Increase Text', 'simple-budget-plugin-sbp' ),
+                'type'        => Controls_Manager::TEXT,
+                'default'     => '+',
+                'description' => esc_html__( 'Used when no increase icon is selected.', 'simple-budget-plugin-sbp' ),
+                'condition'   => [
                     'mode' => 'stepper',
                 ],
             ]
@@ -152,6 +178,49 @@ class BudgetQuantity extends Widget_Base {
                 'selectors'  => [
                     '{{WRAPPER}} .sbp-budget-quantity' => 'gap: {{SIZE}}{{UNIT}};',
                     '{{WRAPPER}} .sbp-budget-quantity__control' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'wrapper_background',
+            [
+                'label'     => esc_html__( 'Background', 'simple-budget-plugin-sbp' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .sbp-budget-quantity' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'wrapper_border',
+                'selector' => '{{WRAPPER}} .sbp-budget-quantity',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'wrapper_radius',
+            [
+                'label'      => esc_html__( 'Border Radius', 'simple-budget-plugin-sbp' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%', 'em', 'rem' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .sbp-budget-quantity' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'wrapper_padding',
+            [
+                'label'      => esc_html__( 'Padding', 'simple-budget-plugin-sbp' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', 'rem' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .sbp-budget-quantity' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -287,6 +356,14 @@ class BudgetQuantity extends Widget_Base {
             ]
         );
 
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'button_typography',
+                'selector' => '{{WRAPPER}} .sbp-budget-quantity__step',
+            ]
+        );
+
         $this->add_control(
             'button_background',
             [
@@ -378,11 +455,11 @@ class BudgetQuantity extends Widget_Base {
             </span>
             <span class="sbp-budget-quantity__control">
                 <?php if ( 'stepper' === $mode ) : ?>
-                    <?php $this->render_step_button( 'decrement', -1, $settings['decrement_icon'] ?? [], __( 'Decrease quantity', 'simple-budget-plugin-sbp' ), '−' ); ?>
+                    <?php $this->render_step_button( 'decrement', -1, $settings['decrement_icon'] ?? [], __( 'Decrease quantity', 'simple-budget-plugin-sbp' ), $settings['decrement_text'] ?? '−' ); ?>
                 <?php endif; ?>
                 <input <?php $this->print_render_attribute_string( 'input' ); ?> />
                 <?php if ( 'stepper' === $mode ) : ?>
-                    <?php $this->render_step_button( 'increment', 1, $settings['increment_icon'] ?? [], __( 'Increase quantity', 'simple-budget-plugin-sbp' ), '+' ); ?>
+                    <?php $this->render_step_button( 'increment', 1, $settings['increment_icon'] ?? [], __( 'Increase quantity', 'simple-budget-plugin-sbp' ), $settings['increment_text'] ?? '+' ); ?>
                 <?php endif; ?>
             </span>
         </div>
@@ -395,6 +472,8 @@ class BudgetQuantity extends Widget_Base {
         var mode = 'input' === settings.mode ? 'input' : 'stepper';
         var quantity = Math.max( 1, Math.min( <?php echo absint( CartRenderer::MAX_ITEM_QUANTITY ); ?>, parseInt( settings.preview_quantity, 10 ) || 2 ) );
         var label = settings.label || '<?php echo esc_js( __( 'Quantity', 'simple-budget-plugin-sbp' ) ); ?>';
+        var decrementText = settings.decrement_text || '−';
+        var incrementText = settings.increment_text || '+';
         var decrementIcon = elementor.helpers.renderIcon( view, settings.decrement_icon, { 'aria-hidden': true }, 'i', 'object' );
         var incrementIcon = elementor.helpers.renderIcon( view, settings.increment_icon, { 'aria-hidden': true }, 'i', 'object' );
         #>
@@ -403,13 +482,13 @@ class BudgetQuantity extends Widget_Base {
             <span class="sbp-budget-quantity__control">
                 <# if ( 'stepper' === mode ) { #>
                     <button type="button" class="sbp-budget-quantity__step" aria-label="<?php echo esc_attr__( 'Decrease quantity', 'simple-budget-plugin-sbp' ); ?>" disabled>
-                        <# if ( decrementIcon.rendered ) { #>{{{ decrementIcon.value }}}<# } else { #>−<# } #>
+                        <# if ( decrementIcon.rendered ) { #>{{{ decrementIcon.value }}}<# } else { #>{{ decrementText }}<# } #>
                     </button>
                 <# } #>
                 <input class="sbp-budget-quantity__input sbp-quantity-field sbp-quantity" type="number" min="1" max="<?php echo absint( CartRenderer::MAX_ITEM_QUANTITY ); ?>" step="1" value="{{ quantity }}" aria-label="{{ label }}" disabled />
                 <# if ( 'stepper' === mode ) { #>
                     <button type="button" class="sbp-budget-quantity__step" aria-label="<?php echo esc_attr__( 'Increase quantity', 'simple-budget-plugin-sbp' ); ?>" disabled>
-                        <# if ( incrementIcon.rendered ) { #>{{{ incrementIcon.value }}}<# } else { #>+<# } #>
+                        <# if ( incrementIcon.rendered ) { #>{{{ incrementIcon.value }}}<# } else { #>{{ incrementText }}<# } #>
                     </button>
                 <# } #>
             </span>
@@ -418,6 +497,12 @@ class BudgetQuantity extends Widget_Base {
     }
 
     private function render_step_button( $key, $step, $icon, $label, $fallback ) {
+        $fallback = sanitize_text_field( $fallback );
+
+        if ( '' === $fallback ) {
+            $fallback = $step < 0 ? '−' : '+';
+        }
+
         $this->add_render_attribute( $key, [
             'class'         => [ 'sbp-budget-quantity__step', 'sbp-budget-quantity__step--' . sanitize_html_class( $key ) ],
             'type'          => 'button',
