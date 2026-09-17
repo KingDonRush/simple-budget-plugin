@@ -3,7 +3,7 @@
 Simple Budget Plugin is a WordPress plugin for lightweight quote-request flows
 inside Elementor-based sites. It lets visitors add posts or custom post type
 items to a local budget cart, review the selected items, remove entries, and
-send a prebuilt quote request through WhatsApp.
+open a prebuilt WhatsApp quote request for the visitor to review and send.
 
 ## Why It Exists
 
@@ -11,6 +11,8 @@ Many catalog and service websites need quotation requests, not a full
 WooCommerce checkout. This plugin keeps the site builder workflow intact while
 adding a focused budget/cart layer for products, services, or any configured
 custom post type.
+
+**Independent plugin project.** No payment processing or adoption claim is implied.
 
 ## Current Capabilities
 
@@ -78,6 +80,33 @@ bash scripts/verify.sh
 
 Set `SBP_SKIP_WP_SMOKE=1` to run only syntax and whitespace checks when the
 local Docker WordPress runtime is unavailable.
+
+## Review the implementation
+
+- [AJAX validation](includes/Ajax/Ajax.php)
+- [Elementor widgets](includes/Elementor/Widgets)
+- [Editable cart templates](includes/Templates/CartTemplateManager.php)
+- [Browser cart behavior](assets/js/sbp-script.js)
+
+Review on 2026-09-17: `SBP_SKIP_WP_SMOKE=1 bash scripts/verify.sh` passed syntax
+and whitespace checks on revision `27c9f411f87d12026ef9fb85b4afe59845f0ad99`.
+The WordPress integration smoke test was not run in this review.
+
+## Development method and authorship
+
+This is an independent project, not evidence of an employer or a client engagement.
+The source was produced primarily or entirely by AI coding agents under Guilherme
+Manoel da Silva's direction. His contribution includes product intent, requirements,
+constraints, decomposition, product and architectural decisions through the agent
+interface, iteration, validation and documentation. The repository demonstrates
+the resulting system and process; it does not imply that he manually wrote every
+component or can reproduce it unaided from memory.
+
+## Em português
+
+Plugin de solicitação de orçamento para WordPress/Elementor, com widgets nativos,
+carrinho local e modelo de modal editável. Gera a URL do pedido para o visitante
+revisar e enviar pelo WhatsApp; não processa pagamentos.
 
 ## License
 
