@@ -98,3 +98,16 @@ local Docker WordPress runtime is unavailable.
 ## License
 
 GPLv2 or later.
+
+## Runtime validation and boundaries
+
+The 4.0 server-side smoke suite passed 28 assertions on an isolated WordPress 6.9 /
+PHP 8.4 / Elementor Free 4.0.8 installation. It exercises template permissions,
+role validation, contextual rendering, quantity-aware pricing, ranges, mixed
+currencies, migration detection and fallback rendering. PHP and JavaScript syntax
+checks also pass. Browser interaction and actual WhatsApp delivery are separate
+checks; this pass did not send a quote or produce visual captures.
+
+The cart is browser-local state. Calculations are estimates, not an order/payment
+ledger. WhatsApp submission prepares a link for the visitor; it does not prove
+delivery or create a checkout transaction.
